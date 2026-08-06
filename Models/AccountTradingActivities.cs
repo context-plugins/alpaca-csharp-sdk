@@ -218,7 +218,7 @@ public record AccountTradingActivities
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("type")]
-    public TypeModel? Type { get; init; }
+    public TypeEnum? Type { get; init; }
 
     /// <summary>
     /// An order executed through Alpaca can experience several status changes during its lifecycle. The most common statuses are described in detail below:

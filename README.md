@@ -31,7 +31,7 @@ services.AddTraderApiClient(options =>
     {
         options.ApiKey = "YOUR_API_KEY";
         options.ApiSecret = "YOUR_API_KEY";
-        options.Environment = ServerEnvironment.Production;
+        options.Environment = ServerEnvironment.Paper;
         // TODO: configure more client options here
     });
 ```
@@ -48,7 +48,7 @@ var options =
     {
         ApiKey = "YOUR_API_KEY",
         ApiSecret = "YOUR_API_KEY",
-        Environment = ServerEnvironment.Production,
+        Environment = ServerEnvironment.Paper,
     };
 var client = new TraderApiClient(httpClient, options);
 ```

@@ -46,7 +46,7 @@ internal sealed class OAuth2AuthorizationCodeStrategy
                 $"{nameof(OAuth2AuthorizationCodeCredentials.PromptForAuthorizationCode)} is required " +
                 "for the OAuth2 Authorization Code flow.");
 
-        if (credentials.Pkce is null && string.IsNullOrEmpty(credentials.ClientSecret))
+        if (credentials.Pkce is null && credentials.ClientSecret is null or "")
             throw new InvalidOperationException(
                 $"{nameof(OAuth2AuthorizationCodeCredentials.ClientSecret)} is required when PKCE is disabled.");
 
@@ -57,7 +57,7 @@ internal sealed class OAuth2AuthorizationCodeStrategy
 
         return await _rawClient.Execute(
             _tokenUrl, [], [],
-            _headerParams(credentials.ClientId, credentials.ClientSecret),
+            [.. _headerParams(credentials.ClientId, credentials.ClientSecret), new HeaderParam("Idempotency-Key", Guid.NewGuid())],
             HttpMethod.Post,
             FormUrlEncodedRequest.Create([
                 new Param("grant_type", "authorization_code"),
@@ -67,7 +67,10 @@ internal sealed class OAuth2AuthorizationCodeStrategy
                 .. _bodyParams(credentials.ClientId, credentials.ClientSecret),
             ]),
             JsonResponse.Create<OAuthTokenRefreshable>(),
-            RawErrorResponse.Instance, [], null, ct).ConfigureAwait(false);
+            RawErrorResponse.Instance, 
+            [],
+            null,
+            ct).ConfigureAwait(false);
     }
 
     public async Task<OAuthTokenRefreshable?> TryRefreshToken(
@@ -75,7 +78,10 @@ internal sealed class OAuth2AuthorizationCodeStrategy
     {
         var result = await _rawClient.ExecuteResult(
             _tokenUrl, [], [],
-            _headerParams(credentials.ClientId, credentials.ClientSecret),
+            [
+                .. _headerParams(credentials.ClientId, credentials.ClientSecret),
+                new HeaderParam("Idempotency-Key", Guid.NewGuid())
+            ],
             HttpMethod.Post,
             FormUrlEncodedRequest.Create([
                 new Param("grant_type", "refresh_token"),
@@ -83,7 +89,10 @@ internal sealed class OAuth2AuthorizationCodeStrategy
                 .. _bodyParams(credentials.ClientId, credentials.ClientSecret),
             ]),
             JsonResponse.Create<OAuthTokenRefreshable>(),
-            RawErrorResponse.Instance, [], null, ct).ConfigureAwait(false);
+            RawErrorResponse.Instance, 
+            [], 
+            null,
+            ct).ConfigureAwait(false);
 
         return result.TryGetResponse(out var token) ? token : null;
     }
@@ -106,7 +115,7 @@ internal sealed class OAuth2AuthorizationCodeStrategy
     private static IReadOnlyList<Param> BodyParams(string clientId, string? clientSecret)
     {
         List<Param> parameters = [new("client_id", clientId)];
-        if (clientSecret != null)
+        if (clientSecret is not null)
             parameters.Add(new Param("client_secret", clientSecret));
         return parameters;
     }
@@ -114,16 +123,16 @@ internal sealed class OAuth2AuthorizationCodeStrategy
     private static IReadOnlyCollection<Param> BuildAuthorizationQueryParams(
         OAuth2AuthorizationCodeCredentials credentials, PkceValues? pkce)
     {
-        var queryParams = new List<Param>
-        {
+        List<Param> queryParams =
+        [
             new("response_type", "code"),
             new("client_id", credentials.ClientId),
-            new("redirect_uri", credentials.RedirectUri)
-        };
-        if (!string.IsNullOrEmpty(credentials.Scope))
-            queryParams.Add(new Param("scope", credentials.Scope!));
-        if (!string.IsNullOrEmpty(credentials.State))
-            queryParams.Add(new Param("state", credentials.State!));
+            new("redirect_uri", credentials.RedirectUri),
+        ];
+        if (credentials.Scope is { Length: > 0 })
+            queryParams.Add(new Param("scope", credentials.Scope));
+        if (credentials.State is { Length: > 0 })
+            queryParams.Add(new Param("state", credentials.State));
         if (pkce is not null)
         {
             queryParams.Add(new Param("code_challenge", pkce.Challenge));
@@ -131,9 +140,7 @@ internal sealed class OAuth2AuthorizationCodeStrategy
         }
         return queryParams;
     }
-
-    // --- PKCE generation ---
-
+    
     private static PkceValues GeneratePkce(PkceMethod method)
     {
         var bytes = new byte[32];

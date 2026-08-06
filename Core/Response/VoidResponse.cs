@@ -14,6 +14,6 @@ public sealed class VoidResponse : IResponse<VoidResponse>
     {
         // No body to read, but this response still owns the HttpResponseMessage and disposes it.
         httpResponseMessage.Dispose();
-        return new(Instance);
+        return new ValueTask<VoidResponse>(Instance);
     }
 }

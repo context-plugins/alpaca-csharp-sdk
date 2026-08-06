@@ -19,7 +19,7 @@ internal static class ParameterFlattener
 
     public static IEnumerable<string> Flatten(object? value)
     {
-        if (value == null) return [];
+        if (value is null) return [];
 
         var normalized = value.Normalize();
         return normalized switch
@@ -38,7 +38,7 @@ internal static class ParameterFlattener
         SerializationFormat format)
     {
         // TODO: Shield handle null or empty or default value here;
-        if (value == null) return [];
+        if (value is null) return [];
 
         var normalized = value.Normalize();
         return normalized switch
@@ -91,7 +91,7 @@ internal static class ParameterFlattener
     // ------------------------------------------------------
     // Specific list-format handlers (each is a pure expression)
     // ------------------------------------------------------
-    private static bool IsScalar(object? v) => v is null or string or bool or long or double;
+    private static bool IsScalar(object? v) => v is null or string or bool or long or decimal or double;
 
 
     private static IEnumerable<(string, string)> Indexed(string key, IEnumerable<object?> list)

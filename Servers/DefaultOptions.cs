@@ -4,19 +4,19 @@ namespace TraderApi.Servers;
 
 public class DefaultOptions
 {
-    public ProductionOptions Production { get; set; } = new();
-    public Environment2Options Environment2 { get; set; } = new();
+    public PaperOptions Paper { get; set; } = new();
+    public LiveOptions Live { get; set; } = new();
 
     internal UrlTemplate Resolve(ServerEnvironment environment, string path) =>
-        environment.Match(() => new UrlTemplate(Production.BaseUrl, path, []),
-            () => new UrlTemplate(Environment2.BaseUrl, path, []));
+        environment.Match(() => new UrlTemplate(Paper.BaseUrl, path, []),
+            () => new UrlTemplate(Live.BaseUrl, path, []));
 
-    public class ProductionOptions
+    public class PaperOptions
     {
         public string BaseUrl { get; set; } = "https://paper-api.alpaca.markets";
     }
 
-    public class Environment2Options
+    public class LiveOptions
     {
         public string BaseUrl { get; set; } = "https://api.alpaca.markets";
     }

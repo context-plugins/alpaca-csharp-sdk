@@ -10,15 +10,18 @@ namespace TraderApi.Core.Authentication;
 
 /// <summary>
 /// Represents multiple alternative schemes (OR logic).
-/// The first scheme that succeeds wins; if all fail, throws <see cref="AuthSchemeException"/>.
+/// Schemes with no credentials configured are not candidates and are skipped; the first
+/// configured scheme that succeeds wins. If every configured scheme fails, throws
+/// <see cref="AuthSchemeException"/>. With nothing configured the request goes out
+/// unauthenticated, so the server decides — the same as a single unconfigured scheme.
 /// </summary>
 internal sealed class AuthSchemeAny : IRevocableAuthScheme
 {
     private readonly IReadOnlyList<IAuthScheme> _schemes;
 
-    public AuthSchemeAny(params IAuthScheme[] schemes)
+    public AuthSchemeAny(params IReadOnlyList<IAuthScheme> schemes)
     {
-        if (schemes is null || schemes.Length == 0)
+        if (schemes is null or [])
             throw new ArgumentException("Must provide at least one scheme.", nameof(schemes));
         if (schemes.Any(s => s is null))
             throw new ArgumentException("All schemes must be non-null.", nameof(schemes));
@@ -31,6 +34,9 @@ internal sealed class AuthSchemeAny : IRevocableAuthScheme
 
         foreach (var scheme in _schemes)
         {
+            if (!scheme.IsConfigured())
+                continue;
+
             try
             {
                 await scheme.Apply(request, cancellationToken).ConfigureAwait(false);
@@ -46,7 +52,8 @@ internal sealed class AuthSchemeAny : IRevocableAuthScheme
             }
         }
 
-        throw new AuthSchemeException("No authentication scheme succeeded.", failures);
+        if (failures.Count > 0)
+            throw new AuthSchemeException("No authentication scheme succeeded.", failures);
     }
 
     // We don't track which inner scheme won the last Apply, so on a 401 we invalidate every

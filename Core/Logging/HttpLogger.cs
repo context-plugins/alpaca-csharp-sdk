@@ -158,8 +158,8 @@ internal sealed class HttpLogger
             var fragment = uri.GetComponents(UriComponents.Fragment, UriFormat.UriEscaped);
             return uri.GetComponents(UriComponents.SchemeAndServer, UriFormat.UriEscaped)
                 + uri.AbsolutePath
-                + (query.Length > 0 ? "?" + MaskPairs(query, maskUnknownKeys: true) : string.Empty)
-                + (fragment.Length > 0 ? "#" + fragment : string.Empty);
+                + (query is not [] ? "?" + MaskPairs(query, maskUnknownKeys: true) : string.Empty)
+                + (fragment is not [] ? "#" + fragment : string.Empty);
         }
 
         public string Header(string name, string value) =>
@@ -175,13 +175,13 @@ internal sealed class HttpLogger
         public bool IsLoggable(string? contentType)
         {
             var mediaType = MediaTypeOf(contentType);
-            return mediaType.Length > 0 && _loggableContentTypes.Any(prefix =>
+            return mediaType is not [] && _loggableContentTypes.Any(prefix =>
                 mediaType.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
         }
 
         public string Body(string? contentType, string body)
         {
-            if (body.Length == 0)
+            if (body is [])
                 return body;
 
             var isForm = string.Equals(

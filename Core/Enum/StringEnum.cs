@@ -27,7 +27,7 @@ public abstract record StringEnum<TEnum> : TypedEnum<string, TEnum> where TEnum 
                 null
             );
 
-            if (constructor == null)
+            if (constructor is null)
                 throw new InvalidOperationException(
                     $"Type {type.Name} must have a constructor that accepts a string parameter");
 
@@ -40,8 +40,6 @@ public abstract record StringEnum<TEnum> : TypedEnum<string, TEnum> where TEnum 
     /// <summary>
     /// Tries to get a known value, returns false if value is not predefined
     /// </summary>
-    public static bool TryGetKnownValue(string value, out TEnum? result)
-    {
-        return KnownValues.TryGetValue(value, out result);
-    }
+    public static bool TryGetKnownValue(string value, out TEnum? result) =>
+        KnownValues.TryGetValue(value, out result);
 }

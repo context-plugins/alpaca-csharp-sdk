@@ -32,7 +32,7 @@ internal sealed record KeysetState<TResponse> : IPageState<TResponse, KeysetStat
 
         var hasMore = _hasMore?.Invoke(page, headers);
 
-        if (hasMore == false)
+        if (hasMore is false)
             return null;
 
         if (hasMore is null && count < Limit)

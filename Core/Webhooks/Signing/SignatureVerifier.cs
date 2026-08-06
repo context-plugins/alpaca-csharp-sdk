@@ -35,10 +35,10 @@ internal sealed class SignatureVerifier
 
         if (ReplayTolerance is { } tolerance)
         {
-            if (string.IsNullOrEmpty(TimestampHeaderName))
+            if (TimestampHeaderName is null or "")
                 return false;
 
-            if (!request.TryGetHeader(TimestampHeaderName!, out var timestamp))
+            if (!request.TryGetHeader(TimestampHeaderName, out var timestamp))
                 return false;
 
             if (!IsWithinReplayWindow(timestamp, Clock.GetUtcNow(), tolerance))
@@ -46,7 +46,7 @@ internal sealed class SignatureVerifier
         }
 
         var providedSignatures = SignatureHeaderFormat.ExtractSignatures(signatureHeader);
-        if (providedSignatures.Count == 0)
+        if (providedSignatures is [])
             return false;
 
         var body = request.Body.ToArray();

@@ -105,8 +105,7 @@ internal sealed class RawClient
     {
         var pages = ExecutePagedResult(initialState, requestFactory, itemsSelector, response,
             requestOptions, cancellationToken);
-        return new Pageable<TResponse, TItem>(ThrowOnError(pages.AsPages(cancellationToken), cancellationToken),
-            itemsSelector);
+        return new Pageable<TResponse, TItem>(ThrowOnError(pages.AsPages(cancellationToken), cancellationToken), itemsSelector);
 
         static async IAsyncEnumerable<TResponse> ThrowOnError(
             IAsyncEnumerable<ApiResult<TResponse, TError>> pages,
@@ -152,7 +151,7 @@ internal sealed class RawClient
                     yield break;
 
                 var next = state.Next(page, result.Headers);
-                if (next == null)
+                if (next is null)
                     yield break;
 
                 state = next;

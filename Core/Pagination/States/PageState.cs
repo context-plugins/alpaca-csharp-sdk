@@ -6,13 +6,13 @@ namespace TraderApi.Core.Pagination.States;
 internal sealed record PageState<TResponse> : IPageState<TResponse, PageState<TResponse>>
 {
     private readonly long? _limit;
-    private readonly Func<TResponse, int?> _count;
+    private readonly Func<TResponse, int> _count;
     private readonly Func<TResponse, HttpResponseHeaders, bool?>? _hasMore;
     private readonly Func<TResponse, HttpResponseHeaders, long?>? _totalPages;
 
     internal PageState(
         long? limit,
-        Func<TResponse, int?> count,
+        Func<TResponse, int> count,
         Func<TResponse, HttpResponseHeaders, bool?>? hasMore,
         Func<TResponse, HttpResponseHeaders, long?>? totalPages)
     {
@@ -35,7 +35,7 @@ internal sealed record PageState<TResponse> : IPageState<TResponse, PageState<TR
         if (_hasMore?.Invoke(page, headers) is { } hasMore)
             return hasMore ? this with { Page = currentPage + 1 } : null;
 
-        var count = _count(page) ?? 0;
+        var count = _count(page);
 
         if (count == 0)
             return null;
@@ -52,7 +52,7 @@ internal static class PageState
     internal static PageState<TResponse> Create<TResponse>(
         long? page,
         long? limit,
-        Func<TResponse, int?> count,
+        Func<TResponse, int> count,
         Func<TResponse, HttpResponseHeaders, bool?>? hasMore = null,
         Func<TResponse, HttpResponseHeaders, long?>? totalPages = null) =>
         new(limit, count, hasMore, totalPages) { Page = page };

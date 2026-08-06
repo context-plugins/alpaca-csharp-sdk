@@ -23,7 +23,7 @@ internal sealed class HttpStatusPolicy
     public bool IsSuccess(HttpStatusCode statusCode) =>
         _successCodes.Count > 0
             ? _successCodes.Contains(statusCode)
-            : (int)statusCode >= 200 && (int)statusCode <= 299;
+            : (int)statusCode is >= 200 and <= 299;
 
     public bool IsUnauthorized(HttpStatusCode statusCode) => statusCode == HttpStatusCode.Unauthorized;
 }

@@ -12,10 +12,10 @@ public sealed class StringEnumConverter<TEnum> : JsonConverter<TEnum> where TEnu
 
     public override TEnum? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType == JsonTokenType.Null)
+        if (reader.TokenType is JsonTokenType.Null)
             return null;
 
-        if (reader.TokenType != JsonTokenType.String)
+        if (reader.TokenType is not JsonTokenType.String)
             throw new JsonException($"Unexpected token {reader.TokenType} when parsing {typeToConvert.Name}. Expected String.");
 
         var value = reader.GetString() ?? string.Empty;
@@ -30,9 +30,9 @@ public sealed class StringEnumConverter<TEnum> : JsonConverter<TEnum> where TEnu
                 null
             );
 
-            if (method == null)
+            if (method is null)
                 throw new InvalidOperationException(
-                    $"Type {type.Name} must inherit from StringEnum<T>");
+                    $"Type {type.Name} must inherit from {nameof(StringEnum<>)}<T>");
 
             return v => (TEnum)method.Invoke(null, [v])!;
         });
@@ -42,7 +42,7 @@ public sealed class StringEnumConverter<TEnum> : JsonConverter<TEnum> where TEnu
 
     public override void Write(Utf8JsonWriter writer, TEnum? value, JsonSerializerOptions options)
     {
-        if (value == null)
+        if (value is null)
         {
             writer.WriteNullValue();
             return;

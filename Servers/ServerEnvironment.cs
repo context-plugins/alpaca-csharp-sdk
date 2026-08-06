@@ -8,27 +8,27 @@ namespace TraderApi.Servers;
 public record ServerEnvironment : StringEnum<ServerEnvironment>
 {
     /// <summary>
-    /// Paper
+    /// Paper trading — simulated money. Safe default.
     /// </summary>
-    public static readonly ServerEnvironment Production = new("production");
+    public static readonly ServerEnvironment Paper = new("Paper");
     /// <summary>
-    /// Live
+    /// Live trading — REAL money.
     /// </summary>
-    public static readonly ServerEnvironment Environment2 = new("environment2");
+    public static readonly ServerEnvironment Live = new("Live");
 
     private ServerEnvironment(string value) : base(value)
     {
     }
 
-    internal T Match<T>(Func<T> onProduction, Func<T> onEnvironment2) =>
+    internal T Match<T>(Func<T> onPaper, Func<T> onLive) =>
         this switch
         {
-            _ when this == Production => onProduction(),
-            _ when this == Environment2 => onEnvironment2(),
+            _ when this == Paper => onPaper(),
+            _ when this == Live => onLive(),
             _ => throw new ArgumentOutOfRangeException(nameof(ServerEnvironment),
                 this,
                 $"Unknown {nameof(ServerEnvironment)} value.")
         };
 
-    public static ServerEnvironment Default() => Production;
+    public static ServerEnvironment Default() => Paper;
 }

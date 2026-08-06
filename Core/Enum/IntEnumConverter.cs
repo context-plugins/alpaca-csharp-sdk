@@ -13,10 +13,10 @@ public sealed class IntEnumConverter<TEnum> : JsonConverter<TEnum>
 
     public override TEnum? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        if (reader.TokenType == JsonTokenType.Null)
+        if (reader.TokenType is JsonTokenType.Null)
             return null;
 
-        if (reader.TokenType != JsonTokenType.Number)
+        if (reader.TokenType is not JsonTokenType.Number)
             throw new JsonException($"Unexpected token {reader.TokenType} when parsing {typeToConvert.Name}. Expected Number.");
 
         var value = reader.GetInt32();
@@ -31,9 +31,9 @@ public sealed class IntEnumConverter<TEnum> : JsonConverter<TEnum>
                 null
             );
 
-            if (method == null)
+            if (method is null)
                 throw new InvalidOperationException(
-                    $"Type {type.Name} must inherit from IntEnum<T>");
+                    $"Type {type.Name} must inherit from {nameof(IntEnum<>)}<T>");
 
             return v => (TEnum)method.Invoke(null, [v])!;
         });
@@ -43,7 +43,7 @@ public sealed class IntEnumConverter<TEnum> : JsonConverter<TEnum>
 
     public override void Write(Utf8JsonWriter writer, TEnum? value, JsonSerializerOptions options)
     {
-        if (value == null)
+        if (value is null)
         {
             writer.WriteNullValue();
             return;

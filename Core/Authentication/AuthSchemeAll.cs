@@ -14,9 +14,9 @@ internal sealed class AuthSchemeAll : IRevocableAuthScheme
 {
     private readonly IReadOnlyList<IAuthScheme> _schemes;
 
-    public AuthSchemeAll(params IAuthScheme[] schemes)
+    public AuthSchemeAll(params IReadOnlyList<IAuthScheme> schemes)
     {
-        if (schemes is null || schemes.Length == 0)
+        if (schemes is null or [])
             throw new ArgumentException("Must provide at least one scheme.", nameof(schemes));
         if (schemes.Any(s => s is null))
             throw new ArgumentException("All schemes must be non-null.", nameof(schemes));

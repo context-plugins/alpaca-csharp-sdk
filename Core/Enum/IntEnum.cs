@@ -28,7 +28,7 @@ public abstract record IntEnum<TEnum> : TypedEnum<int, TEnum>
                 null
             );
 
-            if (constructor == null)
+            if (constructor is null)
                 throw new InvalidOperationException(
                     $"Type {type.Name} must have a constructor that accepts an int parameter");
 

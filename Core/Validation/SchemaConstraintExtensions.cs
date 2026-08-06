@@ -19,7 +19,7 @@ internal static class SchemaConstraintExtensions
         public bool HasFormat(FormatKind kind) => kind switch
         {
             FormatKind.Email => IsEmail(value),
-            FormatKind.Hostname => Uri.CheckHostName(value) != UriHostNameType.Unknown,
+            FormatKind.Hostname => Uri.CheckHostName(value) is not UriHostNameType.Unknown,
             FormatKind.JsonPointer => IsJsonPointer(value),
             FormatKind.Ipv4 => IsIpAddress(value, AddressFamily.InterNetwork),
             FormatKind.Ipv6 => IsIpAddress(value, AddressFamily.InterNetworkV6),
@@ -110,7 +110,7 @@ internal static class SchemaConstraintExtensions
         var index = value.IndexOf('@');
         return index > 0 && index < value.Length - 1 && index == value.LastIndexOf('@');
     }
-    
+
     private static bool IsIpAddress(string value, AddressFamily family) =>
         IPAddress.TryParse(value, out var address) && address.AddressFamily == family;
 
@@ -118,15 +118,15 @@ internal static class SchemaConstraintExtensions
 
     private static bool IsJsonPointer(string value)
     {
-        if (value.Length == 0)
+        if (value is [])
             return true;
-        if (value[0] != '/')
+        if (value is not ['/', ..])
             return false;
         for (var i = 0; i < value.Length; i++)
         {
             if (value[i] != '~')
                 continue;
-            if (i + 1 >= value.Length || (value[i + 1] != '0' && value[i + 1] != '1'))
+            if (i + 1 >= value.Length || value[i + 1] is not ('0' or '1'))
                 return false;
         }
         return true;

@@ -6,19 +6,27 @@ namespace TraderApi.Core.Extensions;
 
 internal static class CollectionExtensions
 {
-    public static IReadOnlyList<TResult> Map<TSource, TResult>(
-        this IReadOnlyList<TSource> source, Func<TSource, TResult> selector) =>
-        source.Select(selector).ToList();
+    extension<TSource>(IReadOnlyList<TSource> source)
+    {
+        public IReadOnlyList<TResult> Map<TResult>(Func<TSource, TResult> selector) =>
+            source.Select(selector).ToList();
+    }
 
-    public static IReadOnlyDictionary<string, TResult> Map<TSource, TResult>(
-        this IReadOnlyDictionary<string, TSource> source, Func<TSource, TResult> selector) =>
-        source.ToDictionary(kv => kv.Key, kv => selector(kv.Value));
+    extension<TSource>(IReadOnlyDictionary<string, TSource> source)
+    {
+        public IReadOnlyDictionary<string, TResult> Map<TResult>(Func<TSource, TResult> selector) =>
+            source.ToDictionary(kv => kv.Key, kv => selector(kv.Value));
+    }
 
-    public static IReadOnlyList<IReadOnlyDictionary<string, TResult>> Map<TSource, TResult>(
-        this IReadOnlyList<IReadOnlyDictionary<string, TSource>> source, Func<TSource, TResult> selector) =>
-        source.Select(d => d.Map(selector)).ToList();
+    extension<TSource>(IReadOnlyList<IReadOnlyDictionary<string, TSource>> source)
+    {
+        public IReadOnlyList<IReadOnlyDictionary<string, TResult>> Map<TResult>(Func<TSource, TResult> selector) =>
+            source.Select(d => d.Map(selector)).ToList();
+    }
 
-    public static IReadOnlyDictionary<string, IReadOnlyList<TResult>> Map<TSource, TResult>(
-        this IReadOnlyDictionary<string, IReadOnlyList<TSource>> source, Func<TSource, TResult> selector) =>
-        source.ToDictionary(kv => kv.Key, kv => kv.Value.Map(selector));
+    extension<TSource>(IReadOnlyDictionary<string, IReadOnlyList<TSource>> source)
+    {
+        public IReadOnlyDictionary<string, IReadOnlyList<TResult>> Map<TResult>(Func<TSource, TResult> selector) =>
+            source.ToDictionary(kv => kv.Key, kv => kv.Value.Map(selector));
+    }
 }

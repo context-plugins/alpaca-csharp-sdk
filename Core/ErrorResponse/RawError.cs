@@ -28,7 +28,7 @@ public sealed class RawError
 #else
         var content = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 #endif
-        return new(response.StatusCode, content);
+        return new RawError(response.StatusCode, content);
     }
 
     public ReadOnlyMemory<byte> ReadAsBytes() => _content;

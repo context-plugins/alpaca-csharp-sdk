@@ -40,20 +40,13 @@ internal static class LoggingEnvironment
 
     private static bool TryParseLevel(string? raw, out LogLevel level)
     {
-        switch (raw?.Trim().ToLowerInvariant())
+        (var ok, level) = raw?.Trim().ToLowerInvariant() switch
         {
-            case "info":
-                level = LogLevel.Information;
-                return true;
-            case "debug":
-                level = LogLevel.Debug;
-                return true;
-            case "trace":
-                level = LogLevel.Trace;
-                return true;
-            default:
-                level = LogLevel.None;
-                return false;
-        }
+            "info" => (true, LogLevel.Information),
+            "debug" => (true, LogLevel.Debug),
+            "trace" => (true, LogLevel.Trace),
+            _ => (false, LogLevel.None),
+        };
+        return ok;
     }
 }
