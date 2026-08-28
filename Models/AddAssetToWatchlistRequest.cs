@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using TraderApi.Core.Models;
 
 namespace TraderApi.Models;
 
@@ -13,4 +14,7 @@ public record AddAssetToWatchlistRequest
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("symbol")]
     public string? Symbol { get; init; }
+
+    [JsonExtensionData]
+    public AdditionalProperties AdditionalProperties { get; init; } = [];
 }

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using TraderApi.Core.Models;
 using TraderApi.Models.Enums;
 
 namespace TraderApi.Models;
@@ -137,4 +138,7 @@ public record Position
 
     [JsonPropertyName("asset_marginable")]
     public required bool AssetMarginable { get; init; }
+
+    [JsonExtensionData]
+    public AdditionalProperties AdditionalProperties { get; init; } = [];
 }

@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using TraderApi.Core.Models;
 
 namespace TraderApi.Models;
 
@@ -31,4 +32,7 @@ public record PositionClosedReponse
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("body")]
     public Order? Body { get; init; }
+
+    [JsonExtensionData]
+    public AdditionalProperties AdditionalProperties { get; init; } = [];
 }

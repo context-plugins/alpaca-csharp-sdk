@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using TraderApi.Core.Models;
 
 namespace TraderApi.Models;
 
@@ -14,4 +15,7 @@ public record PostWatchlistRequest
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("symbols")]
     public IReadOnlyList<string>? Symbols { get; init; }
+
+    [JsonExtensionData]
+    public AdditionalProperties AdditionalProperties { get; init; } = [];
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using TraderApi.Core.Models;
 
 namespace TraderApi.Models;
 
@@ -46,4 +47,7 @@ public record PortfolioHistory
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("timeframe")]
     public string? Timeframe { get; init; }
+
+    [JsonExtensionData]
+    public AdditionalProperties AdditionalProperties { get; init; } = [];
 }

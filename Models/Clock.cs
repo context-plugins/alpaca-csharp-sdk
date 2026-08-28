@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using TraderApi.Core.Models;
 
 namespace TraderApi.Models;
 
@@ -32,4 +33,7 @@ public record Clock
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("next_close")]
     public DateTimeOffset? NextClose { get; init; }
+
+    [JsonExtensionData]
+    public AdditionalProperties AdditionalProperties { get; init; } = [];
 }

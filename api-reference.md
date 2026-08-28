@@ -501,9 +501,9 @@ try
 }
 catch (SdkException<DeleteAllOrdersError> ex)
 {
-    if (ex.Error.TryGetError(out var error))
+    if (ex.Error.TryGetNoContent(out var error))
     {
-        // TODO: Handle 'error' of type DeleteAllOrdersError
+        // TODO: Handle 'error' of type RawError
     }
 }
 ```
@@ -556,9 +556,9 @@ try
 }
 catch (SdkException<DeleteOrderByOrderIdError> ex)
 {
-    if (ex.Error.TryGetError(out var error))
+    if (ex.Error.TryGetNoContent(out var error))
     {
-        // TODO: Handle 'error' of type DeleteOrderByOrderIdError
+        // TODO: Handle 'error' of type RawError
     }
 }
 ```
@@ -832,9 +832,9 @@ try
 }
 catch (SdkException<PostOrderError> ex)
 {
-    if (ex.Error.TryGetError(out var error))
+    if (ex.Error.TryGetNoContent(out var error))
     {
-        // TODO: Handle 'error' of type PostOrderError
+        // TODO: Handle 'error' of type RawError
     }
 }
 ```
@@ -979,9 +979,9 @@ try
 }
 catch (SdkException<DeleteAllOpenPositionsError> ex)
 {
-    if (ex.Error.TryGetError(out var error))
+    if (ex.Error.TryGetNoContent(out var error))
     {
-        // TODO: Handle 'error' of type DeleteAllOpenPositionsError
+        // TODO: Handle 'error' of type RawError
     }
 }
 ```

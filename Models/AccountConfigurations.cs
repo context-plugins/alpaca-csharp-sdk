@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using TraderApi.Core.Models;
 using TraderApi.Models.Enums;
 
 namespace TraderApi.Models;
@@ -53,4 +54,7 @@ public record AccountConfigurations
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("pdt_check")]
     public string? PdtCheck { get; init; }
+
+    [JsonExtensionData]
+    public AdditionalProperties AdditionalProperties { get; init; } = [];
 }

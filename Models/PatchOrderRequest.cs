@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using TraderApi.Core.Models;
 using TraderApi.Models.Enums;
 
 namespace TraderApi.Models;
@@ -78,4 +79,7 @@ public record PatchOrderRequest
     [JsonPropertyName("client_order_id")]
     [MaxLength(48)]
     public string? ClientOrderId { get; init; }
+
+    [JsonExtensionData]
+    public AdditionalProperties AdditionalProperties { get; init; } = [];
 }

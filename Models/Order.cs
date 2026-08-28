@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using TraderApi.Core.Models;
 using TraderApi.Models.Enums;
 
 namespace TraderApi.Models;
@@ -324,4 +325,7 @@ public record Order
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("hwm")]
     public string? Hwm { get; init; }
+
+    [JsonExtensionData]
+    public AdditionalProperties AdditionalProperties { get; init; } = [];
 }

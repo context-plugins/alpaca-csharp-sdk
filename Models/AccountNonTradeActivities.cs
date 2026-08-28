@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using TraderApi.Core.Models;
 using TraderApi.Models.Enums;
 
 namespace TraderApi.Models;
@@ -191,4 +192,7 @@ public record AccountNonTradeActivities
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("per_share_amount")]
     public string? PerShareAmount { get; init; }
+
+    [JsonExtensionData]
+    public AdditionalProperties AdditionalProperties { get; init; } = [];
 }

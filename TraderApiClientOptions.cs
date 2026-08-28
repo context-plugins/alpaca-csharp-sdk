@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using TraderApi.Core.Configuration;
+using TraderApi.Core.Hooks;
 using TraderApi.Servers;
 
 namespace TraderApi;
@@ -9,6 +11,7 @@ public class TraderApiClientOptions
     public RetryOptions Retry { get; set; } = RetryOptions.Default();
     public LoggingOptions Logging { get; set; } = new();
     public ServerOptions Server { get; set; } = new();
+    public IReadOnlyList<SdkHook> Hooks { get; set; } = [];
     public string? ApiKey { get; set; }
     public string? ApiSecret { get; set; }
 }

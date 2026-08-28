@@ -31,7 +31,13 @@ public sealed class TraderApiClient
         var resiliencePipelineFactory = new ResiliencePipelineFactory(options.Retry);
         var httpLogger = new HttpLogger(options.Logging, "TraderApiClient");
         var rawClient =
-            new RawClient(httpClient, urlFactory, httpStatusPolicy, headersFactory, resiliencePipelineFactory, httpLogger);
+            new RawClient(httpClient,
+                urlFactory,
+                httpStatusPolicy,
+                headersFactory,
+                resiliencePipelineFactory,
+                httpLogger,
+                options.Hooks);
         var auth = new AuthSchemes(options);
         AccountActivities = new AccountActivities(rawClient, server, auth);
         AccountConfigurationsApi = new AccountConfigurationsApi(rawClient, server, auth);
