@@ -3,9 +3,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.Extensions;
+using Alpaca.Core.Extensions;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 internal sealed class JsonResponse<TResponse> : IResponse<TResponse>
 {

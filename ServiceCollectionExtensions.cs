@@ -3,15 +3,15 @@ using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace TraderApi;
+namespace Alpaca;
 
 public static class ServiceCollectionExtensions
 {
     extension(IServiceCollection services)
     {
-        public IServiceCollection AddTraderApiClient(Action<TraderApiClientOptions>? configure = null)
+        public IServiceCollection AddAlpacaClient(Action<AlpacaClientOptions>? configure = null)
         {
-            var options = new TraderApiClientOptions();
+            var options = new AlpacaClientOptions();
             configure?.Invoke(options);
             services.AddHttpClient();
             services.AddSingleton(sp =>
@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
                         };
                     var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
                     var httpClient = httpClientFactory.CreateClient();
-                    return new TraderApiClient(httpClient, options);
+                    return new AlpacaClient(httpClient, options);
                 });
             return services;
         }

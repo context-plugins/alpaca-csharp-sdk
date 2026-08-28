@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using TraderApi.Core.Enum;
+using Alpaca.Core.Enum;
 
-namespace TraderApi.Models.Enums;
+namespace Alpaca.Models.Enums;
 
 [JsonConverter(typeof(StringEnumConverter<Status1>))]
 public sealed record Status1 : StringEnum<Status1>

@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 public sealed class VoidResponse : IResponse<VoidResponse>
 {

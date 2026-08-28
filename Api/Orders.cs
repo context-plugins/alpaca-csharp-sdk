@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Exceptions;
-using TraderApi.Core.Models;
-using TraderApi.Core.Request;
-using TraderApi.Core.Response;
-using TraderApi.Errors;
-using TraderApi.Models;
-using TraderApi.Models.Enums;
+using Alpaca.Core;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Models;
+using Alpaca.Core.Request;
+using Alpaca.Core.Response;
+using Alpaca.Errors;
+using Alpaca.Models;
+using Alpaca.Models.Enums;
 
-namespace TraderApi.Api;
+namespace Alpaca.Api;
 
 /// <summary>
 /// Head to https://alpaca.markets/docs/api-documentation/api-v2/orders/ to view complete documentation on the Orders API.

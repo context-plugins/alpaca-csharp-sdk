@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
-using TraderApi.Core.Models;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.Pagination.States;
+namespace Alpaca.Core.Pagination.States;
 
 internal sealed record LinkState<TResponse> : IPageState<TResponse, LinkState<TResponse>>
 {

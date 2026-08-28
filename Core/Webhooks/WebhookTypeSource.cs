@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json;
 
-namespace TraderApi.Core.Webhooks;
+namespace Alpaca.Core.Webhooks;
 
 internal abstract record WebhookTypeSource
 {

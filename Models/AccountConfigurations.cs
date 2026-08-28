@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using TraderApi.Core.Models;
-using TraderApi.Models.Enums;
+using Alpaca.Core.Models;
+using Alpaca.Models.Enums;
 
-namespace TraderApi.Models;
+namespace Alpaca.Models;
 
 /// <summary>
 /// The account configuration API provides custom configurations about your trading account settings. These configurations control various allow you to modify settings to suit your trading needs.

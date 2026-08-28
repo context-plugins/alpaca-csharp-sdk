@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using TraderApi.Core.Enum;
+using Alpaca.Core.Enum;
 
-namespace TraderApi.Models.Enums;
+namespace Alpaca.Models.Enums;
 
 /// <summary>
 /// both, entry, or exit. Controls Day Trading Margin Call (DTMC) checks.

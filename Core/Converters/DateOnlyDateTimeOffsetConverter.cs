@@ -1,9 +1,9 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Extensions;
+using Alpaca.Core.Extensions;
 
-namespace TraderApi.Core.Converters;
+namespace Alpaca.Core.Converters;
 
 internal sealed class DateOnlyDateTimeOffsetConverter : JsonConverter<DateTimeOffset>
 {

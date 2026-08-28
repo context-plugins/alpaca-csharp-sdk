@@ -2,10 +2,10 @@ using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.Models;
-using TraderApi.Core.Response;
+using Alpaca.Core.Models;
+using Alpaca.Core.Response;
 
-namespace TraderApi.Core.ErrorResponse;
+namespace Alpaca.Core.ErrorResponse;
 
 public abstract class ApiError
 {

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.Json;
-using TraderApi.Core.Extensions;
+using Alpaca.Core.Extensions;
 
-namespace TraderApi.Core.Models;
+namespace Alpaca.Core.Models;
 
 public sealed class AdditionalProperties : IDictionary<string, JsonElement>, IEquatable<AdditionalProperties>
 {

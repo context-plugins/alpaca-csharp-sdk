@@ -7,10 +7,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.Exceptions;
-using TraderApi.Core.Extensions;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Extensions;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 internal sealed class JsonSseResponse<TResponse> : IResponse<IAsyncEnumerable<TResponse>>
 {

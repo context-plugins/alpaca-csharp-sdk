@@ -1,6 +1,6 @@
-using TraderApi.Core.Models;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Servers;
+namespace Alpaca.Servers;
 
 public class DefaultOptions
 {

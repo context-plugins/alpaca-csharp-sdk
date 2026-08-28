@@ -1,10 +1,10 @@
 using System.Net.Http;
-using TraderApi.Api;
-using TraderApi.Core;
-using TraderApi.Core.Logging;
-using TraderApi.Core.Models;
+using Alpaca.Api;
+using Alpaca.Core;
+using Alpaca.Core.Logging;
+using Alpaca.Core.Models;
 
-namespace TraderApi;
+namespace Alpaca;
 
 /// <summary>
 /// Alpaca's Trading API is a modern platform for algorithmic trading.
@@ -12,9 +12,9 @@ namespace TraderApi;
 /// For complete documentation on the Trading API and to obtain your keys head to https://alpaca.markets/docs/api-documentation/api-v2/. Once you have your keys, head to the environments tab to quickly get started.
 /// </para>
 /// </summary>
-public sealed class TraderApiClient
+public sealed class AlpacaClient
 {
-    public TraderApiClient(HttpClient httpClient, TraderApiClientOptions options)
+    public AlpacaClient(HttpClient httpClient, AlpacaClientOptions options)
     {
         var server = new Server(options.Environment, options.Server);
         var queryParameterFactory = new QueryParameterFactory([]);
@@ -22,14 +22,14 @@ public sealed class TraderApiClient
         var urlFactory = new UriFactory(queryParameterFactory, templateParamsFactory);
         var httpStatusPolicy = new HttpStatusPolicy([]);
         var headersFactory =
-            new HeadersFactory([new HeaderParam("User-Agent", "TraderApiClient/2.0.0 CSharp"),
+            new HeadersFactory([new HeaderParam("User-Agent", "AlpacaClient/2.0.0 CSharp"),
                     new HeaderParam("X-APIMatic-Lang", "CSharp"),
                     new HeaderParam("X-APIMatic-Package-Version", "2.0.0"),
                     new HeaderParam("X-APIMatic-Gen-Version", "4.0.0"),
                     new HeaderParam("X-APIMatic-OS", RuntimeEnvironment.Os),
                     new HeaderParam("X-APIMatic-Runtime", RuntimeEnvironment.Runtime)]);
         var resiliencePipelineFactory = new ResiliencePipelineFactory(options.Retry);
-        var httpLogger = new HttpLogger(options.Logging, "TraderApiClient");
+        var httpLogger = new HttpLogger(options.Logging, "AlpacaClient");
         var rawClient =
             new RawClient(httpClient,
                 urlFactory,

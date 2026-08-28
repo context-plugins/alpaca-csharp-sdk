@@ -1,7 +1,7 @@
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Response;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Response;
 
-namespace TraderApi.Core.Models;
+namespace Alpaca.Core.Models;
 
 internal sealed class ApiResponse<TResponse, TError>
 {

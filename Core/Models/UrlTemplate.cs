@@ -1,3 +1,3 @@
-namespace TraderApi.Core.Models;
+namespace Alpaca.Core.Models;
 
 internal readonly record struct UrlTemplate(string BaseUrl, string Path, TemplateParam[] Variables);

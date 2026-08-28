@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using TraderApi.Core.Models;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core;
+namespace Alpaca.Core;
 
 internal sealed class UriFactory
 {

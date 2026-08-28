@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using TraderApi.Core.Enum;
+using Alpaca.Core.Enum;
 
-namespace TraderApi.Core.Authentication.OAuth2.AuthorizationCode;
+namespace Alpaca.Core.Authentication.OAuth2.AuthorizationCode;
 
 [JsonConverter(typeof(StringEnumConverter<PkceMethod>))]
 public sealed record PkceMethod : StringEnum<PkceMethod>

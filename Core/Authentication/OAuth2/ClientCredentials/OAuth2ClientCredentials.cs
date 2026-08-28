@@ -1,4 +1,4 @@
-namespace TraderApi.Core.Authentication.OAuth2.ClientCredentials;
+namespace Alpaca.Core.Authentication.OAuth2.ClientCredentials;
 
 public sealed class OAuth2ClientCredentials
 {

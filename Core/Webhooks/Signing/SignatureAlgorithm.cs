@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace TraderApi.Core.Webhooks.Signing;
+namespace Alpaca.Core.Webhooks.Signing;
 
 internal abstract record SignatureAlgorithm
 {

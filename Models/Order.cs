@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Models;
-using TraderApi.Models.Enums;
+using Alpaca.Core.Models;
+using Alpaca.Models.Enums;
 
-namespace TraderApi.Models;
+namespace Alpaca.Models;
 
 /// <summary>
 /// The Orders API allows a user to monitor, place and cancel their orders with Alpaca.

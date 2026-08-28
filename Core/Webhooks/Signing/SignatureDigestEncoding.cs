@@ -1,6 +1,6 @@
 using System;
 
-namespace TraderApi.Core.Webhooks.Signing;
+namespace Alpaca.Core.Webhooks.Signing;
 
 internal abstract record SignatureDigestEncoding
 {

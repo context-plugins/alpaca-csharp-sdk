@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TraderApi.Core.Webhooks;
+namespace Alpaca.Core.Webhooks;
 
 public sealed class WebhookRequest
 {

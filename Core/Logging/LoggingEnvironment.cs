@@ -1,8 +1,8 @@
 using System;
 using Microsoft.Extensions.Logging;
-using TraderApi.Core.Configuration;
+using Alpaca.Core.Configuration;
 
-namespace TraderApi.Core.Logging;
+namespace Alpaca.Core.Logging;
 
 internal static class LoggingEnvironment
 {

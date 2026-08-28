@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace TraderApi.Core.Enum;
+namespace Alpaca.Core.Enum;
 
 public abstract record StringEnum<TEnum> : TypedEnum<string, TEnum> where TEnum : StringEnum<TEnum>
 {

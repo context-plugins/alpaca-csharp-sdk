@@ -1,6 +1,6 @@
-using TraderApi.Servers;
+using Alpaca.Servers;
 
-namespace TraderApi;
+namespace Alpaca;
 
 public class ServerOptions
 {

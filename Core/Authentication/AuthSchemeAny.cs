@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.Exceptions;
+using Alpaca.Core.Exceptions;
 
-namespace TraderApi.Core.Authentication;
+namespace Alpaca.Core.Authentication;
 
 /// <summary>
 /// Represents multiple alternative schemes (OR logic).

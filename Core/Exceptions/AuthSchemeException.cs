@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace TraderApi.Core.Exceptions;
+namespace Alpaca.Core.Exceptions;
 
 public sealed class AuthSchemeException : Exception
 {

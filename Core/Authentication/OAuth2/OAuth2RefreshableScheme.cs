@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TraderApi.Core.Authentication.OAuth2;
+namespace Alpaca.Core.Authentication.OAuth2;
 
 internal sealed class OAuth2RefreshableScheme<TCredentials> : IRevocableAuthScheme
 {

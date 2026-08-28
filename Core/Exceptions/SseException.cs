@@ -1,6 +1,6 @@
 using System;
 
-namespace TraderApi.Core.Exceptions;
+namespace Alpaca.Core.Exceptions;
 
 public abstract class SseException : Exception
 {

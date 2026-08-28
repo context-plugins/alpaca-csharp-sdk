@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace TraderApi.Core.Enum;
+namespace Alpaca.Core.Enum;
 
 internal sealed class IntEnumConverter<TEnum> : JsonConverter<TEnum>
     where TEnum : IntEnum<TEnum>

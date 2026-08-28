@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using TraderApi.Core.Configuration;
+using Alpaca.Core.Configuration;
 
-namespace TraderApi.Core.Logging;
+namespace Alpaca.Core.Logging;
 
 internal sealed class HttpLogger
 {

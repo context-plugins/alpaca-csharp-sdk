@@ -1,10 +1,10 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Models;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Errors;
+namespace Alpaca.Errors;
 
 public sealed class DeleteAllOrdersError : ApiError
 {

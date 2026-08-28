@@ -1,14 +1,14 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Exceptions;
-using TraderApi.Core.Request;
-using TraderApi.Core.Response;
-using TraderApi.Models;
+using Alpaca.Core;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Request;
+using Alpaca.Core.Response;
+using Alpaca.Models;
 
-namespace TraderApi.Api;
+namespace Alpaca.Api;
 
 /// <summary>
 /// Head to https://alpaca.markets/docs/api-references/trading-api/account/ to view complete documentation on the Accounts API.

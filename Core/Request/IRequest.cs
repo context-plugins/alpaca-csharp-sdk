@@ -1,6 +1,6 @@
 using System.Net.Http;
 
-namespace TraderApi.Core.Request;
+namespace Alpaca.Core.Request;
 
 internal interface IRequest
 {
