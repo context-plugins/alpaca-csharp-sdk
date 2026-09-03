@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 
-namespace Alpaca.Core.Configuration;
+namespace TraderApi.Core.Configuration;
 
 public sealed record RetryAttempt
 {

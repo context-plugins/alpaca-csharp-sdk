@@ -1,4 +1,4 @@
-namespace Alpaca.Core.Validation;
+namespace TraderApi.Core.Validation;
 
 public enum FormatKind
 {

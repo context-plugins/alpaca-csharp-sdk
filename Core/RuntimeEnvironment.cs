@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace Alpaca.Core;
+namespace TraderApi.Core;
 
 internal static class RuntimeEnvironment
 {

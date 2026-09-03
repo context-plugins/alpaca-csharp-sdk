@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Alpaca.Core.Authentication.OAuth2;
+namespace TraderApi.Core.Authentication.OAuth2;
 
 /// <summary>
 /// Extends <see cref="OAuthToken"/> with an optional refresh token for grant types that may

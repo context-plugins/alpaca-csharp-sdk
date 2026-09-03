@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Alpaca.Core.Webhooks.Signing;
+namespace TraderApi.Core.Webhooks.Signing;
 
 internal abstract record MessageSegment
 {

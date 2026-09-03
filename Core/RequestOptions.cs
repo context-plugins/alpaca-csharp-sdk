@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using Alpaca.Core.Hooks;
+using TraderApi.Core.Hooks;
 
-namespace Alpaca.Core;
+namespace TraderApi.Core;
 
 public sealed record RequestOptions
 {

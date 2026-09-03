@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
-namespace Alpaca.Core.Logging;
+namespace TraderApi.Core.Logging;
 
 internal static partial class SdkLog
 {

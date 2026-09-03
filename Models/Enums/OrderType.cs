@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Alpaca.Core.Enum;
+using TraderApi.Core.Enum;
 
-namespace Alpaca.Models.Enums;
+namespace TraderApi.Models.Enums;
 
 /// <summary>
 /// Represents the types of orders Alpaca currently supports

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Alpaca.Core;
-using Alpaca.Core.ErrorResponse;
-using Alpaca.Core.Exceptions;
-using Alpaca.Core.Models;
-using Alpaca.Core.Request;
-using Alpaca.Core.Response;
-using Alpaca.Models;
+using TraderApi.Core;
+using TraderApi.Core.ErrorResponse;
+using TraderApi.Core.Exceptions;
+using TraderApi.Core.Models;
+using TraderApi.Core.Request;
+using TraderApi.Core.Response;
+using TraderApi.Models;
 
-namespace Alpaca.Api;
+namespace TraderApi.Api;
 
 /// <summary>
 /// Head to https://alpaca.markets/docs/api-documentation/api-v2/watchlist/ to view complete documentation on the Watchlist API.

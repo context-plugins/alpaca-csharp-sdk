@@ -1,9 +1,9 @@
 using System;
 using System.Text.Json.Serialization;
-using Alpaca.Core.Models;
-using Alpaca.Models.Enums;
+using TraderApi.Core.Models;
+using TraderApi.Models.Enums;
 
-namespace Alpaca.Models;
+namespace TraderApi.Models;
 
 public record AccountNonTradeActivities
 {

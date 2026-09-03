@@ -1,8 +1,8 @@
-# Alpaca
+# Trader API
 
 [![Built with APIMatic][apimatic-badge]][apimatic-url] [![License: MIT][license-badge]][license-url]
 
-The Alpaca SDK for .NET provides access to the Alpaca REST APIs from .NET applications.
+The Trader API SDK for .NET provides access to the Trader API REST APIs from .NET applications.
 
 > [!TIP]
 > **Looking for a specific signature, model, enum, or error type?** This SDK ships a generated,
@@ -21,7 +21,7 @@ For complete documentation on the Trading API and to obtain your keys head to ht
 Add the .NET SDK as a project reference into your solution:
 
 ```bash
-dotnet add reference <path-to-sdk>/Alpaca.csproj
+dotnet add reference <path-to-sdk>/TraderApi.csproj
 ```
 
 ---
@@ -30,10 +30,10 @@ dotnet add reference <path-to-sdk>/Alpaca.csproj
 
 ### Dependency Injection
 
-Register the client with `IServiceCollection` and resolve it from the container. The `HttpClient` is managed by `IHttpClientFactory`. Configure the client's behavior through [AlpacaClientOptions](AlpacaClientOptions.cs).
+Register the client with `IServiceCollection` and resolve it from the container. The `HttpClient` is managed by `IHttpClientFactory`. Configure the client's behavior through [TraderApiClientOptions](TraderApiClientOptions.cs).
 
 ```csharp
-services.AddAlpacaClient(options =>
+services.AddTraderApiClient(options =>
     {
         options.ApiKey = "YOUR_API_KEY";
         options.ApiSecret = "YOUR_API_KEY";
@@ -44,19 +44,19 @@ services.AddAlpacaClient(options =>
 
 ### Direct Instantiation
 
-Create the client by passing an `HttpClient` you manage yourself. Configure the client's behavior through [AlpacaClientOptions](AlpacaClientOptions.cs).
+Create the client by passing an `HttpClient` you manage yourself. Configure the client's behavior through [TraderApiClientOptions](TraderApiClientOptions.cs).
 
 ```csharp
 var httpClient = new HttpClient();
 // TODO: configure more client options here
 var options =
-    new AlpacaClientOptions
+    new TraderApiClientOptions
     {
         ApiKey = "YOUR_API_KEY",
         ApiSecret = "YOUR_API_KEY",
         Environment = ServerEnvironment.Paper,
     };
-var client = new AlpacaClient(httpClient, options);
+var client = new TraderApiClient(httpClient, options);
 ```
 
 ---
@@ -94,7 +94,7 @@ The map and the [API Reference](api-reference.md) answer different questions, an
 ## Best Practices
 
 > [!TIP]
-> Use a **single `AlpacaClient` instance** for the lifetime of your application and
+> Use a **single `TraderApiClient` instance** for the lifetime of your application and
 > reuse it across all requests. Creating a new instance per request might exhaust the
 > connection pool.
 

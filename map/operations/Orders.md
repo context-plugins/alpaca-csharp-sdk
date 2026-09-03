@@ -8,6 +8,7 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 ### DeleteAllOrders
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `DeleteAllOrders(RequestOptions? requestOptions = null, CancellationToken ct = default)`
 - **Returns**: `IReadOnlyList<CanceledOrderResponse>`
 - **Error**: `SdkException<DeleteAllOrdersError>` — **Case A (typed)**
@@ -20,6 +21,7 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 ### DeleteOrderByOrderId
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `DeleteOrderByOrderId(Guid orderId, RequestOptions? requestOptions = null, CancellationToken ct = default)`
 - **Returns**: `void` (Task)
 - **Error**: `SdkException<DeleteOrderByOrderIdError>` — **Case A (typed)**
@@ -31,6 +33,7 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 ### GetAllOrders
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `GetAllOrders(Status1? status, int? limit, string? after, string? until, Direction? direction, bool? nested, string? symbols, RequestOptions? requestOptions = null, CancellationToken ct = default)`
   - 7 params (`status` … `symbols`) — nullable, no default → **must pass explicitly** (pass `null` to skip)
 - **Query params (wire ← C#)**: `status` ← `status`, `limit` ← `limit`, `after` ← `after`, `until` ← `until`, `direction` ← `direction`, `nested` ← `nested`, `symbols` ← `symbols`
@@ -45,6 +48,7 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 ### GetOrderByOrderId
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `GetOrderByOrderId(Guid orderId, bool? nested, RequestOptions? requestOptions = null, CancellationToken ct = default)`
   - `nested` — nullable, no default → **must pass explicitly**
 - **Query params (wire ← C#)**: `nested` ← `nested`
@@ -57,6 +61,7 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 ### PatchOrderByOrderId
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `PatchOrderByOrderId(Guid orderId, PatchOrderRequest body, RequestOptions? requestOptions = null, CancellationToken ct = default)`
 - **Returns**: `Order`
 - **Error**: `SdkException<RawError>` — **Case B**
@@ -68,6 +73,7 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 ### PostOrder
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `PostOrder(Order body, RequestOptions? requestOptions = null, CancellationToken ct = default)`
 - **Returns**: `Order`
 - **Error**: `SdkException<PostOrderError>` — **Case A (typed)**

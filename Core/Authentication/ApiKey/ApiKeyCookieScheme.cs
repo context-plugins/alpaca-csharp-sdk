@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Alpaca.Core.Authentication.ApiKey;
+namespace TraderApi.Core.Authentication.ApiKey;
 
 internal sealed class ApiKeyCookieScheme : IAuthScheme
 {

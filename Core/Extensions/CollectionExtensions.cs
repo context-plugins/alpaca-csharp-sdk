@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Alpaca.Core.Extensions;
+namespace TraderApi.Core.Extensions;
 
 internal static class CollectionExtensions
 {

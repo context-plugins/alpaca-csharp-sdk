@@ -1,20 +1,20 @@
 <!-- Generated file — do not edit; regenerated with the SDK. -->
 
-# SDK map — Alpaca (.NET)
+# SDK map — Trader API (.NET)
 
 > A generated table of contents for this SDK. Consult this map and its sub-pages to learn signatures, error types, and server/auth wiring **by lookup**. Model shapes and enum values are *not* duplicated here — the map names the file declaring each type; read the shape there. The compiler is the backstop: a wrong name fails to build.
 
 |  |  |
 | --- | --- |
-| SDK display name | Alpaca |
-| Root namespace | `Alpaca` |
+| SDK display name | Trader API |
+| Root namespace | `TraderApi` |
 | Target framework | `netstandard2.0` (C# `LangVersion 14`, `Nullable enable`) |
 | API spec version | `2.0.0` |
 | Generator | APIMatic |
 
 Staleness check: the API spec version above changes when the SDK is regenerated from a new spec. If a lookup here fails to compile, trust the compiler and re-read the source file named in the row.
 
-All `Source` paths on this map and its sub-pages are relative to the **SDK root** — the directory holding this file and `Alpaca.csproj` — never to the page that carries them. Open them as-is from the SDK root, from any page; if the SDK sits under a subdirectory of a larger repo, prefix that subdirectory.
+All `Source` paths on this map and its sub-pages are relative to the **SDK root** — the directory holding this file and `TraderApi.csproj` — never to the page that carries them. Open them as-is from the SDK root, from any page; if the SDK sits under a subdirectory of a larger repo, prefix that subdirectory.
 
 ---
 
@@ -24,19 +24,19 @@ All `Source` paths on this map and its sub-pages are relative to the **SDK root*
 var httpClient = new HttpClient();
 // TODO: configure more client options here
 var options =
-    new AlpacaClientOptions
+    new TraderApiClientOptions
     {
         ApiKey = "YOUR_API_KEY",
         ApiSecret = "YOUR_API_KEY",
         Environment = ServerEnvironment.Paper,
     };
-var client = new AlpacaClient(httpClient, options);
+var client = new TraderApiClient(httpClient, options);
 ```
 
-DI alternative (`services.AddAlpacaClient`):
+DI alternative (`services.AddTraderApiClient`):
 
 ```csharp
-services.AddAlpacaClient(options =>
+services.AddTraderApiClient(options =>
     {
         options.ApiKey = "YOUR_API_KEY";
         options.ApiSecret = "YOUR_API_KEY";
@@ -45,9 +45,9 @@ services.AddAlpacaClient(options =>
     });
 ```
 
-Every API group is a property on the client (e.g. `client.AccountActivities`). Source: `AlpacaClient.cs`. The only constructor is `AlpacaClient(HttpClient httpClient, AlpacaClientOptions options)`.
+Every API group is a property on the client (e.g. `client.AccountActivities`). Source: `TraderApiClient.cs`. The only constructor is `TraderApiClient(HttpClient httpClient, TraderApiClientOptions options)`.
 
-All `AlpacaClientOptions` properties (source: `AlpacaClientOptions.cs`):
+All `TraderApiClientOptions` properties (source: `TraderApiClientOptions.cs`):
 
 | Property | Type |
 | --- | --- |
@@ -59,7 +59,7 @@ All `AlpacaClientOptions` properties (source: `AlpacaClientOptions.cs`):
 | `ApiKey` | `string?` |
 | `ApiSecret` | `string?` |
 
-`RetryOptions` members (namespace `Alpaca.Core.Configuration` — add `using Alpaca.Core.Configuration;`; source: `Core/Configuration/RetryOptions.cs`; all members are `required`, so build a full instance or start from `RetryOptions.Default()`):
+`RetryOptions` members (namespace `TraderApi.Core.Configuration` — add `using TraderApi.Core.Configuration;`; source: `Core/Configuration/RetryOptions.cs`; all members are `required`, so build a full instance or start from `RetryOptions.Default()`):
 
 | Member | Type |
 | --- | --- |
@@ -168,12 +168,12 @@ Namespaces by content type (add `using` accordingly):
 
 | Contents | Namespace |
 | --- | --- |
-| Client & options (root) | `Alpaca` |
-| Operation controllers (`Api/`) | `Alpaca.Api` |
-| Records (`Models/`) | `Alpaca.Models` |
-| Enums (`Models/Enums/`) | `Alpaca.Models.Enums` |
-| AnyOf unions (`Models/AnyOf/`) | `Alpaca.Models.AnyOf` |
-| Error classes (`Errors/`) | `Alpaca.Errors` |
+| Client & options (root) | `TraderApi` |
+| Operation controllers (`Api/`) | `TraderApi.Api` |
+| Records (`Models/`) | `TraderApi.Models` |
+| Enums (`Models/Enums/`) | `TraderApi.Models.Enums` |
+| AnyOf unions (`Models/AnyOf/`) | `TraderApi.Models.AnyOf` |
+| Error classes (`Errors/`) | `TraderApi.Errors` |
 
 ---
 
@@ -182,6 +182,13 @@ Namespaces by content type (add `using` accordingly):
 **API key (header `APCA-API-KEY-ID`).** Set `options.ApiKey = "<api_key>"`; sent as the `APCA-API-KEY-ID` request header.
 
 **API key (header `APCA-API-SECRET-KEY`).** Set `options.ApiSecret = "<api_key>"`; sent as the `APCA-API-SECRET-KEY` request header.
+
+Operation blocks name their credential in an **Auth** bullet; an operation whose spec declares no scheme carries no such bullet.
+
+- `AND` — every credential listed must be set for the call to be fully authenticated.
+- `OR` — the first credential you set that applies successfully is the one sent, in the order listed.
+
+A credential you never set is skipped rather than throwing, and the request is sent anyway — so an authentication failure can mean no credential was sent rather than a bad one. Under `OR`, if every credential you did set fails to apply, `AuthSchemeException` is thrown.
 
 **Environments.** `options.Environment` selects the target environment (`Servers/ServerEnvironment.cs`):
 

@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Alpaca.Core.Models;
+using TraderApi.Core.Models;
 
-namespace Alpaca.Models;
+namespace TraderApi.Models;
 
 /// <summary>
 /// Append an asset for the symbol to the end of watchlist asset list

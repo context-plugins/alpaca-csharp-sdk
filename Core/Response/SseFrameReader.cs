@@ -5,9 +5,9 @@ using System.Net.ServerSentEvents;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Alpaca.Core.Exceptions;
+using TraderApi.Core.Exceptions;
 
-namespace Alpaca.Core.Response;
+namespace TraderApi.Core.Response;
 
 internal static class SseFrameReader
 {

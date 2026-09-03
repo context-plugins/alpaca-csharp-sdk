@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Alpaca.Core.Enum;
+using TraderApi.Core.Enum;
 
-namespace Alpaca.Models.Enums;
+namespace TraderApi.Models.Enums;
 
 /// <summary>
 /// An enum representing the various possible account status values.

@@ -1,9 +1,9 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Alpaca.Core.Extensions;
+using TraderApi.Core.Extensions;
 
-namespace Alpaca.Core.Converters;
+namespace TraderApi.Core.Converters;
 
 internal sealed class Iso8601DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
 {

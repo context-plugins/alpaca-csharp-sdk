@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http.Headers;
 
-namespace Alpaca.Core.Pagination.States;
+namespace TraderApi.Core.Pagination.States;
 
 internal sealed record OffsetState<TResponse> : IPageState<TResponse, OffsetState<TResponse>>
 {

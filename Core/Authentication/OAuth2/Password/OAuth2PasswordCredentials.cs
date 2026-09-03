@@ -1,4 +1,4 @@
-namespace Alpaca.Core.Authentication.OAuth2.Password;
+namespace TraderApi.Core.Authentication.OAuth2.Password;
 
 public sealed class OAuth2PasswordCredentials
 {

@@ -8,6 +8,7 @@ Accessor: `client.CalendarApi` · Source: `Api/CalendarApi.cs` · 1 operation
 
 ### GetCalendar
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `GetCalendar(DateTimeOffset? start, DateTimeOffset? end, RequestOptions? requestOptions = null, CancellationToken ct = default)`
   - `start` — nullable, no default → **must pass explicitly**
   - `end` — nullable, no default → **must pass explicitly**

@@ -1,8 +1,8 @@
 using System;
 using System.Text.Json.Serialization;
-using Alpaca.Core.Enum;
+using TraderApi.Core.Enum;
 
-namespace Alpaca.Servers;
+namespace TraderApi.Servers;
 
 [JsonConverter(typeof(StringEnumConverter<ServerEnvironment>))]
 public record ServerEnvironment : StringEnum<ServerEnvironment>

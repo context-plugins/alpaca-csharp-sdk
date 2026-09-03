@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using Alpaca.Core.Models;
+using TraderApi.Core.Models;
 
-namespace Alpaca.Core.Request;
+namespace TraderApi.Core.Request;
 
 internal sealed class FormUrlEncodedRequest : IRequest
 {

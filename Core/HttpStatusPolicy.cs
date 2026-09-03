@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace Alpaca.Core;
+namespace TraderApi.Core;
 
 internal sealed class HttpStatusPolicy
 {

@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Alpaca.Core.Enum;
+using TraderApi.Core.Enum;
 
-namespace Alpaca.Models.Enums;
+namespace TraderApi.Models.Enums;
 
 /// <summary>
 /// An order executed through Alpaca can experience several status changes during its lifecycle. The most common statuses are described in detail below:

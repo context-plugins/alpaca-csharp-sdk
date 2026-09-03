@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Alpaca.Core;
+namespace TraderApi.Core;
 
 internal sealed class AsyncLock
 {

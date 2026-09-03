@@ -8,6 +8,7 @@ Accessor: `client.ClockApi` · Source: `Api/ClockApi.cs` · 1 operation
 
 ### GetClock
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `GetClock(RequestOptions? requestOptions = null, CancellationToken ct = default)`
 - **Returns**: `Clock`
 - **Error**: `SdkException<RawError>` — **Case B**

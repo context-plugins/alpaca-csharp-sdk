@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Net.Http.Headers;
-using Alpaca.Core.Models;
+using TraderApi.Core.Models;
 
-namespace Alpaca.Core.Extensions;
+namespace TraderApi.Core.Extensions;
 
 internal static class HttpRequestExtensions
 {

@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 
-namespace Alpaca.Core.Validation;
+namespace TraderApi.Core.Validation;
 
 internal static class SchemaConstraintExtensions
 {

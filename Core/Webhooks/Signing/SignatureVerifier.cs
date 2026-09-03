@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Alpaca.Core.Webhooks.Signing;
+namespace TraderApi.Core.Webhooks.Signing;
 
 internal sealed class SignatureVerifier
 {

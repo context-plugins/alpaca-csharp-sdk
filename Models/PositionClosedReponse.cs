@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
-using Alpaca.Core.Models;
+using TraderApi.Core.Models;
 
-namespace Alpaca.Models;
+namespace TraderApi.Models;
 
 /// <summary>
 /// Represents the result of asking the api to close a position.

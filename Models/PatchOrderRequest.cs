@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using Alpaca.Core.Models;
-using Alpaca.Models.Enums;
+using TraderApi.Core.Models;
+using TraderApi.Models.Enums;
 
-namespace Alpaca.Models;
+namespace TraderApi.Models;
 
 /// <summary>
 /// Represents a request to patch an order.

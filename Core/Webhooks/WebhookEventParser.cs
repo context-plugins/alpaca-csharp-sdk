@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Alpaca.Core.Webhooks;
+namespace TraderApi.Core.Webhooks;
 
 public abstract class WebhookEventParser<TEvent>
     where TEvent : class

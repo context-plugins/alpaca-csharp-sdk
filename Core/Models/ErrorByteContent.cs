@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http.Headers;
 
-namespace Alpaca.Core.Models;
+namespace TraderApi.Core.Models;
 
 public sealed class ErrorByteContent
 {

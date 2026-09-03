@@ -8,6 +8,7 @@ Accessor: `client.Positions` · Source: `Api/Positions.cs` · 4 operations
 
 ### DeleteAllOpenPositions
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `DeleteAllOpenPositions(bool? cancelOrders, RequestOptions? requestOptions = null, CancellationToken ct = default)`
   - `cancelOrders` — nullable, no default → **must pass explicitly**
 - **Query params (wire ← C#)**: `cancel_orders` ← `cancelOrders`
@@ -22,6 +23,7 @@ Accessor: `client.Positions` · Source: `Api/Positions.cs` · 4 operations
 
 ### DeleteOpenPosition
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `DeleteOpenPosition(string symbolOrAssetId, double? qty, double? percentage, RequestOptions? requestOptions = null, CancellationToken ct = default)`
   - `qty` — nullable, no default → **must pass explicitly**
   - `percentage` — nullable, no default → **must pass explicitly**
@@ -35,6 +37,7 @@ Accessor: `client.Positions` · Source: `Api/Positions.cs` · 4 operations
 
 ### GetAllOpenPositions
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `GetAllOpenPositions(RequestOptions? requestOptions = null, CancellationToken ct = default)`
 - **Returns**: `IReadOnlyList<Position>`
 - **Error**: `SdkException<RawError>` — **Case B**
@@ -45,6 +48,7 @@ Accessor: `client.Positions` · Source: `Api/Positions.cs` · 4 operations
 
 ### GetOpenPosition
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `GetOpenPosition(string symbolOrAssetId, RequestOptions? requestOptions = null, CancellationToken ct = default)`
 - **Returns**: `Position`
 - **Error**: `SdkException<RawError>` — **Case B**

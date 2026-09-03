@@ -6,18 +6,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using Polly;
 using Polly.Timeout;
-using Alpaca.Core.Authentication;
-using Alpaca.Core.ErrorResponse;
-using Alpaca.Core.Extensions;
-using Alpaca.Core.Hooks;
-using Alpaca.Core.Logging;
-using Alpaca.Core.Models;
-using Alpaca.Core.Pagination;
-using Alpaca.Core.Pagination.States;
-using Alpaca.Core.Request;
-using Alpaca.Core.Response;
+using TraderApi.Core.Authentication;
+using TraderApi.Core.ErrorResponse;
+using TraderApi.Core.Extensions;
+using TraderApi.Core.Hooks;
+using TraderApi.Core.Logging;
+using TraderApi.Core.Models;
+using TraderApi.Core.Pagination;
+using TraderApi.Core.Pagination.States;
+using TraderApi.Core.Request;
+using TraderApi.Core.Response;
 
-namespace Alpaca.Core;
+namespace TraderApi.Core;
 
 internal sealed class RawClient
 {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Net.Http;
-using Alpaca.Core.Authentication;
-using Alpaca.Core.Request;
+using TraderApi.Core.Authentication;
+using TraderApi.Core.Request;
 
-namespace Alpaca.Core.Models;
+namespace TraderApi.Core.Models;
 
 internal sealed class ApiRequest
 {

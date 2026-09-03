@@ -8,6 +8,7 @@ Accessor: `client.PortfolioHistoryApi` · Source: `Api/PortfolioHistoryApi.cs` �
 
 ### GetAccountPortfolioHistory
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `GetAccountPortfolioHistory(string? period, string? timeframe, DateTimeOffset? dateEnd, string? extendedHours, RequestOptions? requestOptions = null, CancellationToken ct = default)`
   - 4 params (`period` … `extendedHours`) — nullable, no default → **must pass explicitly** (pass `null` to skip)
 - **Query params (wire ← C#)**: `period` ← `period`, `timeframe` ← `timeframe`, `date_end` ← `dateEnd`, `extended_hours` ← `extendedHours`

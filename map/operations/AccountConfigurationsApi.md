@@ -8,6 +8,7 @@ Accessor: `client.AccountConfigurationsApi` · Source: `Api/AccountConfiguration
 
 ### GetAccountConfig
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `GetAccountConfig(RequestOptions? requestOptions = null, CancellationToken ct = default)`
 - **Returns**: `AccountConfigurations`
 - **Error**: `SdkException<RawError>` — **Case B**
@@ -18,6 +19,7 @@ Accessor: `client.AccountConfigurationsApi` · Source: `Api/AccountConfiguration
 
 ### PatchAccountConfig
 
+- **Auth**: `options.ApiKey` AND `options.ApiSecret`
 - **Signature**: `PatchAccountConfig(AccountConfigurations? body, RequestOptions? requestOptions = null, CancellationToken ct = default)`
   - `body` — nullable, no default → **must pass explicitly**
 - **Returns**: `AccountConfigurations`

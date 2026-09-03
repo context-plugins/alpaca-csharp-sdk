@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
-namespace Alpaca.Core.Configuration;
+namespace TraderApi.Core.Configuration;
 
 public record LoggingOptions
 {

@@ -1,7 +1,7 @@
 using System.Net.Http;
-using Alpaca.Core.Extensions;
+using TraderApi.Core.Extensions;
 
-namespace Alpaca.Core.Request;
+namespace TraderApi.Core.Request;
 
 internal sealed class EmptyBody : IRequest
 {

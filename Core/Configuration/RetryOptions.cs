@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 
-namespace Alpaca.Core.Configuration;
+namespace TraderApi.Core.Configuration;
 
 public record RetryOptions
 {

@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Alpaca.Core.ErrorResponse;
+namespace TraderApi.Core.ErrorResponse;
 
 public interface IErrorResponse<TError>
 {

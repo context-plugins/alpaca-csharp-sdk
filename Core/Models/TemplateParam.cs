@@ -1,4 +1,4 @@
-namespace Alpaca.Core.Models;
+namespace TraderApi.Core.Models;
 
 internal readonly record struct TemplateParam(string Key, object? Value)
 {

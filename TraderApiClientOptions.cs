@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using Alpaca.Core.Configuration;
-using Alpaca.Core.Hooks;
-using Alpaca.Servers;
+using TraderApi.Core.Configuration;
+using TraderApi.Core.Hooks;
+using TraderApi.Servers;
 
-namespace Alpaca;
+namespace TraderApi;
 
-public class AlpacaClientOptions
+public class TraderApiClientOptions
 {
     public ServerEnvironment Environment { get; set; } = ServerEnvironment.Default();
     public RetryOptions Retry { get; set; } = RetryOptions.Default();

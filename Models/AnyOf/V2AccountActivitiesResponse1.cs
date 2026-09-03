@@ -1,10 +1,10 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Alpaca.Core.Extensions;
-using Alpaca.Core.Models;
+using TraderApi.Core.Extensions;
+using TraderApi.Core.Models;
 
-namespace Alpaca.Models.AnyOf;
+namespace TraderApi.Models.AnyOf;
 
 /// <summary>
 /// Will be one of a TradingActivity or NonTradeActivity based on activity_type used in path

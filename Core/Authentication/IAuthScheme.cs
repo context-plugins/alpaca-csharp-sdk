@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Alpaca.Core.Authentication;
+namespace TraderApi.Core.Authentication;
 
 public interface IAuthScheme
 {

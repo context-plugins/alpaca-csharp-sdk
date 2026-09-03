@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 using Polly;
 using Polly.Retry;
 using Polly.Timeout;
-using Alpaca.Core.Configuration;
-using Alpaca.Core.Logging;
-using Alpaca.Core.Request;
+using TraderApi.Core.Configuration;
+using TraderApi.Core.Logging;
+using TraderApi.Core.Request;
 
-namespace Alpaca.Core;
+namespace TraderApi.Core;
 
 internal sealed class ResiliencePipelineFactory
 {

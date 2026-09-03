@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Alpaca.Core.Request;
+namespace TraderApi.Core.Request;
 
 internal sealed class NonDisposingStream : Stream
 {

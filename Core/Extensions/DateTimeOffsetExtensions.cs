@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace Alpaca.Core.Extensions;
+namespace TraderApi.Core.Extensions;
 
 internal static class DateTimeOffsetExtensions
 {

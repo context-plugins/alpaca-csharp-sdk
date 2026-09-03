@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Alpaca.Core.ErrorResponse;
+namespace TraderApi.Core.ErrorResponse;
 
 public sealed class RawError
 {

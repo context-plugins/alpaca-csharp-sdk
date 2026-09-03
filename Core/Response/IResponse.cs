@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Alpaca.Core.Response;
+namespace TraderApi.Core.Response;
 
 internal interface IResponse<TResponse>
 {

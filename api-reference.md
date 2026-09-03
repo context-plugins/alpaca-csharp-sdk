@@ -1,6 +1,6 @@
 # Reference
 
-> Source: [AlpacaClient](AlpacaClient.cs)
+> Source: [TraderApiClient](TraderApiClient.cs)
 
 ## AccountActivities
 

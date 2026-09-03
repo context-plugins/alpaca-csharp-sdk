@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Alpaca.Core.Authentication;
+namespace TraderApi.Core.Authentication;
 
 /// <summary>
 /// Represents a set of schemes that must all apply (AND logic).

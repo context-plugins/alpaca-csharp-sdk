@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Alpaca.Core.Models;
+using TraderApi.Core.Models;
 
-namespace Alpaca.Core;
+namespace TraderApi.Core;
 
 internal sealed class QueryParameterFactory
 {

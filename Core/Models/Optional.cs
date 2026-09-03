@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace Alpaca.Core.Models;
+namespace TraderApi.Core.Models;
 
 [DebuggerDisplay("{GetDebuggerDisplay(),nq}")]
 internal readonly record struct Optional<TValue>

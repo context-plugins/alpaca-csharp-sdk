@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Alpaca.Core.Authentication.Basic;
+namespace TraderApi.Core.Authentication.Basic;
 
 public sealed class BasicAuthCredentials
 {

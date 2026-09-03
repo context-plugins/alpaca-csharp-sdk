@@ -5,12 +5,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Alpaca.Core.ErrorResponse;
-using Alpaca.Core.Models;
-using Alpaca.Core.Request;
-using Alpaca.Core.Response;
+using TraderApi.Core.ErrorResponse;
+using TraderApi.Core.Models;
+using TraderApi.Core.Request;
+using TraderApi.Core.Response;
 
-namespace Alpaca.Core.Authentication.OAuth2.AuthorizationCode;
+namespace TraderApi.Core.Authentication.OAuth2.AuthorizationCode;
 
 internal sealed class OAuth2AuthorizationCodeStrategy
     : IOAuth2RefreshableTokenStrategy<OAuth2AuthorizationCodeCredentials>

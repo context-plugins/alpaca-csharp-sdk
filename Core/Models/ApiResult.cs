@@ -2,9 +2,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http.Headers;
-using Alpaca.Core.Exceptions;
+using TraderApi.Core.Exceptions;
 
-namespace Alpaca.Core.Models;
+namespace TraderApi.Core.Models;
 
 /// <summary>
 ///     Represents either a successful response of type <typeparamref name="TResponse" />
