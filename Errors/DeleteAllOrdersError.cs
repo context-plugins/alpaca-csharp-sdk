@@ -1,10 +1,8 @@
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Models;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Errors;
+namespace Alpaca.Errors;
 
 public sealed class DeleteAllOrdersError : ApiError
 {
@@ -15,30 +13,18 @@ public sealed class DeleteAllOrdersError : ApiError
         _noContentValue = noContentValue;
     }
 
-    private static DeleteAllOrdersError AsNoContent(RawError value) =>
-        new(Optional<RawError>.Some(value), default);
+    private static DeleteAllOrdersError AsNoContent(RawError value) => new(Optional<RawError>.Some(value), default);
 
-    private static DeleteAllOrdersError AsFallback(RawError value) =>
-        new(default, Optional<RawError>.Some(value));
+    private static DeleteAllOrdersError AsFallback(RawError value) => new(default, Optional<RawError>.Some(value));
 
     public bool TryGetNoContent(out RawError value) => _noContentValue.TryGetValue(out value);
 
-    internal static Task<DeleteAllOrdersError> Create(HttpResponseMessage response, CancellationToken ct) =>
-        (int)response.StatusCode switch
+    private static Task<DeleteAllOrdersError> Create(FailedResponse response) =>
+        response.StatusCode switch
         {
-            500 => FromRawBody(response, ct).As(AsNoContent),
-            _ => FromRawBody(response, ct).As(AsFallback)
+            500 => response.RawBody().As(AsNoContent),
+            _ => response.RawBody().As(AsFallback)
         };
-}
 
-internal sealed class DeleteAllOrdersErrorResponse : IErrorResponse<DeleteAllOrdersError>
-{
-    public static DeleteAllOrdersErrorResponse Instance { get; } = new();
-
-    private DeleteAllOrdersErrorResponse()
-    {
-    }
-
-    public Task<DeleteAllOrdersError> Map(HttpResponseMessage response, CancellationToken ct) =>
-        DeleteAllOrdersError.Create(response, ct);
+    internal static ApiErrorResponse<DeleteAllOrdersError> Response { get; } = new(Create);
 }

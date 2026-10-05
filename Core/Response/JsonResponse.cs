@@ -1,11 +1,12 @@
-using System.Net.Http;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.Extensions;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Extensions;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 internal sealed class JsonResponse<TResponse> : IResponse<TResponse>
 {
@@ -13,17 +14,25 @@ internal sealed class JsonResponse<TResponse> : IResponse<TResponse>
 
     public JsonResponse(JsonConverter? jsonConverter) => _options = jsonConverter.ToWebOptions();
 
-    public async ValueTask<TResponse> Map(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
+    public async ValueTask<TResponse> Map(ResponseContext context, CancellationToken cancellationToken)
     {
-        using (httpResponseMessage)
+        using (context.Response)
         {
 #if NET6_0_OR_GREATER
-            var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            var responseStream = await context.Response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
 #else
-            var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            var responseStream = await context.Response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 #endif
-            return (await JsonSerializer.DeserializeAsync<TResponse>(responseStream, _options, cancellationToken)
-                .ConfigureAwait(false))!;
+            try
+            {
+                return (await JsonSerializer.DeserializeAsync<TResponse>(responseStream, _options, cancellationToken)
+                    .ConfigureAwait(false))!;
+            }
+            catch (JsonException ex)
+            {
+                throw ResponseDeserializationException.For(context, typeof(TResponse),
+                    $"{context.Call} returned a body that could not be deserialized into {typeof(TResponse).Name}.", ex);
+            }
         }
     }
 }

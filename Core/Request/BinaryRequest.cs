@@ -1,9 +1,9 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
-using TraderApi.Core.Extensions;
-using TraderApi.Core.Models;
+using Alpaca.Core.Extensions;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.Request;
+namespace Alpaca.Core.Request;
 
 internal sealed class BinaryRequest : IRequest
 {

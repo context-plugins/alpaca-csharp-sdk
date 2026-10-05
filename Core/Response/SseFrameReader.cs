@@ -1,83 +1,85 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Net.Http;
 using System.Net.ServerSentEvents;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.Exceptions;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 internal static class SseFrameReader
 {
     public static async IAsyncEnumerable<byte[]> EnumerateFrames(
-        HttpResponseMessage response,
+        ResponseContext context,
         byte[]? sentinelBytes,
-        TimeSpan? idleTimeout,
         [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        using (response)
+        using (context.Response)
         {
 #if NET6_0_OR_GREATER
-            var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            var stream = await context.Response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
 #else
-            var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            var stream = await context.Response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 #endif
 
             var parser = SseParser.Create(stream, static (_, data) => data.ToArray());
 
-            if (idleTimeout is not { } idleWindow)
-            {
-                await foreach (var item in parser.EnumerateAsync(cancellationToken).ConfigureAwait(false))
-                {
-                    var frame = item.Data;
-                    if (IsSentinel(frame, sentinelBytes))
-                        yield break;
-
-                    yield return frame;
-                }
-
-                yield break;
-            }
-
             using var frameCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             var enumerator = parser.EnumerateAsync(frameCts.Token).GetAsyncEnumerator(frameCts.Token);
-            try
+            await using (enumerator.ConfigureAwait(false))
             {
                 while (true)
                 {
                     var moveNext = enumerator.MoveNextAsync();
 
                     bool hasNext;
-                    if (moveNext.IsCompletedSuccessfully)
+                    try
                     {
-                        hasNext = moveNext.Result;
-                    }
-                    else
-                    {
-                        var moveNextTask = moveNext.AsTask();
-                        using var timerCts = new CancellationTokenSource();
-                        var idleDelay = Task.Delay(idleWindow, timerCts.Token);
-
-                        if (await Task.WhenAny(moveNextTask, idleDelay).ConfigureAwait(false) == idleDelay)
+                        if (context.StreamReadTimeout is not { } idleWindow || moveNext.IsCompleted)
                         {
-                            frameCts.Cancel();
-                            try
-                            {
-                                await moveNextTask.ConfigureAwait(false);
-                            }
-                            catch (Exception)
-                            {
-                                // The read we just cancelled — its outcome is irrelevant; we are
-                                // reporting the timeout instead.
-                            }
-
-                            throw new SseTimeoutException(idleWindow);
+                            hasNext = await moveNext.ConfigureAwait(false);
                         }
+                        else
+                        {
+                            var moveNextTask = moveNext.AsTask();
+                            using var timerCts = new CancellationTokenSource();
+                            var idleDelay = context.Clock.Delay(idleWindow, timerCts.Token);
 
-                        timerCts.Cancel();
-                        hasNext = await moveNextTask.ConfigureAwait(false);
+                            var winner = await Task.WhenAny(moveNextTask, idleDelay).ConfigureAwait(false);
+                            if (winner == idleDelay && !moveNextTask.IsCompleted)
+                            {
+                                frameCts.Cancel();
+                                context.Response.Dispose();
+                                try
+                                {
+                                    await moveNextTask.ConfigureAwait(false);
+                                }
+                                catch (Exception)
+                                {
+                                    // The read we just canceled — its outcome is irrelevant; we are
+                                    // reporting the timeout instead.
+                                }
+
+                                throw SdkTimeoutException.For(context.Call, idleWindow,
+                                    $"{context.Call} received no Server-Sent Events frame within {idleWindow.TotalSeconds.ToString(CultureInfo.InvariantCulture)} s.");
+                            }
+
+                            timerCts.Cancel();
+                            hasNext = await moveNextTask.ConfigureAwait(false);
+                        }
+                    }
+                    catch (Exception ex) when (ex is HttpRequestException or IOException)
+                    {
+                        throw new SdkConnectionException($"{context.Call} could not read the response body: {ex.Message}", ex)
+                        {
+                            Method = context.Call.Method,
+                            RequestUri = context.Call.RequestUri,
+                        };
                     }
 
                     if (!hasNext)
@@ -89,10 +91,6 @@ internal static class SseFrameReader
 
                     yield return data;
                 }
-            }
-            finally
-            {
-                await enumerator.DisposeAsync().ConfigureAwait(false);
             }
         }
     }

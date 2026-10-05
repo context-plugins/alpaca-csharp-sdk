@@ -1,10 +1,11 @@
+using System;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Enum;
+using Alpaca.Core.Enum;
 
-namespace TraderApi.Models.Enums;
+namespace Alpaca.Models.Enums;
 
 [JsonConverter(typeof(StringEnumConverter<Direction>))]
-public sealed record Direction : StringEnum<Direction>
+public sealed record Direction : OpenStringEnum<Direction>
 {
     private Direction(string value) : base(value)
     {
@@ -14,5 +15,18 @@ public sealed record Direction : StringEnum<Direction>
 
     public static readonly Direction Desc = new("desc");
 
-    public static Direction FromValue(string value) => FromValueCore(value);
+    public TResult Match<TResult>(Func<TResult> onAsc, Func<TResult> onDesc, Func<string, TResult> otherwise) =>
+        this switch
+        {
+            _ when this == Asc => onAsc(),
+            _ when this == Desc => onDesc(),
+            _ => otherwise(Value)
+        };
+
+    public void Match(Action onAsc, Action onDesc, Action<string> otherwise)
+    {
+        if (this == Asc) onAsc();
+        else if (this == Desc) onDesc();
+        else otherwise(Value);
+    }
 }

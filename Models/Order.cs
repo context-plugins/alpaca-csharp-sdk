@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Models;
-using TraderApi.Models.Enums;
+using Alpaca.Core.Models;
+using Alpaca.Models.Enums;
 
-namespace TraderApi.Models;
+namespace Alpaca.Models;
 
 /// <summary>
 /// The Orders API allows a user to monitor, place and cancel their orders with Alpaca.
@@ -303,7 +303,7 @@ public record Order
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("legs")]
-    public IReadOnlyList<Order?>? Legs { get; init; }
+    public IReadOnlyList<Order>? Legs { get; init; }
 
     /// <summary>
     /// The percent value away from the high water mark for trailing stop orders.

@@ -4,19 +4,21 @@ using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TraderApi.Core.Authentication.OAuth2;
+namespace Alpaca.Core.Authentication.OAuth2;
 
 internal sealed class OAuth2Scheme<TCredentials> : IRevocableAuthScheme
 {
     private readonly Func<TCredentials> _credFactory;
     private readonly IOAuth2TokenStrategy<TCredentials> _strategy;
+    private readonly TimeProvider _clock;
     private volatile OAuthToken? _cachedToken;
     private readonly AsyncLock _lock = new();
 
-    public OAuth2Scheme(Func<TCredentials> credFactory, IOAuth2TokenStrategy<TCredentials> strategy)
+    public OAuth2Scheme(Func<TCredentials> credFactory, IOAuth2TokenStrategy<TCredentials> strategy, TimeProvider clock)
     {
         _credFactory = credFactory;
         _strategy = strategy;
+        _clock = clock;
     }
 
     public async ValueTask Apply(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -33,18 +35,20 @@ internal sealed class OAuth2Scheme<TCredentials> : IRevocableAuthScheme
     private async ValueTask<OAuthToken> GetAndCacheToken(CancellationToken ct)
     {
         var cached = _cachedToken;
-        if (cached is not null && !cached.IsExpired(DateTimeOffset.UtcNow))
+        if (cached is not null && !cached.IsExpired(_clock.GetUtcNow()))
             return cached;
 
         using (await _lock.LockAsync(ct).ConfigureAwait(false))
         {
             cached = _cachedToken;
-            if (cached is not null && !cached.IsExpired(DateTimeOffset.UtcNow))
+            if (cached is not null && !cached.IsExpired(_clock.GetUtcNow()))
                 return cached;
 
             var credentials = _credFactory();
-            _cachedToken = await _strategy.GetToken(credentials, ct).ConfigureAwait(false);
-            return _cachedToken;
+            var fetched = await _strategy.GetToken(credentials, ct).ConfigureAwait(false);
+            var token = fetched with { ReceivedAt = _clock.GetUtcNow() };
+            _cachedToken = token;
+            return token;
         }
     }
 }
@@ -55,9 +59,10 @@ internal static class OAuth2SchemeExtensions
     {
         public static IAuthScheme Create(
             TCredentials? credentials,
-            IOAuth2TokenStrategy<TCredentials> strategy) =>
+            IOAuth2TokenStrategy<TCredentials> strategy,
+            TimeProvider clock) =>
             credentials is not null
-                ? new OAuth2Scheme<TCredentials>(() => credentials, strategy)
+                ? new OAuth2Scheme<TCredentials>(() => credentials, strategy, clock)
                 : NoneAuthScheme.Instance;
     }
 }

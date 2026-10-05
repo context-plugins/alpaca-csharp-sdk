@@ -1,10 +1,10 @@
 using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Extensions;
-using TraderApi.Core.Models;
+using Alpaca.Core.Extensions;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Models.AnyOf;
+namespace Alpaca.Models.AnyOf;
 
 /// <summary>
 /// Will be one of a TradingActivity or NonTradeActivity based on activity_type used in path
@@ -50,24 +50,25 @@ file sealed class V2AccountActivitiesResponse1Converter : JsonConverter<V2Accoun
     {
         using var doc = JsonDocument.ParseValue(ref reader);
         var root = doc.RootElement;
-        if (JsonSerializer.TryDeserialize<AccountTradingActivities>(root,
+        if (JsonSerializer.TryDeserialize<AccountTradingActivities>(
+            root,
             options,
             out var accountTradingActivitiesValue))
         {
             return V2AccountActivitiesResponse1.AccountTradingActivities(accountTradingActivitiesValue);
         }
-        if (JsonSerializer.TryDeserialize<AccountNonTradeActivities>(root,
+        if (JsonSerializer.TryDeserialize<AccountNonTradeActivities>(
+            root,
             options,
             out var accountNonTradeActivitiesValue))
         {
             return V2AccountActivitiesResponse1.AccountNonTradeActivities(accountNonTradeActivitiesValue);
         }
-        throw new JsonException($"JSON does not match AccountTradingActivities or AccountNonTradeActivities schemas: {root.ToString()}");
+        throw new JsonException(
+            $"JSON does not match AccountTradingActivities or AccountNonTradeActivities schemas: {root.ToString()}");
     }
 
-    public override void Write(Utf8JsonWriter writer,
-        V2AccountActivitiesResponse1 value,
-        JsonSerializerOptions options)
+    public override void Write(Utf8JsonWriter writer, V2AccountActivitiesResponse1 value, JsonSerializerOptions options)
     {
         if (value.TryGetAccountTradingActivities(out var accountTradingActivitiesValue))
         {

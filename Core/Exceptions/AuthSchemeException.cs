@@ -1,17 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
-namespace TraderApi.Core.Exceptions;
+namespace Alpaca.Core.Exceptions;
 
-public sealed class AuthSchemeException : Exception
+public sealed class AuthSchemeException(string message, IReadOnlyList<Exception> schemeFailures)
+    : SdkException(message, schemeFailures is [var only] ? only : new AggregateException(schemeFailures))
 {
-    public required IReadOnlyList<Exception> SchemeFailures { get; init; }
-
-    [SetsRequiredMembers]
-    public AuthSchemeException(string message, IReadOnlyList<Exception> schemeFailures)
-        : base(message, new AggregateException(schemeFailures))
-    {
-        SchemeFailures = schemeFailures;
-    }
+    public IReadOnlyList<Exception> SchemeFailures { get; } = schemeFailures;
 }

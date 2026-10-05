@@ -1,7 +1,8 @@
+using System;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Enum;
+using Alpaca.Core.Enum;
 
-namespace TraderApi.Models.Enums;
+namespace Alpaca.Models.Enums;
 
 /// <summary>
 /// Represents the types of orders Alpaca currently supports
@@ -14,7 +15,7 @@ namespace TraderApi.Models.Enums;
 /// </list>
 /// </summary>
 [JsonConverter(typeof(StringEnumConverter<OrderType>))]
-public sealed record OrderType : StringEnum<OrderType>
+public sealed record OrderType : OpenStringEnum<OrderType>
 {
     private OrderType(string value) : base(value)
     {
@@ -30,5 +31,34 @@ public sealed record OrderType : StringEnum<OrderType>
 
     public static readonly OrderType TrailingStop = new("trailing_stop");
 
-    public static OrderType FromValue(string value) => FromValueCore(value);
+    public TResult Match<TResult>(Func<TResult> onMarket,
+        Func<TResult> onLimit,
+        Func<TResult> onStop,
+        Func<TResult> onStopLimit,
+        Func<TResult> onTrailingStop,
+        Func<string, TResult> otherwise) =>
+        this switch
+        {
+            _ when this == Market => onMarket(),
+            _ when this == Limit => onLimit(),
+            _ when this == Stop => onStop(),
+            _ when this == StopLimit => onStopLimit(),
+            _ when this == TrailingStop => onTrailingStop(),
+            _ => otherwise(Value)
+        };
+
+    public void Match(Action onMarket,
+        Action onLimit,
+        Action onStop,
+        Action onStopLimit,
+        Action onTrailingStop,
+        Action<string> otherwise)
+    {
+        if (this == Market) onMarket();
+        else if (this == Limit) onLimit();
+        else if (this == Stop) onStop();
+        else if (this == StopLimit) onStopLimit();
+        else if (this == TrailingStop) onTrailingStop();
+        else otherwise(Value);
+    }
 }

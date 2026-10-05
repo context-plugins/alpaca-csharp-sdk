@@ -1,13 +1,15 @@
 # Reference
 
-> Source: [TraderApiClient](TraderApiClient.cs)
+Every operation below is shown in its throwing form. On an error status it throws `ApiException<TError>` — the status code, headers, content type and the operation's error type, `RawError` (the raw body) when the spec declares none — and where an operation offers an `…AsResult` sibling, that sibling returns `ApiResult<TResponse, TError>` instead. A request that produces no usable response surfaces as `SdkConnectionException` or `SdkTimeoutException`, a body that does not match the documented response type as `ResponseDeserializationException`, and a credential that cannot be applied as `AuthSchemeException`; all of them derive from `SdkException` and name the failed call. See [README → Error Handling](README.md#error-handling).
+
+> Source: [AlpacaClient](AlpacaClient.cs)
 
 ## AccountActivities
 
 > Source: [AccountActivities](Api/AccountActivities.cs)
 
 <details>
-<summary><code>Task&lt;IReadOnlyList&lt;V2AccountActivitiesResponse&gt;&gt; GetAccountActivities(DateTimeOffset? date, DateTimeOffset? until, DateTimeOffset? after, Direction? direction, int? pageSize, string? pageToken, string? activityTypes, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;IReadOnlyList&lt;V2AccountActivitiesResponse&gt;&gt; GetAccountActivities(GetAccountActivitiesRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -30,16 +32,14 @@ Returns account activity entries for many types of activities.
 ```csharp
 try
 {
-    var response = await client.AccountActivities.GetAccountActivities(date,
-        until,
-        after,
-        direction,
-        pageSize,
-        pageToken,
-        activityTypes);
+    var response = await client.AccountActivities.GetAccountActivities(new GetAccountActivitiesRequest
+    {
+        Direction = Direction.Desc,
+        ActivityTypes = "FILL",
+    });
     // TODO: Handle 'response' of type IReadOnlyList<V2AccountActivitiesResponse>
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -48,20 +48,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>date</code> | <code>DateTimeOffset?</code> | The date for which you want to see activities. |
-| <code>until</code> | <code>DateTimeOffset?</code> | The response will contain only activities submitted before this date. (Cannot be used with date.) |
-| <code>after</code> | <code>DateTimeOffset?</code> | The response will contain only activities submitted after this date. (Cannot be used with date.) |
-| <code>direction</code> | <code>[Direction?](Models/Enums/Direction.cs)</code> | asc or desc (default desc if unspecified.) |
-| <code>pageSize</code> | <code>int?</code> | The maximum number of entries to return in the response. (See the section on paging above.) |
-| <code>pageToken</code> | <code>string?</code> | The ID of the end of your current page of results. |
-| <code>activityTypes</code> | <code>string?</code> | A comma-separated list of the activity types to include in the response. If unspecified, activities of all types will be returned. See ActivityType model for values |
+<code>[GetAccountActivitiesRequest](Requests/AccountActivities/GetAccountActivitiesRequest.cs)</code>
 
 </dd>
 </dl>
@@ -73,7 +65,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>IReadOnlyList&lt;[V2AccountActivitiesResponse](Models/AnyOf/V2AccountActivitiesResponse.cs)&gt;</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -84,7 +76,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;IReadOnlyList&lt;V2AccountActivitiesResponse1&gt;&gt; GetAccountActivitiesByActivityType(string activityType, DateTimeOffset? date, DateTimeOffset? until, DateTimeOffset? after, Direction? direction, int? pageSize, string? pageToken, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;IReadOnlyList&lt;V2AccountActivitiesResponse1&gt;&gt; GetAccountActivitiesByActivityType(GetAccountActivitiesByActivityTypeRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -107,16 +99,15 @@ Returns account activity entries for a specific type of activity.
 ```csharp
 try
 {
-    var response = await client.AccountActivities.GetAccountActivitiesByActivityType(activityType,
-        date,
-        until,
-        after,
-        direction,
-        pageSize,
-        pageToken);
+    var response = await client.AccountActivities.GetAccountActivitiesByActivityType(
+        new GetAccountActivitiesByActivityTypeRequest
+        {
+            ActivityType = "some example string",
+            Direction = Direction.Desc,
+        });
     // TODO: Handle 'response' of type IReadOnlyList<V2AccountActivitiesResponse1>
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -125,20 +116,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>activityType</code> | <code>string</code> | The activity type you want to view entries for. A list of valid activity types can be found at the bottom of this page. |
-| <code>date</code> | <code>DateTimeOffset?</code> | The date for which you want to see activities. |
-| <code>until</code> | <code>DateTimeOffset?</code> | The response will contain only activities submitted before this date. (Cannot be used with date.) |
-| <code>after</code> | <code>DateTimeOffset?</code> | The response will contain only activities submitted after this date. (Cannot be used with date.) |
-| <code>direction</code> | <code>[Direction?](Models/Enums/Direction.cs)</code> | asc or desc (default desc if unspecified.) |
-| <code>pageSize</code> | <code>int?</code> | The maximum number of entries to return in the response. (See the section on paging above.) |
-| <code>pageToken</code> | <code>string?</code> | The ID of the end of your current page of results. |
+<code>[GetAccountActivitiesByActivityTypeRequest](Requests/AccountActivities/GetAccountActivitiesByActivityTypeRequest.cs)</code>
 
 </dd>
 </dl>
@@ -150,7 +133,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>IReadOnlyList&lt;[V2AccountActivitiesResponse1](Models/AnyOf/V2AccountActivitiesResponse1.cs)&gt;</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -165,7 +148,7 @@ catch (SdkException<RawError> ex)
 > Source: [AccountConfigurationsApi](Api/AccountConfigurationsApi.cs)
 
 <details>
-<summary><code>Task&lt;AccountConfigurations&gt; GetAccountConfig(RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;AccountConfigurations&gt; GetAccountConfig(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -191,7 +174,7 @@ try
     var response = await client.AccountConfigurationsApi.GetAccountConfig();
     // TODO: Handle 'response' of type AccountConfigurations
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -207,7 +190,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[AccountConfigurations](Models/AccountConfigurations.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -218,7 +201,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;AccountConfigurations&gt; PatchAccountConfig(AccountConfigurations? body, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;AccountConfigurations&gt; PatchAccountConfig(PatchAccountConfigRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -241,10 +224,10 @@ Updates and returns the current account configuration values
 ```csharp
 try
 {
-    var response = await client.AccountConfigurationsApi.PatchAccountConfig(body);
+    var response = await client.AccountConfigurationsApi.PatchAccountConfig(new PatchAccountConfigRequest());
     // TODO: Handle 'response' of type AccountConfigurations
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -253,14 +236,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>body</code> | <code>[AccountConfigurations?](Models/AccountConfigurations.cs)</code> | - |
+<code>[PatchAccountConfigRequest](Requests/AccountConfigurationsApi/PatchAccountConfigRequest.cs)</code>
 
 </dd>
 </dl>
@@ -272,7 +253,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[AccountConfigurations](Models/AccountConfigurations.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -287,7 +268,7 @@ catch (SdkException<RawError> ex)
 > Source: [Accounts](Api/Accounts.cs)
 
 <details>
-<summary><code>Task&lt;Account&gt; GetAccount(RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Account&gt; GetAccount(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -313,7 +294,7 @@ try
     var response = await client.Accounts.GetAccount();
     // TODO: Handle 'response' of type Account
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -329,7 +310,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Account](Models/Account.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -344,7 +325,7 @@ catch (SdkException<RawError> ex)
 > Source: [CalendarApi](Api/CalendarApi.cs)
 
 <details>
-<summary><code>Task&lt;IReadOnlyList&lt;Calendar&gt;&gt; GetCalendar(DateTimeOffset? start, DateTimeOffset? end, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;IReadOnlyList&lt;Calendar&gt;&gt; GetCalendar(GetCalendarRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -367,10 +348,10 @@ Returns the market calendar.
 ```csharp
 try
 {
-    var response = await client.CalendarApi.GetCalendar(start, end);
+    var response = await client.CalendarApi.GetCalendar(new GetCalendarRequest());
     // TODO: Handle 'response' of type IReadOnlyList<Calendar>
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -379,15 +360,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>start</code> | <code>DateTimeOffset?</code> | The first date to retrieve data for (inclusive) |
-| <code>end</code> | <code>DateTimeOffset?</code> | The last date to retrieve data for (inclusive) |
+<code>[GetCalendarRequest](Requests/CalendarApi/GetCalendarRequest.cs)</code>
 
 </dd>
 </dl>
@@ -399,7 +377,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>IReadOnlyList&lt;[Calendar](Models/Calendar.cs)&gt;</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -414,7 +392,7 @@ catch (SdkException<RawError> ex)
 > Source: [ClockApi](Api/ClockApi.cs)
 
 <details>
-<summary><code>Task&lt;Clock&gt; GetClock(RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Clock&gt; GetClock(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -442,7 +420,7 @@ try
     var response = await client.ClockApi.GetClock();
     // TODO: Handle 'response' of type Clock
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -458,7 +436,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Clock](Models/Clock.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -473,7 +451,7 @@ catch (SdkException<RawError> ex)
 > Source: [Orders](Api/Orders.cs)
 
 <details>
-<summary><code>Task&lt;IReadOnlyList&lt;CanceledOrderResponse&gt;&gt; DeleteAllOrders(RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;IReadOnlyList&lt;CanceledOrderResponse&gt;&gt; DeleteAllOrders(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -499,7 +477,7 @@ try
     var response = await client.Orders.DeleteAllOrders();
     // TODO: Handle 'response' of type IReadOnlyList<CanceledOrderResponse>
 }
-catch (SdkException<DeleteAllOrdersError> ex)
+catch (ApiException<DeleteAllOrdersError> ex)
 {
     if (ex.Error.TryGetNoContent(out var error))
     {
@@ -518,7 +496,7 @@ catch (SdkException<DeleteAllOrdersError> ex)
 
 **OnSuccess**: <code>IReadOnlyList&lt;[CanceledOrderResponse](Models/CanceledOrderResponse.cs)&gt;</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[DeleteAllOrdersError](Errors/DeleteAllOrdersError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[DeleteAllOrdersError](Errors/DeleteAllOrdersError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -529,7 +507,7 @@ catch (SdkException<DeleteAllOrdersError> ex)
 </details>
 
 <details>
-<summary><code>Task DeleteOrderByOrderId(Guid orderId, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task DeleteOrderByOrderId(DeleteOrderByOrderIdRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -552,9 +530,12 @@ Attempts to cancel an Open Order. If the order is no longer cancelable, the requ
 ```csharp
 try
 {
-    await client.Orders.DeleteOrderByOrderId(orderId);
+    await client.Orders.DeleteOrderByOrderId(new DeleteOrderByOrderIdRequest
+    {
+        OrderId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+    });
 }
-catch (SdkException<DeleteOrderByOrderIdError> ex)
+catch (ApiException<DeleteOrderByOrderIdError> ex)
 {
     if (ex.Error.TryGetNoContent(out var error))
     {
@@ -566,14 +547,12 @@ catch (SdkException<DeleteOrderByOrderIdError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>orderId</code> | <code>Guid</code> | order id |
+<code>[DeleteOrderByOrderIdRequest](Requests/Orders/DeleteOrderByOrderIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -585,7 +564,7 @@ catch (SdkException<DeleteOrderByOrderIdError> ex)
 
 **OnSuccess**: No content
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[DeleteOrderByOrderIdError](Errors/DeleteOrderByOrderIdError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[DeleteOrderByOrderIdError](Errors/DeleteOrderByOrderIdError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -596,7 +575,7 @@ catch (SdkException<DeleteOrderByOrderIdError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;IReadOnlyList&lt;Order&gt;&gt; GetAllOrders(Status1? status, int? limit, string? after, string? until, Direction? direction, bool? nested, string? symbols, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;IReadOnlyList&lt;Order&gt;&gt; GetAllOrders(GetAllOrdersRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -619,10 +598,10 @@ Retrieves a list of orders for the account, filtered by the supplied query param
 ```csharp
 try
 {
-    var response = await client.Orders.GetAllOrders(status, limit, after, until, direction, nested, symbols);
+    var response = await client.Orders.GetAllOrders(new GetAllOrdersRequest { Status = Status1.Open });
     // TODO: Handle 'response' of type IReadOnlyList<Order>
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -631,20 +610,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>status</code> | <code>[Status1?](Models/Enums/Status1.cs)</code> | Order status to be queried. open, closed or all. Defaults to open. |
-| <code>limit</code> | <code>int?</code> | The maximum number of orders in response. Defaults to 50 and max is 500. |
-| <code>after</code> | <code>string?</code> | The response will include only ones submitted after this timestamp (exclusive.) |
-| <code>until</code> | <code>string?</code> | The response will include only ones submitted until this timestamp (exclusive.) |
-| <code>direction</code> | <code>[Direction?](Models/Enums/Direction.cs)</code> | The chronological order of response based on the submission time. asc or desc. Defaults to desc. |
-| <code>nested</code> | <code>bool?</code> | If true, the result will roll up multi-leg orders under the legs field of primary order. |
-| <code>symbols</code> | <code>string?</code> | A comma-separated list of symbols to filter by (ex. “AAPL,TSLA,MSFT”). A currency pair is required for crypto orders (ex. “BTCUSD,BCHUSD,LTCUSD,ETCUSD”). |
+<code>[GetAllOrdersRequest](Requests/Orders/GetAllOrdersRequest.cs)</code>
 
 </dd>
 </dl>
@@ -656,7 +627,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>IReadOnlyList&lt;[Order](Models/Order.cs)&gt;</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -667,7 +638,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Order&gt; GetOrderByOrderId(Guid orderId, bool? nested, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Order&gt; GetOrderByOrderId(GetOrderByOrderIdRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -690,10 +661,13 @@ Retrieves a single order for the given order_id.
 ```csharp
 try
 {
-    var response = await client.Orders.GetOrderByOrderId(orderId, nested);
+    var response = await client.Orders.GetOrderByOrderId(new GetOrderByOrderIdRequest
+    {
+        OrderId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+    });
     // TODO: Handle 'response' of type Order
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -702,15 +676,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>orderId</code> | <code>Guid</code> | order id |
-| <code>nested</code> | <code>bool?</code> | If true, the result will roll up multi-leg orders under the legs field of primary order. |
+<code>[GetOrderByOrderIdRequest](Requests/Orders/GetOrderByOrderIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -722,7 +693,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Order](Models/Order.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -733,7 +704,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Order&gt; PatchOrderByOrderId(Guid orderId, PatchOrderRequest body, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Order&gt; PatchOrderByOrderId(PatchOrderByOrderIdRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -749,7 +720,6 @@ A success return code from a replaced order does NOT guarantee the existing open
 
 While an order is being replaced, buying power is reduced by the larger of the two orders that have been placed (the old order being replaced, and the newly placed order to replace it). If you are replacing a buy entry order with a higher limit price than the original order, the buying power is calculated based on the newly placed order. If you are replacing it with a lower limit price, the buying power is calculated based on the old order.
 
-
 </dd>
 </dl>
 
@@ -761,10 +731,14 @@ While an order is being replaced, buying power is reduced by the larger of the t
 ```csharp
 try
 {
-    var response = await client.Orders.PatchOrderByOrderId(orderId, body);
+    var response = await client.Orders.PatchOrderByOrderId(new PatchOrderByOrderIdRequest
+    {
+        OrderId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+        Body = new PatchOrderRequest(),
+    });
     // TODO: Handle 'response' of type Order
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -773,15 +747,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>orderId</code> | <code>Guid</code> | order id |
-| <code>body</code> | <code>[PatchOrderRequest](Models/PatchOrderRequest.cs)</code> | - |
+<code>[PatchOrderByOrderIdRequest](Requests/Orders/PatchOrderByOrderIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -793,7 +764,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Order](Models/Order.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -804,7 +775,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Order&gt; PostOrder(Order body, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Order&gt; PostOrder(PostOrderRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -827,10 +798,21 @@ Places a new order for the given account. An order request may be rejected if th
 ```csharp
 try
 {
-    var response = await client.Orders.PostOrder(body);
+    var response = await client.Orders.PostOrder(new PostOrderRequest
+    {
+        Body = new Order
+        {
+            Symbol = "some example string",
+            Notional = "some example string",
+            Qty = "some example string",
+            Type = OrderType.Market,
+            Side = OrderSide.Buy,
+            TimeInForce = TimeInForce.Day,
+        },
+    });
     // TODO: Handle 'response' of type Order
 }
-catch (SdkException<PostOrderError> ex)
+catch (ApiException<PostOrderError> ex)
 {
     if (ex.Error.TryGetNoContent(out var error))
     {
@@ -842,14 +824,12 @@ catch (SdkException<PostOrderError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>body</code> | <code>[Order](Models/Order.cs)</code> | - |
+<code>[PostOrderRequest](Requests/Orders/PostOrderRequest.cs)</code>
 
 </dd>
 </dl>
@@ -861,7 +841,7 @@ catch (SdkException<PostOrderError> ex)
 
 **OnSuccess**: <code>[Order](Models/Order.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[PostOrderError](Errors/PostOrderError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[PostOrderError](Errors/PostOrderError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -876,7 +856,7 @@ catch (SdkException<PostOrderError> ex)
 > Source: [PortfolioHistoryApi](Api/PortfolioHistoryApi.cs)
 
 <details>
-<summary><code>Task&lt;PortfolioHistory&gt; GetAccountPortfolioHistory(string? period, string? timeframe, DateTimeOffset? dateEnd, string? extendedHours, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;PortfolioHistory&gt; GetAccountPortfolioHistory(GetAccountPortfolioHistoryRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -899,13 +879,13 @@ Returns timeseries data about equity and profit/loss (P/L) of the account in req
 ```csharp
 try
 {
-    var response = await client.PortfolioHistoryApi.GetAccountPortfolioHistory(period,
-        timeframe,
-        dateEnd,
-        extendedHours);
+    var response = await client.PortfolioHistoryApi.GetAccountPortfolioHistory(new GetAccountPortfolioHistoryRequest
+    {
+        DateEnd = DateTimeOffset.Parse("2022-05-15T00:00:00Z"),
+    });
     // TODO: Handle 'response' of type PortfolioHistory
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -914,17 +894,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>period</code> | <code>string?</code> | The duration of the data in <number> + <unit>, such as 1D, where <unit> can be D for day, W for week, M for month and A for year. Defaults to 1M. |
-| <code>timeframe</code> | <code>string?</code> | The resolution of time window. 1Min, 5Min, 15Min, 1H, or 1D. If omitted, 1Min for less than 7 days period, 15Min for less than 30 days, or otherwise 1D. |
-| <code>dateEnd</code> | <code>DateTimeOffset?</code> | The date the data is returned up to, in “YYYY-MM-DD” format. Defaults to the current market date (rolls over at the market open if extended_hours is false, otherwise at 7am ET) |
-| <code>extendedHours</code> | <code>string?</code> | If true, include extended hours in the result. This is effective only for timeframe less than 1D. |
+<code>[GetAccountPortfolioHistoryRequest](Requests/PortfolioHistoryApi/GetAccountPortfolioHistoryRequest.cs)</code>
 
 </dd>
 </dl>
@@ -936,7 +911,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[PortfolioHistory](Models/PortfolioHistory.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -951,7 +926,7 @@ catch (SdkException<RawError> ex)
 > Source: [Positions](Api/Positions.cs)
 
 <details>
-<summary><code>Task&lt;IReadOnlyList&lt;PositionClosedReponse&gt;&gt; DeleteAllOpenPositions(bool? cancelOrders, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;IReadOnlyList&lt;PositionClosedReponse&gt;&gt; DeleteAllOpenPositions(DeleteAllOpenPositionsRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -974,10 +949,10 @@ Closes (liquidates) all of the account’s open long and short positions. A resp
 ```csharp
 try
 {
-    var response = await client.Positions.DeleteAllOpenPositions(cancelOrders);
+    var response = await client.Positions.DeleteAllOpenPositions(new DeleteAllOpenPositionsRequest());
     // TODO: Handle 'response' of type IReadOnlyList<PositionClosedReponse>
 }
-catch (SdkException<DeleteAllOpenPositionsError> ex)
+catch (ApiException<DeleteAllOpenPositionsError> ex)
 {
     if (ex.Error.TryGetNoContent(out var error))
     {
@@ -989,14 +964,12 @@ catch (SdkException<DeleteAllOpenPositionsError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>cancelOrders</code> | <code>bool?</code> | If true is specified, cancel all open orders before liquidating all positions. |
+<code>[DeleteAllOpenPositionsRequest](Requests/Positions/DeleteAllOpenPositionsRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1008,7 +981,7 @@ catch (SdkException<DeleteAllOpenPositionsError> ex)
 
 **OnSuccess**: <code>IReadOnlyList&lt;[PositionClosedReponse](Models/PositionClosedReponse.cs)&gt;</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[DeleteAllOpenPositionsError](Errors/DeleteAllOpenPositionsError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[DeleteAllOpenPositionsError](Errors/DeleteAllOpenPositionsError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1019,7 +992,7 @@ catch (SdkException<DeleteAllOpenPositionsError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Order&gt; DeleteOpenPosition(string symbolOrAssetId, double? qty, double? percentage, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Order&gt; DeleteOpenPosition(DeleteOpenPositionRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1042,10 +1015,13 @@ Closes (liquidates) the account’s open position for the given symbol. Works fo
 ```csharp
 try
 {
-    var response = await client.Positions.DeleteOpenPosition(symbolOrAssetId, qty, percentage);
+    var response = await client.Positions.DeleteOpenPosition(new DeleteOpenPositionRequest
+    {
+        SymbolOrAssetId = "some example string",
+    });
     // TODO: Handle 'response' of type Order
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1054,16 +1030,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>symbolOrAssetId</code> | <code>string</code> | symbol or assetId |
-| <code>qty</code> | <code>double?</code> | the number of shares to liquidate. Can accept up to 9 decimal points. Cannot work with percentage |
-| <code>percentage</code> | <code>double?</code> | percentage of position to liquidate. Must be between 0 and 100. Would only sell fractional if position is originally fractional. Can accept up to 9 decimal points. Cannot work with qty |
+<code>[DeleteOpenPositionRequest](Requests/Positions/DeleteOpenPositionRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1075,7 +1047,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Order](Models/Order.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1086,7 +1058,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;IReadOnlyList&lt;Position&gt;&gt; GetAllOpenPositions(RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;IReadOnlyList&lt;Position&gt;&gt; GetAllOpenPositions(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1114,7 +1086,7 @@ try
     var response = await client.Positions.GetAllOpenPositions();
     // TODO: Handle 'response' of type IReadOnlyList<Position>
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1130,7 +1102,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>IReadOnlyList&lt;[Position](Models/Position.cs)&gt;</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1141,7 +1113,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Position&gt; GetOpenPosition(string symbolOrAssetId, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Position&gt; GetOpenPosition(GetOpenPositionRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1164,10 +1136,13 @@ Retrieves the account’s open position for the given symbol or assetId.
 ```csharp
 try
 {
-    var response = await client.Positions.GetOpenPosition(symbolOrAssetId);
+    var response = await client.Positions.GetOpenPosition(new GetOpenPositionRequest
+    {
+        SymbolOrAssetId = "some example string",
+    });
     // TODO: Handle 'response' of type Position
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1176,14 +1151,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>symbolOrAssetId</code> | <code>string</code> | symbol or assetId |
+<code>[GetOpenPositionRequest](Requests/Positions/GetOpenPositionRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1195,7 +1168,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Position](Models/Position.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1210,7 +1183,7 @@ catch (SdkException<RawError> ex)
 > Source: [Watchlists](Api/Watchlists.cs)
 
 <details>
-<summary><code>Task&lt;Watchlist&gt; AddAssetToWatchlist(Guid watchlistId, AddAssetToWatchlistRequest? body, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Watchlist&gt; AddAssetToWatchlist(AddAssetToWatchlistOperationRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1233,10 +1206,13 @@ Append an asset for the symbol to the end of watchlist asset list
 ```csharp
 try
 {
-    var response = await client.Watchlists.AddAssetToWatchlist(watchlistId, body);
+    var response = await client.Watchlists.AddAssetToWatchlist(new AddAssetToWatchlistOperationRequest
+    {
+        WatchlistId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+    });
     // TODO: Handle 'response' of type Watchlist
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1245,15 +1221,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>watchlistId</code> | <code>Guid</code> | watchlist id |
-| <code>body</code> | <code>[AddAssetToWatchlistRequest?](Models/AddAssetToWatchlistRequest.cs)</code> | - |
+<code>[AddAssetToWatchlistOperationRequest](Requests/Watchlists/AddAssetToWatchlistOperationRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1265,7 +1238,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1276,7 +1249,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Watchlist&gt; AddAssetToWatchlistByName(string name, AddAssetToWatchlistRequest? body, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Watchlist&gt; AddAssetToWatchlistByName(AddAssetToWatchlistByNameRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1299,10 +1272,13 @@ Append an asset for the symbol to the end of watchlist asset list
 ```csharp
 try
 {
-    var response = await client.Watchlists.AddAssetToWatchlistByName(name, body);
+    var response = await client.Watchlists.AddAssetToWatchlistByName(new AddAssetToWatchlistByNameRequest
+    {
+        Name = "some example string",
+    });
     // TODO: Handle 'response' of type Watchlist
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1311,15 +1287,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>name</code> | <code>string</code> | name of the watchlist |
-| <code>body</code> | <code>[AddAssetToWatchlistRequest?](Models/AddAssetToWatchlistRequest.cs)</code> | - |
+<code>[AddAssetToWatchlistByNameRequest](Requests/Watchlists/AddAssetToWatchlistByNameRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1331,7 +1304,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1342,7 +1315,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task DeleteWatchlistById(Guid watchlistId, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task DeleteWatchlistById(DeleteWatchlistByIdRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1365,9 +1338,12 @@ Delete a watchlist. This is a permanent deletion.
 ```csharp
 try
 {
-    await client.Watchlists.DeleteWatchlistById(watchlistId);
+    await client.Watchlists.DeleteWatchlistById(new DeleteWatchlistByIdRequest
+    {
+        WatchlistId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+    });
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1376,14 +1352,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>watchlistId</code> | <code>Guid</code> | watchlist id |
+<code>[DeleteWatchlistByIdRequest](Requests/Watchlists/DeleteWatchlistByIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1395,7 +1369,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: No content
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1406,7 +1380,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task DeleteWatchlistByName(string name, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task DeleteWatchlistByName(DeleteWatchlistByNameRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1429,9 +1403,9 @@ Delete a watchlist. This is a permanent deletion.
 ```csharp
 try
 {
-    await client.Watchlists.DeleteWatchlistByName(name);
+    await client.Watchlists.DeleteWatchlistByName(new DeleteWatchlistByNameRequest { Name = "some example string" });
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1440,14 +1414,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>name</code> | <code>string</code> | name of the watchlist |
+<code>[DeleteWatchlistByNameRequest](Requests/Watchlists/DeleteWatchlistByNameRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1459,7 +1431,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: No content
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1470,7 +1442,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Watchlist&gt; GetWatchlistById(Guid watchlistId, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Watchlist&gt; GetWatchlistById(GetWatchlistByIdRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1493,10 +1465,13 @@ Returns a watchlist identified by the ID.
 ```csharp
 try
 {
-    var response = await client.Watchlists.GetWatchlistById(watchlistId);
+    var response = await client.Watchlists.GetWatchlistById(new GetWatchlistByIdRequest
+    {
+        WatchlistId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+    });
     // TODO: Handle 'response' of type Watchlist
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1505,14 +1480,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>watchlistId</code> | <code>Guid</code> | watchlist id |
+<code>[GetWatchlistByIdRequest](Requests/Watchlists/GetWatchlistByIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1524,7 +1497,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1535,7 +1508,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Watchlist&gt; GetWatchlistByName(string name, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Watchlist&gt; GetWatchlistByName(GetWatchlistByNameRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1558,10 +1531,13 @@ Returns a watchlist by name
 ```csharp
 try
 {
-    var response = await client.Watchlists.GetWatchlistByName(name);
+    var response = await client.Watchlists.GetWatchlistByName(new GetWatchlistByNameRequest
+    {
+        Name = "some example string",
+    });
     // TODO: Handle 'response' of type Watchlist
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1570,14 +1546,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>name</code> | <code>string</code> | name of the watchlist |
+<code>[GetWatchlistByNameRequest](Requests/Watchlists/GetWatchlistByNameRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1589,7 +1563,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1600,7 +1574,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;IReadOnlyList&lt;Watchlist&gt;&gt; GetWatchlists(RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;IReadOnlyList&lt;Watchlist&gt;&gt; GetWatchlists(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1626,7 +1600,7 @@ try
     var response = await client.Watchlists.GetWatchlists();
     // TODO: Handle 'response' of type IReadOnlyList<Watchlist>
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1642,7 +1616,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>IReadOnlyList&lt;[Watchlist](Models/Watchlist.cs)&gt;</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1653,7 +1627,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Watchlist&gt; PostWatchlist(PostWatchlistRequest body, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Watchlist&gt; PostWatchlist(PostWatchlistOperationRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1676,10 +1650,13 @@ Create a new watchlist with initial set of assets.
 ```csharp
 try
 {
-    var response = await client.Watchlists.PostWatchlist(body);
+    var response = await client.Watchlists.PostWatchlist(new PostWatchlistOperationRequest
+    {
+        Body = new PostWatchlistRequest { Name = "some example string" },
+    });
     // TODO: Handle 'response' of type Watchlist
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1688,14 +1665,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>body</code> | <code>[PostWatchlistRequest](Models/PostWatchlistRequest.cs)</code> | - |
+<code>[PostWatchlistOperationRequest](Requests/Watchlists/PostWatchlistOperationRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1707,7 +1682,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1718,7 +1693,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Watchlist&gt; RemoveAssetFromWatchlist(Guid watchlistId, string symbol, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Watchlist&gt; RemoveAssetFromWatchlist(RemoveAssetFromWatchlistRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1741,10 +1716,14 @@ Delete one entry for an asset by symbol name
 ```csharp
 try
 {
-    var response = await client.Watchlists.RemoveAssetFromWatchlist(watchlistId, symbol);
+    var response = await client.Watchlists.RemoveAssetFromWatchlist(new RemoveAssetFromWatchlistRequest
+    {
+        WatchlistId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+        Symbol = "some example string",
+    });
     // TODO: Handle 'response' of type Watchlist
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1753,15 +1732,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>watchlistId</code> | <code>Guid</code> | Watchlist ID |
-| <code>symbol</code> | <code>string</code> | symbol name to remove from the watchlist content |
+<code>[RemoveAssetFromWatchlistRequest](Requests/Watchlists/RemoveAssetFromWatchlistRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1773,7 +1749,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1784,7 +1760,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Watchlist&gt; UpdateWatchlistById(Guid watchlistId, PostWatchlistRequest? body, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Watchlist&gt; UpdateWatchlistById(UpdateWatchlistByIdRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1807,10 +1783,13 @@ Update the name and/or content of watchlist
 ```csharp
 try
 {
-    var response = await client.Watchlists.UpdateWatchlistById(watchlistId, body);
+    var response = await client.Watchlists.UpdateWatchlistById(new UpdateWatchlistByIdRequest
+    {
+        WatchlistId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+    });
     // TODO: Handle 'response' of type Watchlist
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1819,15 +1798,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>watchlistId</code> | <code>Guid</code> | watchlist id |
-| <code>body</code> | <code>[PostWatchlistRequest?](Models/PostWatchlistRequest.cs)</code> | - |
+<code>[UpdateWatchlistByIdRequest](Requests/Watchlists/UpdateWatchlistByIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1839,7 +1815,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1850,7 +1826,7 @@ catch (SdkException<RawError> ex)
 </details>
 
 <details>
-<summary><code>Task&lt;Watchlist&gt; UpdateWatchlistByName(string name, PostWatchlistRequest? body, RequestOptions? requestOptions = null, CancellationToken ct = default);</code></summary>
+<summary><code>Task&lt;Watchlist&gt; UpdateWatchlistByName(UpdateWatchlistByNameRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
 
 <dl>
 <dd>
@@ -1873,10 +1849,13 @@ Update the name and/or content of watchlist
 ```csharp
 try
 {
-    var response = await client.Watchlists.UpdateWatchlistByName(name, body);
+    var response = await client.Watchlists.UpdateWatchlistByName(new UpdateWatchlistByNameRequest
+    {
+        Name = "some example string",
+    });
     // TODO: Handle 'response' of type Watchlist
 }
-catch (SdkException<RawError> ex)
+catch (ApiException<RawError> ex)
 {
     // TODO: Handle 'ex.Error' of type RawError
 }
@@ -1885,15 +1864,12 @@ catch (SdkException<RawError> ex)
 </dd>
 </dl>
 
-### Parameters
+### Request
 
 <dl>
 <dd>
 
-| Name | Type | Description |
-| --- | --- | --- |
-| <code>name</code> | <code>string</code> | name of the watchlist |
-| <code>body</code> | <code>[PostWatchlistRequest?](Models/PostWatchlistRequest.cs)</code> | - |
+<code>[UpdateWatchlistByNameRequest](Requests/Watchlists/UpdateWatchlistByNameRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1905,7 +1881,7 @@ catch (SdkException<RawError> ex)
 
 **OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
 
-**OnError**: <code>[SdkException](Core/Exceptions/SdkException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>

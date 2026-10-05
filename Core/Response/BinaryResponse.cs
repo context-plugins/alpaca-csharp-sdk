@@ -1,10 +1,9 @@
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.Models;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 internal sealed class BinaryResponse : IResponse<BinaryContent>
 {
@@ -14,20 +13,19 @@ internal sealed class BinaryResponse : IResponse<BinaryContent>
     {
     }
 
-    public async ValueTask<BinaryContent> Map(HttpResponseMessage httpResponseMessage,
-        CancellationToken cancellationToken)
+    public async ValueTask<BinaryContent> Map(ResponseContext context, CancellationToken cancellationToken)
     {
 #if NET6_0_OR_GREATER
-        var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        var responseStream = await context.Response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
 #else
-        var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        var responseStream = await context.Response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 #endif
         return new BinaryContent
         {
             Stream = responseStream,
-            FileName = httpResponseMessage.Content.Headers.ContentDisposition?.FileNameStar ??
-                       httpResponseMessage.Content.Headers.ContentDisposition?.FileName,
-            ContentType = httpResponseMessage.Content.Headers.ContentType ??
+            FileName = context.Response.Content.Headers.ContentDisposition?.FileNameStar ??
+                       context.Response.Content.Headers.ContentDisposition?.FileName,
+            ContentType = context.Response.Content.Headers.ContentType ??
                           new MediaTypeHeaderValue("application/octet-stream")
         };
     }

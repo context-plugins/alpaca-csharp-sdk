@@ -1,9 +1,9 @@
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.ErrorResponse;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 internal sealed class RawErrorBodyResponse : IResponse<RawError>
 {
@@ -11,6 +11,6 @@ internal sealed class RawErrorBodyResponse : IResponse<RawError>
 
     private RawErrorBodyResponse() { }
 
-    public ValueTask<RawError> Map(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken) =>
-        new(RawError.Create(httpResponseMessage, cancellationToken));
+    public ValueTask<RawError> Map(ResponseContext context, CancellationToken cancellationToken) =>
+        new(RawError.Create(context.Response, cancellationToken));
 }

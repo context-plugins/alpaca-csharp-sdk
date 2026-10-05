@@ -1,16 +1,13 @@
 using System;
-using System.Collections.Concurrent;
-using System.Reflection;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace TraderApi.Core.Enum;
+namespace Alpaca.Core.Enum;
 
 internal sealed class IntEnumConverter<TEnum> : JsonConverter<TEnum>
     where TEnum : IntEnum<TEnum>
 {
-    private static readonly ConcurrentDictionary<Type, Func<int, TEnum>> FromValueCoreCache = new();
-
     public override TEnum? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType is JsonTokenType.Null)
@@ -19,26 +16,10 @@ internal sealed class IntEnumConverter<TEnum> : JsonConverter<TEnum>
         if (reader.TokenType is not JsonTokenType.Number)
             throw new JsonException($"Unexpected token {reader.TokenType} when parsing {typeToConvert.Name}. Expected Number.");
 
-        var value = reader.GetInt32();
+        if (!reader.TryGetInt64(out var value))
+            throw new JsonException($"Number is not an integer when parsing {typeToConvert.Name}.");
 
-        var factory = FromValueCoreCache.GetOrAdd(typeToConvert, type =>
-        {
-            var method = type.GetMethod(
-                "FromValueCore",
-                BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy,
-                null,
-                [typeof(int)],
-                null
-            );
-
-            if (method is null)
-                throw new InvalidOperationException(
-                    $"Type {type.Name} must inherit from {nameof(IntEnum<>)}<T>");
-
-            return v => (TEnum)method.Invoke(null, [v])!;
-        });
-
-        return factory(value);
+        return IntEnum<TEnum>.FromValueCore(value);
     }
 
     public override void Write(Utf8JsonWriter writer, TEnum? value, JsonSerializerOptions options)
@@ -51,4 +32,12 @@ internal sealed class IntEnumConverter<TEnum> : JsonConverter<TEnum>
 
         writer.WriteNumberValue(value.Value);
     }
+
+    public override TEnum ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
+        long.TryParse(reader.GetString(), NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var value)
+            ? IntEnum<TEnum>.FromValueCore(value)
+            : throw new JsonException($"Property name is not an integer when parsing {typeToConvert.Name}.");
+
+    public override void WriteAsPropertyName(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options) =>
+        writer.WritePropertyName(value.Value.ToString(CultureInfo.InvariantCulture));
 }

@@ -5,8 +5,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.ErrorResponse;
+namespace Alpaca.Core.ErrorResponse;
 
 public sealed class RawError
 {
@@ -21,10 +22,10 @@ public sealed class RawError
     }
 
     internal static async Task<RawError> Create(HttpResponseMessage response,
-        CancellationToken ct)
+        CancellationToken cancellationToken)
     {
 #if NET6_0_OR_GREATER
-        var content = await response.Content.ReadAsByteArrayAsync(ct).ConfigureAwait(false);
+        var content = await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
 #else
         var content = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 #endif
@@ -44,6 +45,6 @@ internal sealed class RawErrorResponse : IErrorResponse<RawError>
 
     private RawErrorResponse() { }
 
-    public Task<RawError> Map(HttpResponseMessage response, CancellationToken ct) =>
-        RawError.Create(response, ct);
+    public Task<RawError> Map(ResponseContext context, CancellationToken cancellationToken) =>
+        RawError.Create(context.Response, cancellationToken);
 }

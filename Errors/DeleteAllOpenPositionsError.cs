@@ -1,10 +1,8 @@
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Models;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Errors;
+namespace Alpaca.Errors;
 
 public sealed class DeleteAllOpenPositionsError : ApiError
 {
@@ -23,22 +21,12 @@ public sealed class DeleteAllOpenPositionsError : ApiError
 
     public bool TryGetNoContent(out RawError value) => _noContentValue.TryGetValue(out value);
 
-    internal static Task<DeleteAllOpenPositionsError> Create(HttpResponseMessage response, CancellationToken ct) =>
-        (int)response.StatusCode switch
+    private static Task<DeleteAllOpenPositionsError> Create(FailedResponse response) =>
+        response.StatusCode switch
         {
-            500 => FromRawBody(response, ct).As(AsNoContent),
-            _ => FromRawBody(response, ct).As(AsFallback)
+            500 => response.RawBody().As(AsNoContent),
+            _ => response.RawBody().As(AsFallback)
         };
-}
 
-internal sealed class DeleteAllOpenPositionsErrorResponse : IErrorResponse<DeleteAllOpenPositionsError>
-{
-    public static DeleteAllOpenPositionsErrorResponse Instance { get; } = new();
-
-    private DeleteAllOpenPositionsErrorResponse()
-    {
-    }
-
-    public Task<DeleteAllOpenPositionsError> Map(HttpResponseMessage response, CancellationToken ct) =>
-        DeleteAllOpenPositionsError.Create(response, ct);
+    internal static ApiErrorResponse<DeleteAllOpenPositionsError> Response { get; } = new(Create);
 }

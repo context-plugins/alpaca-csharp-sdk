@@ -1,53 +1,61 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
-using TraderApi.Core.Exceptions;
+using Alpaca.Core.Exceptions;
 
-namespace TraderApi.Core.Models;
+namespace Alpaca.Core.Models;
 
 /// <summary>
 ///     Represents either a successful response of type <typeparamref name="TResponse" />
-///     or an API exception of type <typeparamref name="TError" />.
+///     or a typed error of type <typeparamref name="TError" />.
 /// </summary>
 public readonly struct ApiResult<TResponse, TError>
 {
     private readonly Optional<TResponse> _response;
     private readonly Optional<TError> _error;
+    private readonly CallContext _callContext;
 
     public HttpStatusCode StatusCode { get; }
 
     public HttpResponseHeaders Headers { get; }
 
-    private ApiResult(Optional<TError> error, HttpStatusCode statusCode, HttpResponseHeaders headers)
-    {
-        StatusCode = statusCode;
-        Headers = headers;
-        _error = error;
-        _response = default;
-    }
+    public MediaTypeHeaderValue? ContentType { get; }
 
-    private ApiResult(Optional<TResponse> response, HttpStatusCode statusCode, HttpResponseHeaders headers)
+    private ApiResult(
+        CallContext call,
+        Optional<TResponse> response,
+        Optional<TError> error,
+        HttpStatusCode statusCode,
+        HttpResponseHeaders headers,
+        MediaTypeHeaderValue? contentType)
     {
+        _callContext = call;
         _response = response;
+        _error = error;
         StatusCode = statusCode;
         Headers = headers;
-        _error = default;
+        ContentType = contentType;
     }
 
     /// <summary>Create a success result.</summary>
     internal static ApiResult<TResponse, TError> Success(
+        CallContext call,
         TResponse response,
         HttpStatusCode statusCode,
-        HttpResponseHeaders headers) =>
-        new(Optional<TResponse>.Some(response), statusCode, headers);
+        HttpResponseHeaders headers,
+        MediaTypeHeaderValue? contentType) =>
+        new(call, Optional<TResponse>.Some(response), default, statusCode, headers, contentType);
 
     /// <summary>Create a failure result with a typed error.</summary>
     internal static ApiResult<TResponse, TError> Failure(
-        TError apiException,
+        CallContext call,
+        TError error,
         HttpStatusCode statusCode,
-        HttpResponseHeaders headers) =>
-        new(Optional<TError>.Some(apiException), statusCode, headers);
+        HttpResponseHeaders headers,
+        MediaTypeHeaderValue? contentType) =>
+        new(call, default, Optional<TError>.Some(error), statusCode, headers, contentType);
 
     /// <summary>Try to get a response (true when success).</summary>
     public bool TryGetResponse([NotNullWhen(true)] out TResponse? response) =>
@@ -65,8 +73,8 @@ public readonly struct ApiResult<TResponse, TError>
 
         if (_response.TryGetValue(out var response))
             return onSuccess(response);
-        if (_error.TryGetValue(out var exception))
-            return onFailure(exception);
+        if (_error.TryGetValue(out var error))
+            return onFailure(error);
 
         throw new InvalidOperationException("ApiResult is neither success nor failure.");
     }
@@ -79,8 +87,8 @@ public readonly struct ApiResult<TResponse, TError>
 
         if (_response.TryGetValue(out var response))
             onSuccess(response);
-        else if (_error.TryGetValue(out var exception))
-            onFailure(exception);
+        else if (_error.TryGetValue(out var error))
+            onFailure(error);
         else
             throw new InvalidOperationException("ApiResult is neither success nor failure.");
     }
@@ -105,7 +113,20 @@ public readonly struct ApiResult<TResponse, TError>
             return success;
 
         if (TryGetError(out var error))
-            throw new SdkException<TError> { Error = error };
+        {
+            var number = ((int)StatusCode).ToString(CultureInfo.InvariantCulture);
+            var name = StatusCode.ToString();
+            var status = name == number ? number : $"{number} ({name})";
+            throw new ApiException<TError>($"{_callContext} returned {status}.")
+            {
+                Error = error,
+                Method = _callContext.Method,
+                RequestUri = _callContext.RequestUri,
+                StatusCode = StatusCode,
+                Headers = Headers,
+                ContentType = ContentType,
+            };
+        }
 
         throw new InvalidOperationException("ApiResult is neither success nor failure.");
     }

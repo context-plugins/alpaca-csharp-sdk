@@ -1,13 +1,14 @@
+using System;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Enum;
+using Alpaca.Core.Enum;
 
-namespace TraderApi.Models.Enums;
+namespace Alpaca.Models.Enums;
 
 /// <summary>
 /// fill or partial_fill
 /// </summary>
 [JsonConverter(typeof(StringEnumConverter<TypeEnum>))]
-public sealed record TypeEnum : StringEnum<TypeEnum>
+public sealed record TypeEnum : OpenStringEnum<TypeEnum>
 {
     private TypeEnum(string value) : base(value)
     {
@@ -17,5 +18,18 @@ public sealed record TypeEnum : StringEnum<TypeEnum>
 
     public static readonly TypeEnum PartialFill = new("partial_fill");
 
-    public static TypeEnum FromValue(string value) => FromValueCore(value);
+    public TResult Match<TResult>(Func<TResult> onFill, Func<TResult> onPartialFill, Func<string, TResult> otherwise) =>
+        this switch
+        {
+            _ when this == Fill => onFill(),
+            _ when this == PartialFill => onPartialFill(),
+            _ => otherwise(Value)
+        };
+
+    public void Match(Action onFill, Action onPartialFill, Action<string> otherwise)
+    {
+        if (this == Fill) onFill();
+        else if (this == PartialFill) onPartialFill();
+        else otherwise(Value);
+    }
 }

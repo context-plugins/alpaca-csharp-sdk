@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace TraderApi.Core.Webhooks.Signing;
+namespace Alpaca.Core.Webhooks.Signing;
 
 internal sealed class SignatureVerifier
 {
@@ -24,7 +24,7 @@ internal sealed class SignatureVerifier
 
     internal TimeSpan? ReplayTolerance { get; init; }
 
-    internal TimeProvider Clock { get; init; } = TimeProvider.System;
+    internal required TimeProvider Clock { get; init; }
 
     internal bool Verify(WebhookRequest request)
     {

@@ -1,9 +1,8 @@
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.Models;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 internal sealed class ErrorByteResponse : IResponse<ErrorByteContent>
 {
@@ -13,22 +12,21 @@ internal sealed class ErrorByteResponse : IResponse<ErrorByteContent>
     {
     }
 
-    public async ValueTask<ErrorByteContent> Map(HttpResponseMessage httpResponseMessage,
-        CancellationToken cancellationToken)
+    public async ValueTask<ErrorByteContent> Map(ResponseContext context, CancellationToken cancellationToken)
     {
-        using (httpResponseMessage)
+        using (context.Response)
         {
 #if NET6_0_OR_GREATER
-            var bytes = await httpResponseMessage.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
+            var bytes = await context.Response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
 #else
-            var bytes = await httpResponseMessage.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+            var bytes = await context.Response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 #endif
             return new ErrorByteContent
             {
                 Bytes = bytes,
-                FileName = httpResponseMessage.Content.Headers.ContentDisposition?.FileNameStar ??
-                           httpResponseMessage.Content.Headers.ContentDisposition?.FileName,
-                ContentType = httpResponseMessage.Content.Headers.ContentType
+                FileName = context.Response.Content.Headers.ContentDisposition?.FileNameStar ??
+                           context.Response.Content.Headers.ContentDisposition?.FileName,
+                ContentType = context.Response.Content.Headers.ContentType
             };
         }
     }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TraderApi.Core.Webhooks.Signing;
+namespace Alpaca.Core.Webhooks.Signing;
 
 internal abstract record SignatureHeaderFormat
 {

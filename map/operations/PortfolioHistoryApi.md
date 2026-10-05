@@ -9,13 +9,13 @@ Accessor: `client.PortfolioHistoryApi` · Source: `Api/PortfolioHistoryApi.cs` �
 ### GetAccountPortfolioHistory
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `GetAccountPortfolioHistory(string? period, string? timeframe, DateTimeOffset? dateEnd, string? extendedHours, RequestOptions? requestOptions = null, CancellationToken ct = default)`
-  - 4 params (`period` … `extendedHours`) — nullable, no default → **must pass explicitly** (pass `null` to skip)
-- **Query params (wire ← C#)**: `period` ← `period`, `timeframe` ← `timeframe`, `date_end` ← `dateEnd`, `extended_hours` ← `extendedHours`
+- **Signature**: `GetAccountPortfolioHistory(GetAccountPortfolioHistoryRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+- **Query params (wire ← C#)**: `period` ← `Period`, `timeframe` ← `Timeframe`, `date_end` ← `DateEnd`, `extended_hours` ← `ExtendedHours`
 - **Returns**: `PortfolioHistory`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
+| `GetAccountPortfolioHistoryRequest` | `Requests/PortfolioHistoryApi/GetAccountPortfolioHistoryRequest.cs` |
 | `PortfolioHistory` | `Models/PortfolioHistory.cs` |
 

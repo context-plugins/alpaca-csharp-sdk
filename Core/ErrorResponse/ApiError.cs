@@ -1,11 +1,10 @@
 using System;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.Models;
-using TraderApi.Core.Response;
+using Alpaca.Core.Models;
+using Alpaca.Core.Response;
 
-namespace TraderApi.Core.ErrorResponse;
+namespace Alpaca.Core.ErrorResponse;
 
 public abstract class ApiError
 {
@@ -17,45 +16,52 @@ public abstract class ApiError
     }
 
     public bool TryGetRawError(out RawError error) => _rawError.TryGetValue(out error);
+}
 
-    private static async Task<TSelf> From<TBody, TSelf>(
-        IResponse<TBody> parser,
-        Func<TBody, TSelf> wrap,
-        HttpResponseMessage response,
-        CancellationToken cancellationToken) =>
-        wrap(await parser.Map(response, cancellationToken).ConfigureAwait(false));
+internal readonly struct FailedResponse
+{
+    private readonly ResponseContext _context;
+    private readonly CancellationToken _cancellationToken;
 
-    protected static Parse<TBody> FromJson<TBody>(
-        HttpResponseMessage response, CancellationToken cancellationToken) =>
-        new(JsonResponse.Create<TBody>(), response, cancellationToken);
+    public FailedResponse(ResponseContext context, CancellationToken cancellationToken)
+    {
+        _context = context;
+        _cancellationToken = cancellationToken;
+    }
 
-    protected static Parse<TBody> FromScalar<TBody>(
-        HttpResponseMessage response, CancellationToken cancellationToken,
-        Func<string, TBody> read) =>
-        new(PlainTextResponse.Create(read), response, cancellationToken);
+    public int StatusCode => (int)_context.Response.StatusCode;
 
-    protected static Parse<RawError> FromRawBody(
-        HttpResponseMessage response, CancellationToken cancellationToken) =>
-        new(RawErrorBodyResponse.Instance, response, cancellationToken);
+    public Parse<TBody> Json<TBody>() => new(JsonResponse.Create<TBody>(), this);
 
-    protected static Parse<ErrorByteContent> FromBytes(
-        HttpResponseMessage response, CancellationToken cancellationToken) =>
-        new(ErrorByteResponse.Instance, response, cancellationToken);
+    public Parse<TBody> Scalar<TBody>(Func<string, TBody> read) => new(PlainTextResponse.Create(read), this);
 
-    protected readonly struct Parse<TBody>
+    public Parse<RawError> RawBody() => new(RawErrorBodyResponse.Instance, this);
+
+    public Parse<ErrorByteContent> Bytes() => new(ErrorByteResponse.Instance, this);
+
+    public readonly struct Parse<TBody>
     {
         private readonly IResponse<TBody> _parser;
-        private readonly HttpResponseMessage _response;
-        private readonly CancellationToken _cancellationToken;
+        private readonly FailedResponse _source;
 
-        internal Parse(IResponse<TBody> parser, HttpResponseMessage response, CancellationToken cancellationToken)
+        public Parse(IResponse<TBody> parser, FailedResponse source)
         {
             _parser = parser;
-            _response = response;
-            _cancellationToken = cancellationToken;
+            _source = source;
         }
 
-        public Task<TSelf> As<TSelf>(Func<TBody, TSelf> wrap) =>
-            From(_parser, wrap, _response, _cancellationToken);
+        public async Task<TSelf> As<TSelf>(Func<TBody, TSelf> wrap) =>
+            wrap(await _parser.Map(_source._context, _source._cancellationToken).ConfigureAwait(false));
     }
+}
+
+internal sealed class ApiErrorResponse<TError> : IErrorResponse<TError>
+    where TError : ApiError
+{
+    private readonly Func<FailedResponse, Task<TError>> _create;
+
+    public ApiErrorResponse(Func<FailedResponse, Task<TError>> create) => _create = create;
+
+    public Task<TError> Map(ResponseContext context, CancellationToken cancellationToken) =>
+        _create(new FailedResponse(context, cancellationToken));
 }

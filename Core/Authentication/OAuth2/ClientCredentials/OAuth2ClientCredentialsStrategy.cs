@@ -4,12 +4,12 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Models;
-using TraderApi.Core.Request;
-using TraderApi.Core.Response;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Models;
+using Alpaca.Core.Request;
+using Alpaca.Core.Response;
 
-namespace TraderApi.Core.Authentication.OAuth2.ClientCredentials;
+namespace Alpaca.Core.Authentication.OAuth2.ClientCredentials;
 
 internal sealed class OAuth2ClientCredentialsStrategy : IOAuth2TokenStrategy<OAuth2ClientCredentials>
 {

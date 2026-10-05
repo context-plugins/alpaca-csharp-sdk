@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
-namespace TraderApi.Core.Validation.Attributes;
+namespace Alpaca.Core.Validation.Attributes;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public sealed class MaxPropertiesAttribute : ValidationAttribute

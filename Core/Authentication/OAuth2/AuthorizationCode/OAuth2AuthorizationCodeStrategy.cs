@@ -5,12 +5,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Models;
-using TraderApi.Core.Request;
-using TraderApi.Core.Response;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Models;
+using Alpaca.Core.Request;
+using Alpaca.Core.Response;
 
-namespace TraderApi.Core.Authentication.OAuth2.AuthorizationCode;
+namespace Alpaca.Core.Authentication.OAuth2.AuthorizationCode;
 
 internal sealed class OAuth2AuthorizationCodeStrategy
     : IOAuth2RefreshableTokenStrategy<OAuth2AuthorizationCodeCredentials>
@@ -142,9 +142,9 @@ internal sealed class OAuth2AuthorizationCodeStrategy
         using var rng = RandomNumberGenerator.Create();
         rng.GetBytes(bytes);
         var verifier = Base64UrlEncode(bytes);
-        var challenge = method == PkceMethod.Plain
-            ? verifier
-            : Base64UrlEncode(Sha256Hash(Encoding.ASCII.GetBytes(verifier)));
+        var challenge = method.Match(
+            onS256: () => Base64UrlEncode(Sha256Hash(Encoding.ASCII.GetBytes(verifier))),
+            onPlain: () => verifier);
         return new PkceValues(verifier, challenge, method);
     }
 

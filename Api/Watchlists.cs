@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Exceptions;
-using TraderApi.Core.Models;
-using TraderApi.Core.Request;
-using TraderApi.Core.Response;
-using TraderApi.Models;
+using Alpaca.Core;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Models;
+using Alpaca.Core.Request;
+using Alpaca.Core.Response;
+using Alpaca.Models;
+using Alpaca.Requests.Watchlists;
 
-namespace TraderApi.Api;
+namespace Alpaca.Api;
 
 /// <summary>
 /// Head to https://alpaca.markets/docs/api-documentation/api-v2/watchlist/ to view complete documentation on the Watchlist API.
@@ -32,75 +33,74 @@ public sealed class Watchlists
     /// <summary>
     /// Add Asset to Watchlist
     /// </summary>
-    /// <param name="watchlistId">watchlist id</param>
-    /// <param name="body"></param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="Watchlist"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Append an asset for the symbol to the end of watchlist asset list
     /// </remarks>
-    public Task<Watchlist> AddAssetToWatchlist(Guid watchlistId,
-        AddAssetToWatchlistRequest? body,
+    public Task<Watchlist> AddAssetToWatchlist(AddAssetToWatchlistOperationRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists/{watchlist_id}"),
-            [new TemplateParam("watchlist_id", watchlistId)],
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists/{watchlist_id}"),
+            [new TemplateParam("watchlist_id", request.WatchlistId)],
             [],
             [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
             HttpMethod.Post,
-            JsonRequest.Create(body),
+            JsonRequest.Create(request.Body),
             JsonResponse.Create<Watchlist>(),
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 
     /// <summary>
     /// Add Asset to Watchlist By Name
     /// </summary>
-    /// <param name="name">name of the watchlist</param>
-    /// <param name="body"></param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="Watchlist"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Append an asset for the symbol to the end of watchlist asset list
     /// </remarks>
-    public Task<Watchlist> AddAssetToWatchlistByName(string name,
-        AddAssetToWatchlistRequest? body,
+    public Task<Watchlist> AddAssetToWatchlistByName(AddAssetToWatchlistByNameRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists:by_name"),
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists:by_name"),
             [],
-            [new Param("name", name)],
+            [new Param("name", request.Name)],
             [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
             HttpMethod.Post,
-            JsonRequest.Create(body),
+            JsonRequest.Create(request.Body),
             JsonResponse.Create<Watchlist>(),
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 
     /// <summary>
     /// Delete Watchlist By Id
     /// </summary>
-    /// <param name="watchlistId">watchlist id</param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Delete a watchlist. This is a permanent deletion.
     /// </remarks>
-    public Task DeleteWatchlistById(Guid watchlistId,
+    public Task DeleteWatchlistById(DeleteWatchlistByIdRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists/{watchlist_id}"),
-            [new TemplateParam("watchlist_id", watchlistId)],
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists/{watchlist_id}"),
+            [new TemplateParam("watchlist_id", request.WatchlistId)],
             [],
             [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
             HttpMethod.Delete,
@@ -109,25 +109,26 @@ public sealed class Watchlists
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 
     /// <summary>
     /// Delete Watchlist By Name
     /// </summary>
-    /// <param name="name">name of the watchlist</param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Delete a watchlist. This is a permanent deletion.
     /// </remarks>
-    public Task DeleteWatchlistByName(string name,
+    public Task DeleteWatchlistByName(DeleteWatchlistByNameRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists:by_name"),
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists:by_name"),
             [],
-            [new Param("name", name)],
+            [new Param("name", request.Name)],
             [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
             HttpMethod.Delete,
             EmptyBody.Instance,
@@ -135,24 +136,25 @@ public sealed class Watchlists
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 
     /// <summary>
     /// Get Watchlist by ID
     /// </summary>
-    /// <param name="watchlistId">watchlist id</param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="Watchlist"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Returns a watchlist identified by the ID.
     /// </remarks>
-    public Task<Watchlist> GetWatchlistById(Guid watchlistId,
+    public Task<Watchlist> GetWatchlistById(GetWatchlistByIdRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists/{watchlist_id}"),
-            [new TemplateParam("watchlist_id", watchlistId)],
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists/{watchlist_id}"),
+            [new TemplateParam("watchlist_id", request.WatchlistId)],
             [],
             [],
             HttpMethod.Get,
@@ -161,25 +163,26 @@ public sealed class Watchlists
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 
     /// <summary>
     /// Get Watchlist by Name
     /// </summary>
-    /// <param name="name">name of the watchlist</param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="Watchlist"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Returns a watchlist by name
     /// </remarks>
-    public Task<Watchlist> GetWatchlistByName(string name,
+    public Task<Watchlist> GetWatchlistByName(GetWatchlistByNameRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists:by_name"),
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists:by_name"),
             [],
-            [new Param("name", name)],
+            [new Param("name", request.Name)],
             [],
             HttpMethod.Get,
             EmptyBody.Instance,
@@ -187,21 +190,22 @@ public sealed class Watchlists
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 
     /// <summary>
     /// Watchlists
     /// </summary>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="IReadOnlyList{T}"/> of <see cref="Watchlist"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Returns the list of watchlists registered under the account.
     /// </remarks>
     public Task<IReadOnlyList<Watchlist>> GetWatchlists(RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists"),
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists"),
             [],
             [],
             [],
@@ -211,52 +215,52 @@ public sealed class Watchlists
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 
     /// <summary>
     /// Watchlist
     /// </summary>
-    /// <param name="body"></param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="Watchlist"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Create a new watchlist with initial set of assets.
     /// </remarks>
-    public Task<Watchlist> PostWatchlist(PostWatchlistRequest body,
+    public Task<Watchlist> PostWatchlist(PostWatchlistOperationRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists"),
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists"),
             [],
             [],
             [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
             HttpMethod.Post,
-            JsonRequest.Create(body),
+            JsonRequest.Create(request.Body),
             JsonResponse.Create<Watchlist>(),
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 
     /// <summary>
     /// Symbol from Watchlist
     /// </summary>
-    /// <param name="watchlistId">Watchlist ID</param>
-    /// <param name="symbol">symbol name to remove from the watchlist content</param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="Watchlist"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Delete one entry for an asset by symbol name
     /// </remarks>
-    public Task<Watchlist> RemoveAssetFromWatchlist(Guid watchlistId,
-        string symbol,
+    public Task<Watchlist> RemoveAssetFromWatchlist(RemoveAssetFromWatchlistRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists/{watchlist_id}/{symbol}"),
-            [new TemplateParam("watchlist_id", watchlistId), new TemplateParam("symbol", symbol)],
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists/{watchlist_id}/{symbol}"),
+            [new TemplateParam("watchlist_id", request.WatchlistId), new TemplateParam("symbol", request.Symbol)],
             [],
             [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
             HttpMethod.Delete,
@@ -265,61 +269,59 @@ public sealed class Watchlists
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 
     /// <summary>
     /// Update Watchlist By Id
     /// </summary>
-    /// <param name="watchlistId">watchlist id</param>
-    /// <param name="body"></param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="Watchlist"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Update the name and/or content of watchlist
     /// </remarks>
-    public Task<Watchlist> UpdateWatchlistById(Guid watchlistId,
-        PostWatchlistRequest? body,
+    public Task<Watchlist> UpdateWatchlistById(UpdateWatchlistByIdRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists/{watchlist_id}"),
-            [new TemplateParam("watchlist_id", watchlistId)],
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists/{watchlist_id}"),
+            [new TemplateParam("watchlist_id", request.WatchlistId)],
             [],
             [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
             HttpMethod.Put,
-            JsonRequest.Create(body),
+            JsonRequest.Create(request.Body),
             JsonResponse.Create<Watchlist>(),
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 
     /// <summary>
     /// Update Watchlist By Name
     /// </summary>
-    /// <param name="name">name of the watchlist</param>
-    /// <param name="body"></param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="Watchlist"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Update the name and/or content of watchlist
     /// </remarks>
-    public Task<Watchlist> UpdateWatchlistByName(string name,
-        PostWatchlistRequest? body,
+    public Task<Watchlist> UpdateWatchlistByName(UpdateWatchlistByNameRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/watchlists:by_name"),
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/watchlists:by_name"),
             [],
-            [new Param("name", name)],
+            [new Param("name", request.Name)],
             [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
             HttpMethod.Put,
-            JsonRequest.Create(body),
+            JsonRequest.Create(request.Body),
             JsonResponse.Create<Watchlist>(),
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 }

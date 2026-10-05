@@ -9,74 +9,90 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 ### AddAssetToWatchlist
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `AddAssetToWatchlist(Guid watchlistId, AddAssetToWatchlistRequest? body, RequestOptions? requestOptions = null, CancellationToken ct = default)`
-  - `body` — nullable, no default → **must pass explicitly**
+- **Signature**: `AddAssetToWatchlist(AddAssetToWatchlistOperationRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+  - required: `WatchlistId`
 - **Returns**: `Watchlist`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
+| `AddAssetToWatchlistOperationRequest` | `Requests/Watchlists/AddAssetToWatchlistOperationRequest.cs` |
 | `AddAssetToWatchlistRequest` | `Models/AddAssetToWatchlistRequest.cs` |
 | `Watchlist` | `Models/Watchlist.cs` |
 
 ### AddAssetToWatchlistByName
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `AddAssetToWatchlistByName(string name, AddAssetToWatchlistRequest? body, RequestOptions? requestOptions = null, CancellationToken ct = default)`
-  - `body` — nullable, no default → **must pass explicitly**
-- **Query params (wire ← C#)**: `name` ← `name`
+- **Signature**: `AddAssetToWatchlistByName(AddAssetToWatchlistByNameRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+  - required: `Name`
+- **Query params (wire ← C#)**: `name` ← `Name`
 - **Returns**: `Watchlist`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
+| `AddAssetToWatchlistByNameRequest` | `Requests/Watchlists/AddAssetToWatchlistByNameRequest.cs` |
 | `AddAssetToWatchlistRequest` | `Models/AddAssetToWatchlistRequest.cs` |
 | `Watchlist` | `Models/Watchlist.cs` |
 
 ### DeleteWatchlistById
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `DeleteWatchlistById(Guid watchlistId, RequestOptions? requestOptions = null, CancellationToken ct = default)`
+- **Signature**: `DeleteWatchlistById(DeleteWatchlistByIdRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+  - required: `WatchlistId`
 - **Returns**: `void` (Task)
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
+
+| Type | Source |
+| --- | --- |
+| `DeleteWatchlistByIdRequest` | `Requests/Watchlists/DeleteWatchlistByIdRequest.cs` |
 
 ### DeleteWatchlistByName
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `DeleteWatchlistByName(string name, RequestOptions? requestOptions = null, CancellationToken ct = default)`
-- **Query params (wire ← C#)**: `name` ← `name`
+- **Signature**: `DeleteWatchlistByName(DeleteWatchlistByNameRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+  - required: `Name`
+- **Query params (wire ← C#)**: `name` ← `Name`
 - **Returns**: `void` (Task)
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
+
+| Type | Source |
+| --- | --- |
+| `DeleteWatchlistByNameRequest` | `Requests/Watchlists/DeleteWatchlistByNameRequest.cs` |
 
 ### GetWatchlistById
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `GetWatchlistById(Guid watchlistId, RequestOptions? requestOptions = null, CancellationToken ct = default)`
+- **Signature**: `GetWatchlistById(GetWatchlistByIdRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+  - required: `WatchlistId`
 - **Returns**: `Watchlist`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
+| `GetWatchlistByIdRequest` | `Requests/Watchlists/GetWatchlistByIdRequest.cs` |
 | `Watchlist` | `Models/Watchlist.cs` |
 
 ### GetWatchlistByName
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `GetWatchlistByName(string name, RequestOptions? requestOptions = null, CancellationToken ct = default)`
-- **Query params (wire ← C#)**: `name` ← `name`
+- **Signature**: `GetWatchlistByName(GetWatchlistByNameRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+  - required: `Name`
+- **Query params (wire ← C#)**: `name` ← `Name`
 - **Returns**: `Watchlist`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
+| `GetWatchlistByNameRequest` | `Requests/Watchlists/GetWatchlistByNameRequest.cs` |
 | `Watchlist` | `Models/Watchlist.cs` |
 
 ### GetWatchlists
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `GetWatchlists(RequestOptions? requestOptions = null, CancellationToken ct = default)`
+- **Signature**: `GetWatchlists(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
 - **Returns**: `IReadOnlyList<Watchlist>`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
@@ -85,50 +101,56 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 ### PostWatchlist
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `PostWatchlist(PostWatchlistRequest body, RequestOptions? requestOptions = null, CancellationToken ct = default)`
+- **Signature**: `PostWatchlist(PostWatchlistOperationRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+  - required: `Body`
 - **Returns**: `Watchlist`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
+| `PostWatchlistOperationRequest` | `Requests/Watchlists/PostWatchlistOperationRequest.cs` |
 | `PostWatchlistRequest` | `Models/PostWatchlistRequest.cs` |
 | `Watchlist` | `Models/Watchlist.cs` |
 
 ### RemoveAssetFromWatchlist
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `RemoveAssetFromWatchlist(Guid watchlistId, string symbol, RequestOptions? requestOptions = null, CancellationToken ct = default)`
+- **Signature**: `RemoveAssetFromWatchlist(RemoveAssetFromWatchlistRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+  - required: `WatchlistId`, `Symbol`
 - **Returns**: `Watchlist`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
+| `RemoveAssetFromWatchlistRequest` | `Requests/Watchlists/RemoveAssetFromWatchlistRequest.cs` |
 | `Watchlist` | `Models/Watchlist.cs` |
 
 ### UpdateWatchlistById
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `UpdateWatchlistById(Guid watchlistId, PostWatchlistRequest? body, RequestOptions? requestOptions = null, CancellationToken ct = default)`
-  - `body` — nullable, no default → **must pass explicitly**
+- **Signature**: `UpdateWatchlistById(UpdateWatchlistByIdRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+  - required: `WatchlistId`
 - **Returns**: `Watchlist`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
+| `UpdateWatchlistByIdRequest` | `Requests/Watchlists/UpdateWatchlistByIdRequest.cs` |
 | `PostWatchlistRequest` | `Models/PostWatchlistRequest.cs` |
 | `Watchlist` | `Models/Watchlist.cs` |
 
 ### UpdateWatchlistByName
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `UpdateWatchlistByName(string name, PostWatchlistRequest? body, RequestOptions? requestOptions = null, CancellationToken ct = default)`
-  - `body` — nullable, no default → **must pass explicitly**
-- **Query params (wire ← C#)**: `name` ← `name`
+- **Signature**: `UpdateWatchlistByName(UpdateWatchlistByNameRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+  - required: `Name`
+- **Query params (wire ← C#)**: `name` ← `Name`
 - **Returns**: `Watchlist`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
+| `UpdateWatchlistByNameRequest` | `Requests/Watchlists/UpdateWatchlistByNameRequest.cs` |
 | `PostWatchlistRequest` | `Models/PostWatchlistRequest.cs` |
 | `Watchlist` | `Models/Watchlist.cs` |
 

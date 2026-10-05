@@ -1,7 +1,8 @@
+using System;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Enum;
+using Alpaca.Core.Enum;
 
-namespace TraderApi.Models.Enums;
+namespace Alpaca.Models.Enums;
 
 /// <summary>
 /// Note: For Crypto Trading, Alpaca supports the following Time-In-Force designations: day, gtc, ioc and fok. OPG and CLS are not supported.
@@ -34,7 +35,7 @@ namespace TraderApi.Models.Enums;
 /// </para>
 /// </summary>
 [JsonConverter(typeof(StringEnumConverter<TimeInForce>))]
-public sealed record TimeInForce : StringEnum<TimeInForce>
+public sealed record TimeInForce : OpenStringEnum<TimeInForce>
 {
     private TimeInForce(string value) : base(value)
     {
@@ -52,5 +53,38 @@ public sealed record TimeInForce : StringEnum<TimeInForce>
 
     public static readonly TimeInForce Fok = new("fok");
 
-    public static TimeInForce FromValue(string value) => FromValueCore(value);
+    public TResult Match<TResult>(Func<TResult> onDay,
+        Func<TResult> onGtc,
+        Func<TResult> onOpg,
+        Func<TResult> onCls,
+        Func<TResult> onIoc,
+        Func<TResult> onFok,
+        Func<string, TResult> otherwise) =>
+        this switch
+        {
+            _ when this == Day => onDay(),
+            _ when this == Gtc => onGtc(),
+            _ when this == Opg => onOpg(),
+            _ when this == Cls => onCls(),
+            _ when this == Ioc => onIoc(),
+            _ when this == Fok => onFok(),
+            _ => otherwise(Value)
+        };
+
+    public void Match(Action onDay,
+        Action onGtc,
+        Action onOpg,
+        Action onCls,
+        Action onIoc,
+        Action onFok,
+        Action<string> otherwise)
+    {
+        if (this == Day) onDay();
+        else if (this == Gtc) onGtc();
+        else if (this == Opg) onOpg();
+        else if (this == Cls) onCls();
+        else if (this == Ioc) onIoc();
+        else if (this == Fok) onFok();
+        else otherwise(Value);
+    }
 }

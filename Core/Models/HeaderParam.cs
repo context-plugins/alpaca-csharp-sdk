@@ -1,3 +1,3 @@
-namespace TraderApi.Core.Models;
+namespace Alpaca.Core.Models;
 
 public readonly record struct HeaderParam(string Key, object? Value);

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Models;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Models;
+namespace Alpaca.Models;
 
 /// <summary>
 /// Request format used for creating a new watchlist or updating an existing watchlist with a set of assets and name.
@@ -14,7 +14,7 @@ public record PostWatchlistRequest
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("symbols")]
-    public IReadOnlyList<string>? Symbols { get; init; }
+    public IReadOnlyList<string?>? Symbols { get; init; }
 
     [JsonExtensionData]
     public AdditionalProperties AdditionalProperties { get; init; } = [];

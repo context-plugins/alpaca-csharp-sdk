@@ -9,9 +9,9 @@ Accessor: `client.Accounts` · Source: `Api/Accounts.cs` · 1 operation
 ### GetAccount
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `GetAccount(RequestOptions? requestOptions = null, CancellationToken ct = default)`
+- **Signature**: `GetAccount(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
 - **Returns**: `Account`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |

@@ -1,9 +1,10 @@
 using System;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 internal sealed class PlainTextResponse<TResponse> : IResponse<TResponse>
 {
@@ -11,16 +12,24 @@ internal sealed class PlainTextResponse<TResponse> : IResponse<TResponse>
 
     internal PlainTextResponse(Func<string, TResponse> map) => _map = map;
 
-    public async ValueTask<TResponse> Map(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
+    public async ValueTask<TResponse> Map(ResponseContext context, CancellationToken cancellationToken)
     {
-        using (httpResponseMessage)
+        using (context.Response)
         {
 #if NET6_0_OR_GREATER
-            var responseString = await httpResponseMessage.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            var responseString = await context.Response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 #else
-            var responseString = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+            var responseString = await context.Response.Content.ReadAsStringAsync().ConfigureAwait(false);
 #endif
-            return _map(responseString);
+            try
+            {
+                return _map(responseString);
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException)
+            {
+                throw ResponseDeserializationException.For(context, typeof(TResponse),
+                    $"{context.Call} returned a body that could not be parsed as {typeof(TResponse).Name}.", ex);
+            }
         }
     }
 }

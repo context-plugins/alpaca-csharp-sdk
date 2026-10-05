@@ -1,7 +1,8 @@
+using System;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Enum;
+using Alpaca.Core.Enum;
 
-namespace TraderApi.Models.Enums;
+namespace Alpaca.Models.Enums;
 
 /// <summary>
 /// An enum representing the various possible account status values.
@@ -26,7 +27,7 @@ namespace TraderApi.Models.Enums;
 /// </para>
 /// </summary>
 [JsonConverter(typeof(StringEnumConverter<AccountStatus>))]
-public sealed record AccountStatus : StringEnum<AccountStatus>
+public sealed record AccountStatus : OpenStringEnum<AccountStatus>
 {
     private AccountStatus(string value) : base(value)
     {
@@ -46,5 +47,42 @@ public sealed record AccountStatus : StringEnum<AccountStatus>
 
     public static readonly AccountStatus Rejected = new("REJECTED");
 
-    public static AccountStatus FromValue(string value) => FromValueCore(value);
+    public TResult Match<TResult>(Func<TResult> onOnboarding,
+        Func<TResult> onSubmissionFailed,
+        Func<TResult> onSubmitted,
+        Func<TResult> onAccountUpdated,
+        Func<TResult> onApprovalPending,
+        Func<TResult> onActive,
+        Func<TResult> onRejected,
+        Func<string, TResult> otherwise) =>
+        this switch
+        {
+            _ when this == Onboarding => onOnboarding(),
+            _ when this == SubmissionFailed => onSubmissionFailed(),
+            _ when this == Submitted => onSubmitted(),
+            _ when this == AccountUpdated => onAccountUpdated(),
+            _ when this == ApprovalPending => onApprovalPending(),
+            _ when this == Active => onActive(),
+            _ when this == Rejected => onRejected(),
+            _ => otherwise(Value)
+        };
+
+    public void Match(Action onOnboarding,
+        Action onSubmissionFailed,
+        Action onSubmitted,
+        Action onAccountUpdated,
+        Action onApprovalPending,
+        Action onActive,
+        Action onRejected,
+        Action<string> otherwise)
+    {
+        if (this == Onboarding) onOnboarding();
+        else if (this == SubmissionFailed) onSubmissionFailed();
+        else if (this == Submitted) onSubmitted();
+        else if (this == AccountUpdated) onAccountUpdated();
+        else if (this == ApprovalPending) onApprovalPending();
+        else if (this == Active) onActive();
+        else if (this == Rejected) onRejected();
+        else otherwise(Value);
+    }
 }

@@ -9,14 +9,13 @@ Accessor: `client.CalendarApi` · Source: `Api/CalendarApi.cs` · 1 operation
 ### GetCalendar
 
 - **Auth**: `options.ApiKey` AND `options.ApiSecret`
-- **Signature**: `GetCalendar(DateTimeOffset? start, DateTimeOffset? end, RequestOptions? requestOptions = null, CancellationToken ct = default)`
-  - `start` — nullable, no default → **must pass explicitly**
-  - `end` — nullable, no default → **must pass explicitly**
-- **Query params (wire ← C#)**: `start` ← `start`, `end` ← `end`
+- **Signature**: `GetCalendar(GetCalendarRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default)`
+- **Query params (wire ← C#)**: `start` ← `Start`, `end` ← `End`
 - **Returns**: `IReadOnlyList<Calendar>`
-- **Error**: `SdkException<RawError>` — **Case B**
+- **Error**: `ApiException<RawError>` — **Case B**
 
 | Type | Source |
 | --- | --- |
+| `GetCalendarRequest` | `Requests/CalendarApi/GetCalendarRequest.cs` |
 | `Calendar` | `Models/Calendar.cs` |
 

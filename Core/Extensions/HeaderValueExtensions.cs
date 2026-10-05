@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http.Headers;
 
-namespace TraderApi.Core.Extensions;
+namespace Alpaca.Core.Extensions;
 
 internal static class HeaderValueExtensions
 {

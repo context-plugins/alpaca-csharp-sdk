@@ -1,14 +1,14 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Exceptions;
-using TraderApi.Core.Request;
-using TraderApi.Core.Response;
-using TraderApi.Models;
+using Alpaca.Core;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Request;
+using Alpaca.Core.Response;
+using Alpaca.Models;
 
-namespace TraderApi.Api;
+namespace Alpaca.Api;
 
 /// <summary>
 /// Head to https://alpaca.markets/docs/api-references/trading-api/account/ to view complete documentation on the Accounts API.
@@ -30,14 +30,16 @@ public sealed class Accounts
     /// Get account
     /// </summary>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="Account"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Returns the account associated with the API key.
     /// </remarks>
-    public Task<Account> GetAccount(RequestOptions? requestOptions = null, CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/account"),
+    public Task<Account> GetAccount(RequestOptions? requestOptions = null,
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/account"),
             [],
             [],
             [],
@@ -47,5 +49,5 @@ public sealed class Accounts
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 }

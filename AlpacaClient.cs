@@ -1,10 +1,10 @@
 using System.Net.Http;
-using TraderApi.Api;
-using TraderApi.Core;
-using TraderApi.Core.Logging;
-using TraderApi.Core.Models;
+using Alpaca.Api;
+using Alpaca.Core;
+using Alpaca.Core.Logging;
+using Alpaca.Core.Models;
 
-namespace TraderApi;
+namespace Alpaca;
 
 /// <summary>
 /// Alpaca's Trading API is a modern platform for algorithmic trading.
@@ -12,36 +12,40 @@ namespace TraderApi;
 /// For complete documentation on the Trading API and to obtain your keys head to https://alpaca.markets/docs/api-documentation/api-v2/. Once you have your keys, head to the environments tab to quickly get started.
 /// </para>
 /// </summary>
-public sealed class TraderApiClient
+public sealed class AlpacaClient
 {
     private readonly RawClient _rawClient;
     private readonly Server _server;
     private readonly AuthSchemes _auth;
 
-    public TraderApiClient(HttpClient httpClient, TraderApiClientOptions options)
+    public AlpacaClient(HttpClient httpClient, AlpacaClientOptions options)
     {
         _server = new Server(options.Environment, options.Server);
         var queryParameterFactory = new QueryParameterFactory([]);
         var templateParamsFactory = new TemplateParamsFactory([]);
         var urlFactory = new UriFactory(queryParameterFactory, templateParamsFactory);
         var httpStatusPolicy = new HttpStatusPolicy([]);
-        var headersFactory =
-            new HeadersFactory([new HeaderParam("User-Agent", "TraderApiClient/2.0.0 CSharp"),
-                    new HeaderParam("X-APIMatic-Lang", "CSharp"),
-                    new HeaderParam("X-APIMatic-Package-Version", "2.0.0"),
-                    new HeaderParam("X-APIMatic-Gen-Version", "4.0.0"),
-                    new HeaderParam("X-APIMatic-OS", RuntimeEnvironment.Os),
-                    new HeaderParam("X-APIMatic-Runtime", RuntimeEnvironment.Runtime)]);
-        var resiliencePipelineFactory = new ResiliencePipelineFactory(options.Retry);
-        var httpLogger = new HttpLogger(options.Logging, "TraderApiClient");
+        var headersFactory = new HeadersFactory([
+            new HeaderParam("User-Agent", "AlpacaClient/2.0.0 CSharp"),
+            new HeaderParam("X-APIMatic-Lang", "CSharp"),
+            new HeaderParam("X-APIMatic-Package-Version", "2.0.0"),
+            new HeaderParam("X-APIMatic-Gen-Version", "4.0.0"),
+            new HeaderParam("X-APIMatic-OS", RuntimeEnvironment.Os),
+            new HeaderParam("X-APIMatic-Runtime", RuntimeEnvironment.Runtime),
+        ]);
+        var resiliencePipelineFactory = new ResiliencePipelineFactory(options.Retry, options.TimeProvider);
+        var httpLogger = new HttpLogger(options.Logging, "AlpacaClient", options.TimeProvider);
+        var responseContexts = new ResponseContextFactory(options.TimeProvider, options.StreamReadTimeout);
         _rawClient =
-            new RawClient(httpClient,
+            new RawClient(
+                httpClient,
                 urlFactory,
                 httpStatusPolicy,
                 headersFactory,
                 resiliencePipelineFactory,
                 httpLogger,
-                options.Hooks);
+                options.Hooks,
+                responseContexts);
         _auth = new AuthSchemes(options);
     }
 
@@ -79,8 +83,7 @@ public sealed class TraderApiClient
     /// <summary>
     /// Head to https://alpaca.markets/docs/api-documentation/api-v2/portfolio-history/ to view complete documentation on the Portfolio History API.
     /// </summary>
-    public PortfolioHistoryApi PortfolioHistoryApi =>
-        field ??= new PortfolioHistoryApi(_rawClient, _server, _auth);
+    public PortfolioHistoryApi PortfolioHistoryApi => field ??= new PortfolioHistoryApi(_rawClient, _server, _auth);
 
     /// <summary>
     /// Head to https://alpaca.markets/docs/api-documentation/api-v2/positions/ to view complete documentation on the Positions API.

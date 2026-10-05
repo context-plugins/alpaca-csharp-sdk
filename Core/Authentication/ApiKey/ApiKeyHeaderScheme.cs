@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TraderApi.Core.Authentication.ApiKey;
+namespace Alpaca.Core.Authentication.ApiKey;
 
 internal sealed class ApiKeyHeaderScheme : IAuthScheme
 {

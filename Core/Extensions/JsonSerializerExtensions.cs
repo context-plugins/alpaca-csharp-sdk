@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace TraderApi.Core.Extensions;
+namespace Alpaca.Core.Extensions;
 
 internal static class JsonSerializerExtensions
 {

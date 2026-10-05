@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Concurrent;
-using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace TraderApi.Core.Enum;
+namespace Alpaca.Core.Enum;
 
 internal sealed class StringEnumConverter<TEnum> : JsonConverter<TEnum> where TEnum : StringEnum<TEnum>
 {
-    private static readonly ConcurrentDictionary<Type, Func<string, TEnum>> FromValueCoreCache = new();
-
     public override TEnum? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType is JsonTokenType.Null)
@@ -18,26 +14,7 @@ internal sealed class StringEnumConverter<TEnum> : JsonConverter<TEnum> where TE
         if (reader.TokenType is not JsonTokenType.String)
             throw new JsonException($"Unexpected token {reader.TokenType} when parsing {typeToConvert.Name}. Expected String.");
 
-        var value = reader.GetString() ?? string.Empty;
-
-        var factory = FromValueCoreCache.GetOrAdd(typeToConvert, type =>
-        {
-            var method = type.GetMethod(
-                "FromValueCore",
-                BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy,
-                null,
-                [typeof(string)],
-                null
-            );
-
-            if (method is null)
-                throw new InvalidOperationException(
-                    $"Type {type.Name} must inherit from {nameof(StringEnum<>)}<T>");
-
-            return v => (TEnum)method.Invoke(null, [v])!;
-        });
-
-        return factory(value);
+        return StringEnum<TEnum>.FromValueCore(reader.GetString() ?? string.Empty);
     }
 
     public override void Write(Utf8JsonWriter writer, TEnum? value, JsonSerializerOptions options)
@@ -50,4 +27,10 @@ internal sealed class StringEnumConverter<TEnum> : JsonConverter<TEnum> where TE
 
         writer.WriteStringValue(value.Value);
     }
+
+    public override TEnum ReadAsPropertyName(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) =>
+        StringEnum<TEnum>.FromValueCore(reader.GetString() ?? string.Empty);
+
+    public override void WriteAsPropertyName(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options) =>
+        writer.WritePropertyName(value.Value);
 }

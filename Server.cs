@@ -1,7 +1,7 @@
-using TraderApi.Core.Models;
-using TraderApi.Servers;
+using Alpaca.Core.Models;
+using Alpaca.Servers;
 
-namespace TraderApi;
+namespace Alpaca;
 
 public class Server
 {

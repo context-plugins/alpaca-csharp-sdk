@@ -1,6 +1,6 @@
 using System.Net.Http;
 
-namespace TraderApi.Core.Extensions;
+namespace Alpaca.Core.Extensions;
 
 internal static class HttpContentExtension
 {

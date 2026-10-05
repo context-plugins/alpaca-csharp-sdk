@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace TraderApi.Core.Authentication.OAuth2;
+namespace Alpaca.Core.Authentication.OAuth2;
 
 /// <summary>
 /// Represents the token response issued by the authorization server for grant types that do not
@@ -41,8 +41,8 @@ public record OAuthToken
     // STJ runs this initializer in the parameterless ctor before init-only properties are
     // assigned. IsExpired short-circuits to false while ExpiresIn is null, so the half-built
     // window is never observed as expired.
-    private readonly DateTimeOffset _receivedAt = DateTimeOffset.UtcNow;
+    internal DateTimeOffset ReceivedAt { get; init; } = DateTimeOffset.UtcNow;
 
     public bool IsExpired(DateTimeOffset timeNow) =>
-        ExpiresIn is > 0 && timeNow >= _receivedAt.AddSeconds(ExpiresIn.Value - ExpiryBufferSeconds);
+        ExpiresIn is > 0 && timeNow >= ReceivedAt.AddSeconds(ExpiresIn.Value - Math.Min(ExpiryBufferSeconds, ExpiresIn.Value / 2));
 }

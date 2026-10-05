@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -8,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using TraderApi.Core.Configuration;
+using Alpaca.Core.Configuration;
 
-namespace TraderApi.Core.Logging;
+namespace Alpaca.Core.Logging;
 
 internal sealed class HttpLogger
 {
@@ -19,8 +18,9 @@ internal sealed class HttpLogger
     private readonly bool _logRequestHeaders;
     private readonly bool _logRequestBody;
     private readonly bool _logResponseHeaders;
+    private readonly TimeProvider _clock;
 
-    public HttpLogger(LoggingOptions options, string clientName)
+    public HttpLogger(LoggingOptions options, string clientName, TimeProvider clock)
     {
         var resolved = LoggingEnvironment.Resolve(options, clientName);
         _redaction = new Redaction(resolved);
@@ -28,6 +28,7 @@ internal sealed class HttpLogger
         _logRequestBody = resolved.LogRequestBody;
         _logResponseHeaders = resolved.LogResponseHeaders;
         _logger = (resolved.LoggerFactory ?? NullLoggerFactory.Instance).CreateLogger($"{clientName}.Http");
+        _clock = clock;
     }
 
     public Scope Begin(HttpMethod method, Uri uri, RequestOptions? requestOptions)
@@ -43,7 +44,7 @@ internal sealed class HttpLogger
             ResponseHeaders: On(LogLevel.Debug, _logResponseHeaders));
 
         var url = plan.NeedsUrl ? _redaction.Url(uri) : string.Empty;
-        return new Scope(_logger, _redaction, plan, method.Method, url);
+        return new Scope(_logger, _redaction, plan, method.Method, url, _clock);
 
         bool On(LogLevel emitAt, bool byDefault) =>
             _logger.IsEnabled(emitAt) && (level is null ? byDefault : level <= emitAt);
@@ -63,16 +64,19 @@ internal sealed class HttpLogger
         private readonly Plan _plan;
         private readonly string _method;
         private readonly string _url;
-        private readonly Stopwatch _stopwatch = new();
-        private readonly Stopwatch _total = Stopwatch.StartNew();
+        private readonly TimeProvider _clock;
+        private readonly long _startedAt;
+        private long _sentAt;
 
-        internal Scope(ILogger logger, Redaction redaction, Plan plan, string method, string url)
+        internal Scope(ILogger logger, Redaction redaction, Plan plan, string method, string url, TimeProvider clock)
         {
             _logger = logger;
             _redaction = redaction;
             _plan = plan;
             _method = method;
             _url = url;
+            _clock = clock;
+            _startedAt = clock.GetTimestamp();
         }
 
         public async ValueTask RequestSending(HttpRequestMessage httpRequest)
@@ -94,16 +98,14 @@ internal sealed class HttpLogger
                 }
             }
 
-            _stopwatch.Restart();
+            _sentAt = _clock.GetTimestamp();
         }
 
         public void ResponseReceived(HttpResponseMessage response, bool success)
         {
-            _stopwatch.Stop();
-
             if (success ? _plan.Line : _plan.Warning)
                 SdkLog.HttpResponse(_logger, success ? LogLevel.Information : LogLevel.Warning,
-                    _method, _url, (int)response.StatusCode, _stopwatch.ElapsedMilliseconds);
+                    _method, _url, (int)response.StatusCode, (long)_clock.GetElapsedTime(_sentAt).TotalMilliseconds);
 
             if (_plan.ResponseHeaders)
                 SdkLog.ResponseHeaders(_logger, _redaction.Headers(response.AllHeaders()));
@@ -121,7 +123,7 @@ internal sealed class HttpLogger
         public void Failed(Exception exception)
         {
             if (_plan.Error)
-                SdkLog.HttpFailed(_logger, exception, _method, _url, _total.ElapsedMilliseconds);
+                SdkLog.HttpFailed(_logger, exception, _method, _url, (long)_clock.GetElapsedTime(_startedAt).TotalMilliseconds);
         }
 
         private static (string Text, Exception? Exception) Describe(RetryReason reason) =>

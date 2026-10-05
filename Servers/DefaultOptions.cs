@@ -1,6 +1,6 @@
-using TraderApi.Core.Models;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Servers;
+namespace Alpaca.Servers;
 
 public class DefaultOptions
 {
@@ -8,7 +8,8 @@ public class DefaultOptions
     public LiveOptions Live { get; set; } = new();
 
     internal UrlTemplate Resolve(ServerEnvironment environment, string path) =>
-        environment.Match(() => new UrlTemplate(Paper.BaseUrl, path, []),
+        environment.Match(
+            () => new UrlTemplate(Paper.BaseUrl, path, []),
             () => new UrlTemplate(Live.BaseUrl, path, []));
 
     public class PaperOptions

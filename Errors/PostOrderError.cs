@@ -1,10 +1,8 @@
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Models;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Errors;
+namespace Alpaca.Errors;
 
 public sealed class PostOrderError : ApiError
 {
@@ -15,30 +13,18 @@ public sealed class PostOrderError : ApiError
         _noContentValue = noContentValue;
     }
 
-    private static PostOrderError AsNoContent(RawError value) =>
-        new(Optional<RawError>.Some(value), default);
+    private static PostOrderError AsNoContent(RawError value) => new(Optional<RawError>.Some(value), default);
 
-    private static PostOrderError AsFallback(RawError value) =>
-        new(default, Optional<RawError>.Some(value));
+    private static PostOrderError AsFallback(RawError value) => new(default, Optional<RawError>.Some(value));
 
     public bool TryGetNoContent(out RawError value) => _noContentValue.TryGetValue(out value);
 
-    internal static Task<PostOrderError> Create(HttpResponseMessage response, CancellationToken ct) =>
-        (int)response.StatusCode switch
+    private static Task<PostOrderError> Create(FailedResponse response) =>
+        response.StatusCode switch
         {
-            403 or 422 => FromRawBody(response, ct).As(AsNoContent),
-            _ => FromRawBody(response, ct).As(AsFallback)
+            403 or 422 => response.RawBody().As(AsNoContent),
+            _ => response.RawBody().As(AsFallback)
         };
-}
 
-internal sealed class PostOrderErrorResponse : IErrorResponse<PostOrderError>
-{
-    public static PostOrderErrorResponse Instance { get; } = new();
-
-    private PostOrderErrorResponse()
-    {
-    }
-
-    public Task<PostOrderError> Map(HttpResponseMessage response, CancellationToken ct) =>
-        PostOrderError.Create(response, ct);
+    internal static ApiErrorResponse<PostOrderError> Response { get; } = new(Create);
 }

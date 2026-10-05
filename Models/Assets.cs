@@ -1,10 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Models;
-using TraderApi.Models.Enums;
+using Alpaca.Core.Models;
+using Alpaca.Models.Enums;
 
-namespace TraderApi.Models;
+namespace Alpaca.Models;
 
 /// <summary>
 /// The assets API serves as the master list of assets available for trade and data consumption from Alpaca. Assets are sorted by asset class, exchange and symbol. Some assets are only available for data consumption via Polygon, and are not tradable with Alpaca. These assets will be marked with the flag tradable=false.

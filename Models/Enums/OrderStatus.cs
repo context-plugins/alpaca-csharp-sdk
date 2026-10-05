@@ -1,7 +1,8 @@
+using System;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Enum;
+using Alpaca.Core.Enum;
 
-namespace TraderApi.Models.Enums;
+namespace Alpaca.Models.Enums;
 
 /// <summary>
 /// An order executed through Alpaca can experience several status changes during its lifecycle. The most common statuses are described in detail below:
@@ -78,7 +79,7 @@ namespace TraderApi.Models.Enums;
 /// </para>
 /// </summary>
 [JsonConverter(typeof(StringEnumConverter<OrderStatus>))]
-public sealed record OrderStatus : StringEnum<OrderStatus>
+public sealed record OrderStatus : OpenStringEnum<OrderStatus>
 {
     private OrderStatus(string value) : base(value)
     {
@@ -116,5 +117,78 @@ public sealed record OrderStatus : StringEnum<OrderStatus>
 
     public static readonly OrderStatus Calculated = new("calculated");
 
-    public static OrderStatus FromValue(string value) => FromValueCore(value);
+    public TResult Match<TResult>(Func<TResult> onNew,
+        Func<TResult> onPartiallyFilled,
+        Func<TResult> onFilled,
+        Func<TResult> onDoneForDay,
+        Func<TResult> onCanceled,
+        Func<TResult> onExpired,
+        Func<TResult> onReplaced,
+        Func<TResult> onPendingCancel,
+        Func<TResult> onPendingReplace,
+        Func<TResult> onAccepted,
+        Func<TResult> onPendingNew,
+        Func<TResult> onAcceptedForBidding,
+        Func<TResult> onStopped,
+        Func<TResult> onRejected,
+        Func<TResult> onSuspended,
+        Func<TResult> onCalculated,
+        Func<string, TResult> otherwise) =>
+        this switch
+        {
+            _ when this == New => onNew(),
+            _ when this == PartiallyFilled => onPartiallyFilled(),
+            _ when this == Filled => onFilled(),
+            _ when this == DoneForDay => onDoneForDay(),
+            _ when this == Canceled => onCanceled(),
+            _ when this == Expired => onExpired(),
+            _ when this == Replaced => onReplaced(),
+            _ when this == PendingCancel => onPendingCancel(),
+            _ when this == PendingReplace => onPendingReplace(),
+            _ when this == Accepted => onAccepted(),
+            _ when this == PendingNew => onPendingNew(),
+            _ when this == AcceptedForBidding => onAcceptedForBidding(),
+            _ when this == Stopped => onStopped(),
+            _ when this == Rejected => onRejected(),
+            _ when this == Suspended => onSuspended(),
+            _ when this == Calculated => onCalculated(),
+            _ => otherwise(Value)
+        };
+
+    public void Match(Action onNew,
+        Action onPartiallyFilled,
+        Action onFilled,
+        Action onDoneForDay,
+        Action onCanceled,
+        Action onExpired,
+        Action onReplaced,
+        Action onPendingCancel,
+        Action onPendingReplace,
+        Action onAccepted,
+        Action onPendingNew,
+        Action onAcceptedForBidding,
+        Action onStopped,
+        Action onRejected,
+        Action onSuspended,
+        Action onCalculated,
+        Action<string> otherwise)
+    {
+        if (this == New) onNew();
+        else if (this == PartiallyFilled) onPartiallyFilled();
+        else if (this == Filled) onFilled();
+        else if (this == DoneForDay) onDoneForDay();
+        else if (this == Canceled) onCanceled();
+        else if (this == Expired) onExpired();
+        else if (this == Replaced) onReplaced();
+        else if (this == PendingCancel) onPendingCancel();
+        else if (this == PendingReplace) onPendingReplace();
+        else if (this == Accepted) onAccepted();
+        else if (this == PendingNew) onPendingNew();
+        else if (this == AcceptedForBidding) onAcceptedForBidding();
+        else if (this == Stopped) onStopped();
+        else if (this == Rejected) onRejected();
+        else if (this == Suspended) onSuspended();
+        else if (this == Calculated) onCalculated();
+        else otherwise(Value);
+    }
 }

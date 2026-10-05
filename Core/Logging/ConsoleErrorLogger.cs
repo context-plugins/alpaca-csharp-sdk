@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.Logging;
 
-namespace TraderApi.Core.Logging;
+namespace Alpaca.Core.Logging;
 
 internal sealed class ConsoleErrorLoggerFactory : ILoggerFactory
 {

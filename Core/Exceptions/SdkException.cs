@@ -1,8 +1,12 @@
 using System;
+using System.Net.Http;
 
-namespace TraderApi.Core.Exceptions;
+namespace Alpaca.Core.Exceptions;
 
-public sealed class SdkException<TError> : Exception
+public abstract class SdkException(string message, Exception? innerException = null)
+    : Exception(message, innerException)
 {
-    public required TError Error { get; init; }
+    public required HttpMethod Method { get; init; }
+
+    public required Uri RequestUri { get; init; }
 }

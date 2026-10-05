@@ -1,6 +1,6 @@
 using System.Net.Http.Headers;
 
-namespace TraderApi.Core.Pagination.States;
+namespace Alpaca.Core.Pagination.States;
 
 internal interface IPageState<in TResponse, out TState>
 {

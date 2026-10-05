@@ -1,23 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Polly;
 using Polly.Timeout;
-using TraderApi.Core.Authentication;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Extensions;
-using TraderApi.Core.Hooks;
-using TraderApi.Core.Logging;
-using TraderApi.Core.Models;
-using TraderApi.Core.Pagination;
-using TraderApi.Core.Pagination.States;
-using TraderApi.Core.Request;
-using TraderApi.Core.Response;
+using Alpaca.Core.Authentication;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Extensions;
+using Alpaca.Core.Hooks;
+using Alpaca.Core.Logging;
+using Alpaca.Core.Models;
+using Alpaca.Core.Pagination;
+using Alpaca.Core.Pagination.States;
+using Alpaca.Core.Request;
+using Alpaca.Core.Response;
 
-namespace TraderApi.Core;
+namespace Alpaca.Core;
 
 internal sealed class RawClient
 {
@@ -33,11 +36,12 @@ internal sealed class RawClient
     private readonly ResiliencePipelineFactory _resiliencePipelineFactory;
     private readonly HttpLogger _httpLogger;
     private readonly IReadOnlyList<SdkHook> _hooks;
+    private readonly ResponseContextFactory _responseContexts;
 
     public RawClient(HttpClient httpClient, UriFactory uriFactory,
         HttpStatusPolicy statusPolicy, HeadersFactory headerFactory,
         ResiliencePipelineFactory resiliencePipelineFactory, HttpLogger httpLogger,
-        IReadOnlyList<SdkHook> hooks)
+        IReadOnlyList<SdkHook> hooks, ResponseContextFactory responseContexts)
     {
         _httpClient = httpClient;
         _uriFactory = uriFactory;
@@ -46,6 +50,7 @@ internal sealed class RawClient
         _resiliencePipelineFactory = resiliencePipelineFactory;
         _httpLogger = httpLogger;
         _hooks = hooks;
+        _responseContexts = responseContexts;
     }
 
     public Task<ApiResult<TResponse, TError>> ExecuteResult<TResponse, TError>(
@@ -183,6 +188,7 @@ internal sealed class RawClient
             ? [.. _hooks, .. perCallHooks]
             : _hooks;
         var hookContext = new HookContext { Method = request.HttpMethod, Uri = uri, RequestOptions = requestOptions };
+        var callContext = CallContext.For(request.HttpMethod, uri);
 
         // The response is not disposed of here: on success its lifetime is owned by IResponse.Map
         // (buffered responses dispose it immediately, streaming ones hand it to their iterator);
@@ -232,9 +238,23 @@ internal sealed class RawClient
         catch (TimeoutRejectedException ex)
         {
             log.Failed(ex);
-            throw new TaskCanceledException(
-                "The request was canceled due to the configured RetryOptions.Timeout elapsing.",
-                new TimeoutException(ex.Message, ex));
+            throw SdkTimeoutException.For(callContext, ex.Timeout,
+                $"{callContext} received no response within {ex.Timeout.TotalSeconds.ToString(CultureInfo.InvariantCulture)} s.", ex);
+        }
+        catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested && _httpClient.Timeout != Timeout.InfiniteTimeSpan)
+        {
+            log.Failed(ex);
+            throw SdkTimeoutException.For(callContext, _httpClient.Timeout,
+                $"{callContext} received no response within {_httpClient.Timeout.TotalSeconds.ToString(CultureInfo.InvariantCulture)} s.", ex);
+        }
+        catch (HttpRequestException ex)
+        {
+            log.Failed(ex);
+            throw new SdkConnectionException($"{callContext} could not be sent: {ex.Message}", ex)
+            {
+                Method = callContext.Method,
+                RequestUri = callContext.RequestUri,
+            };
         }
         catch (Exception ex) when (ex is not OperationCanceledException || !cancellationToken.IsCancellationRequested)
         {
@@ -249,20 +269,34 @@ internal sealed class RawClient
         // Capture before IResponse.Map runs — buffered responses dispose the message inside Map.
         var statusCode = httpResponseMessage.StatusCode;
         var responseHeaders = httpResponseMessage.Headers;
+        var contentType = httpResponseMessage.Content?.Headers.ContentType;
+        var responseContext = _responseContexts.Create(httpResponseMessage, callContext);
 
-        if (_statusPolicy.IsSuccess(statusCode))
+        try
         {
-            var successResponse =
-                await response.Response.Map(httpResponseMessage, cancellationToken).ConfigureAwait(false);
-            return ApiResult<TResponse, TError>.Success(successResponse, statusCode, responseHeaders);
+            if (_statusPolicy.IsSuccess(statusCode))
+            {
+                var successResponse =
+                    await response.Response.Map(responseContext, cancellationToken).ConfigureAwait(false);
+                return ApiResult<TResponse, TError>.Success(callContext, successResponse, statusCode, responseHeaders, contentType);
+            }
+
+            using (httpResponseMessage)
+            {
+                var errorResponse = await response.ErrorResponseDeserializer.Map(responseContext, cancellationToken)
+                    .ConfigureAwait(false);
+
+                return ApiResult<TResponse, TError>.Failure(callContext, errorResponse, statusCode, responseHeaders, contentType);
+            }
         }
-
-        using (httpResponseMessage)
+        catch (Exception ex) when (ex is HttpRequestException or IOException)
         {
-            var errorResponse = await response.ErrorResponseDeserializer.Map(httpResponseMessage, cancellationToken)
-                .ConfigureAwait(false);
-
-            return ApiResult<TResponse, TError>.Failure(errorResponse, statusCode, responseHeaders);
+            log.Failed(ex);
+            throw new SdkConnectionException($"{callContext} could not read the response body: {ex.Message}", ex)
+            {
+                Method = callContext.Method,
+                RequestUri = callContext.RequestUri,
+            };
         }
     }
 }

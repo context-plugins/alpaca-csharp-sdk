@@ -1,6 +1,6 @@
-using TraderApi.Core.Enum;
+using Alpaca.Core.Enum;
 
-namespace TraderApi.Core.Webhooks;
+namespace Alpaca.Core.Webhooks;
 
 public abstract record WebhookEvent<TPayload>
 {

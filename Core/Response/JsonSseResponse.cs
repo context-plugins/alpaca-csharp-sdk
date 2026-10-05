@@ -1,32 +1,29 @@
-using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core.Exceptions;
-using TraderApi.Core.Extensions;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Extensions;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 internal sealed class JsonSseResponse<TResponse> : IResponse<IAsyncEnumerable<TResponse>>
 {
     private readonly JsonSerializerOptions _options;
     private readonly byte[]? _sentinelBytes;
-    private readonly TimeSpan? _idleTimeout;
 
-    public JsonSseResponse(string? sentinel, TimeSpan? idleTimeout, JsonConverter? jsonConverter)
+    public JsonSseResponse(string? sentinel, JsonConverter? jsonConverter)
     {
         _sentinelBytes = sentinel is null ? null : Encoding.UTF8.GetBytes(sentinel);
-        _idleTimeout = idleTimeout;
         _options = jsonConverter.ToWebOptions();
     }
 
     public ValueTask<IAsyncEnumerable<TResponse>> Map(
-        HttpResponseMessage httpResponseMessage,
+        ResponseContext context,
         CancellationToken cancellationToken)
     {
         return new ValueTask<IAsyncEnumerable<TResponse>>(Enumerate(cancellationToken));
@@ -34,7 +31,7 @@ internal sealed class JsonSseResponse<TResponse> : IResponse<IAsyncEnumerable<TR
         async IAsyncEnumerable<TResponse> Enumerate([EnumeratorCancellation] CancellationToken ct)
         {
             await foreach (var data in SseFrameReader
-                               .EnumerateFrames(httpResponseMessage, _sentinelBytes, _idleTimeout, ct)
+                               .EnumerateFrames(context, _sentinelBytes, ct)
                                .ConfigureAwait(false))
             {
                 TResponse value;
@@ -44,7 +41,8 @@ internal sealed class JsonSseResponse<TResponse> : IResponse<IAsyncEnumerable<TR
                 }
                 catch (JsonException ex)
                 {
-                    throw new SseDeserializationException(Encoding.UTF8.GetString(data), ex);
+                    throw ResponseDeserializationException.For(context, typeof(TResponse),
+                        $"{context.Call} received a Server-Sent Events frame that could not be deserialized into {typeof(TResponse).Name}.", ex);
                 }
 
                 yield return value;
@@ -55,14 +53,9 @@ internal sealed class JsonSseResponse<TResponse> : IResponse<IAsyncEnumerable<TR
 
 internal static class JsonSseResponse
 {
-    public static JsonSseResponse<TResponse> Create<TResponse>(
-        TimeSpan? idleTimeout = null,
-        JsonConverter? converter = null) =>
-        new(null, idleTimeout, converter);
+    public static JsonSseResponse<TResponse> Create<TResponse>(JsonConverter? converter = null) =>
+        new(null, converter);
 
-    public static JsonSseResponse<TResponse> Create<TResponse>(
-        string sentinel,
-        TimeSpan? idleTimeout = null,
-        JsonConverter? converter = null) =>
-        new(sentinel, idleTimeout, converter);
+    public static JsonSseResponse<TResponse> Create<TResponse>(string sentinel, JsonConverter? converter = null) =>
+        new(sentinel, converter);
 }

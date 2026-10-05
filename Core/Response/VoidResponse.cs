@@ -1,8 +1,8 @@
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Alpaca.Core.Models;
 
-namespace TraderApi.Core.Response;
+namespace Alpaca.Core.Response;
 
 public sealed class VoidResponse : IResponse<VoidResponse>
 {
@@ -10,10 +10,10 @@ public sealed class VoidResponse : IResponse<VoidResponse>
 
     private VoidResponse() { }
 
-    public ValueTask<VoidResponse> Map(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
+    ValueTask<VoidResponse> IResponse<VoidResponse>.Map(ResponseContext context, CancellationToken cancellationToken)
     {
         // No body to read, but this response still owns the HttpResponseMessage and disposes it.
-        httpResponseMessage.Dispose();
+        context.Response.Dispose();
         return new ValueTask<VoidResponse>(Instance);
     }
 }

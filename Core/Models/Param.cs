@@ -1,4 +1,4 @@
-namespace TraderApi.Core.Models;
+namespace Alpaca.Core.Models;
 
 internal readonly record struct Param(
     string? Key,

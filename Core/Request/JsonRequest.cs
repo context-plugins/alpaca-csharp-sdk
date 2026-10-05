@@ -2,9 +2,9 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using TraderApi.Core.Extensions;
+using Alpaca.Core.Extensions;
 
-namespace TraderApi.Core.Request;
+namespace Alpaca.Core.Request;
 
 internal sealed class JsonRequest<TData>(TData data, JsonSerializerOptions options) : IRequest
 {

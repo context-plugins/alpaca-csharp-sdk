@@ -1,18 +1,18 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TraderApi.Core;
-using TraderApi.Core.ErrorResponse;
-using TraderApi.Core.Exceptions;
-using TraderApi.Core.Extensions;
-using TraderApi.Core.Models;
-using TraderApi.Core.Request;
-using TraderApi.Core.Response;
-using TraderApi.Models;
+using Alpaca.Core;
+using Alpaca.Core.ErrorResponse;
+using Alpaca.Core.Exceptions;
+using Alpaca.Core.Extensions;
+using Alpaca.Core.Models;
+using Alpaca.Core.Request;
+using Alpaca.Core.Response;
+using Alpaca.Models;
+using Alpaca.Requests.CalendarApi;
 
-namespace TraderApi.Api;
+namespace Alpaca.Api;
 
 /// <summary>
 /// Head to https://alpaca.markets/docs/api-references/trading-api/calendar/ to view complete documentation on the Market Calendar API.
@@ -33,22 +33,21 @@ public sealed class CalendarApi
     /// <summary>
     /// Get Market Calendar info
     /// </summary>
-    /// <param name="start">The first date to retrieve data for (inclusive)</param>
-    /// <param name="end">The last date to retrieve data for (inclusive)</param>
+    /// <param name="request">The operation's inputs</param>
     /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>A <see cref="Task{TResult}"/> of <see cref="IReadOnlyList{T}"/> of <see cref="Calendar"/> instance.</returns>
-    /// <exception cref="SdkException{TResult}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
     /// <remarks>
     /// Returns the market calendar.
     /// </remarks>
-    public Task<IReadOnlyList<Calendar>> GetCalendar(DateTimeOffset? start,
-        DateTimeOffset? end,
+    public Task<IReadOnlyList<Calendar>> GetCalendar(GetCalendarRequest request,
         RequestOptions? requestOptions = null,
-        CancellationToken ct = default) =>
-        _rawClient.Execute(_server.Default("/v2/calendar"),
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Default("/v2/calendar"),
             [],
-            [new Param("start", start?.ToIso8601()), new Param("end", end?.ToIso8601())],
+            [new Param("start", request.Start?.ToIso8601()), new Param("end", request.End?.ToIso8601())],
             [],
             HttpMethod.Get,
             EmptyBody.Instance,
@@ -56,5 +55,5 @@ public sealed class CalendarApi
             RawErrorResponse.Instance,
             [_auth.ApiKey, _auth.ApiSecret],
             requestOptions,
-            ct);
+            cancellationToken);
 }
