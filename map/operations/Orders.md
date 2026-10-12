@@ -2,7 +2,7 @@
 
 # Orders — operations
 
-Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
+Accessor: `client.Orders` · Source: `src/Alpaca/Api/Orders.cs` · 6 operations
 
 **Type sources**: the file declaring each type an operation names (`RawError` excluded — see sdk-map.md).
 
@@ -16,8 +16,8 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 | Type | Source |
 | --- | --- |
-| `CanceledOrderResponse` | `Models/CanceledOrderResponse.cs` |
-| `DeleteAllOrdersError` | `Errors/DeleteAllOrdersError.cs` |
+| `CanceledOrderResponse` | `src/Alpaca/Models/CanceledOrderResponse.cs` |
+| `DeleteAllOrdersError` | `src/Alpaca/Errors/DeleteAllOrdersError.cs` |
 
 ### DeleteOrderByOrderId
 
@@ -30,8 +30,8 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 | Type | Source |
 | --- | --- |
-| `DeleteOrderByOrderIdRequest` | `Requests/Orders/DeleteOrderByOrderIdRequest.cs` |
-| `DeleteOrderByOrderIdError` | `Errors/DeleteOrderByOrderIdError.cs` |
+| `DeleteOrderByOrderIdRequest` | `src/Alpaca/Requests/Orders/DeleteOrderByOrderIdRequest.cs` |
+| `DeleteOrderByOrderIdError` | `src/Alpaca/Errors/DeleteOrderByOrderIdError.cs` |
 
 ### GetAllOrders
 
@@ -43,10 +43,10 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 | Type | Source |
 | --- | --- |
-| `GetAllOrdersRequest` | `Requests/Orders/GetAllOrdersRequest.cs` |
-| `Status1` | `Models/Enums/Status1.cs` |
-| `Direction` | `Models/Enums/Direction.cs` |
-| `Order` | `Models/Order.cs` |
+| `GetAllOrdersRequest` | `src/Alpaca/Requests/Orders/GetAllOrdersRequest.cs` |
+| `Status1` | `src/Alpaca/Models/Enums/Status1.cs` |
+| `Direction` | `src/Alpaca/Models/Enums/Direction.cs` |
+| `Order` | `src/Alpaca/Models/Order.cs` |
 
 ### GetOrderByOrderId
 
@@ -59,8 +59,8 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 | Type | Source |
 | --- | --- |
-| `GetOrderByOrderIdRequest` | `Requests/Orders/GetOrderByOrderIdRequest.cs` |
-| `Order` | `Models/Order.cs` |
+| `GetOrderByOrderIdRequest` | `src/Alpaca/Requests/Orders/GetOrderByOrderIdRequest.cs` |
+| `Order` | `src/Alpaca/Models/Order.cs` |
 
 ### PatchOrderByOrderId
 
@@ -72,9 +72,9 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 | Type | Source |
 | --- | --- |
-| `PatchOrderByOrderIdRequest` | `Requests/Orders/PatchOrderByOrderIdRequest.cs` |
-| `PatchOrderRequest` | `Models/PatchOrderRequest.cs` |
-| `Order` | `Models/Order.cs` |
+| `PatchOrderByOrderIdRequest` | `src/Alpaca/Requests/Orders/PatchOrderByOrderIdRequest.cs` |
+| `PatchOrderRequest` | `src/Alpaca/Models/PatchOrderRequest.cs` |
+| `Order` | `src/Alpaca/Models/Order.cs` |
 
 ### PostOrder
 
@@ -87,7 +87,7 @@ Accessor: `client.Orders` · Source: `Api/Orders.cs` · 6 operations
 
 | Type | Source |
 | --- | --- |
-| `PostOrderRequest` | `Requests/Orders/PostOrderRequest.cs` |
-| `Order` | `Models/Order.cs` |
-| `PostOrderError` | `Errors/PostOrderError.cs` |
+| `PostOrderRequest` | `src/Alpaca/Requests/Orders/PostOrderRequest.cs` |
+| `Order` | `src/Alpaca/Models/Order.cs` |
+| `PostOrderError` | `src/Alpaca/Errors/PostOrderError.cs` |
 

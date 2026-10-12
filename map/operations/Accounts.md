@@ -2,7 +2,7 @@
 
 # Accounts — operations
 
-Accessor: `client.Accounts` · Source: `Api/Accounts.cs` · 1 operation
+Accessor: `client.Accounts` · Source: `src/Alpaca/Api/Accounts.cs` · 1 operation
 
 **Type sources**: the file declaring each type an operation names (`RawError` excluded — see sdk-map.md).
 
@@ -15,5 +15,5 @@ Accessor: `client.Accounts` · Source: `Api/Accounts.cs` · 1 operation
 
 | Type | Source |
 | --- | --- |
-| `Account` | `Models/Account.cs` |
+| `Account` | `src/Alpaca/Models/Account.cs` |
 

@@ -2,7 +2,7 @@
 
 # AccountConfigurationsApi — operations
 
-Accessor: `client.AccountConfigurationsApi` · Source: `Api/AccountConfigurationsApi.cs` · 2 operations
+Accessor: `client.AccountConfigurationsApi` · Source: `src/Alpaca/Api/AccountConfigurationsApi.cs` · 2 operations
 
 **Type sources**: the file declaring each type an operation names (`RawError` excluded — see sdk-map.md).
 
@@ -15,7 +15,7 @@ Accessor: `client.AccountConfigurationsApi` · Source: `Api/AccountConfiguration
 
 | Type | Source |
 | --- | --- |
-| `AccountConfigurations` | `Models/AccountConfigurations.cs` |
+| `AccountConfigurations` | `src/Alpaca/Models/AccountConfigurations.cs` |
 
 ### PatchAccountConfig
 
@@ -26,6 +26,6 @@ Accessor: `client.AccountConfigurationsApi` · Source: `Api/AccountConfiguration
 
 | Type | Source |
 | --- | --- |
-| `PatchAccountConfigRequest` | `Requests/AccountConfigurationsApi/PatchAccountConfigRequest.cs` |
-| `AccountConfigurations` | `Models/AccountConfigurations.cs` |
+| `PatchAccountConfigRequest` | `src/Alpaca/Requests/AccountConfigurationsApi/PatchAccountConfigRequest.cs` |
+| `AccountConfigurations` | `src/Alpaca/Models/AccountConfigurations.cs` |
 

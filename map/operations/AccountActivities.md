@@ -2,7 +2,7 @@
 
 # AccountActivities — operations
 
-Accessor: `client.AccountActivities` · Source: `Api/AccountActivities.cs` · 2 operations
+Accessor: `client.AccountActivities` · Source: `src/Alpaca/Api/AccountActivities.cs` · 2 operations
 
 **Type sources**: the file declaring each type an operation names (`RawError` excluded — see sdk-map.md).
 
@@ -16,9 +16,9 @@ Accessor: `client.AccountActivities` · Source: `Api/AccountActivities.cs` · 2 
 
 | Type | Source |
 | --- | --- |
-| `GetAccountActivitiesRequest` | `Requests/AccountActivities/GetAccountActivitiesRequest.cs` |
-| `Direction` | `Models/Enums/Direction.cs` |
-| `V2AccountActivitiesResponse` | `Models/AnyOf/V2AccountActivitiesResponse.cs` |
+| `GetAccountActivitiesRequest` | `src/Alpaca/Requests/AccountActivities/GetAccountActivitiesRequest.cs` |
+| `Direction` | `src/Alpaca/Models/Enums/Direction.cs` |
+| `V2AccountActivitiesResponse` | `src/Alpaca/Models/AnyOf/V2AccountActivitiesResponse.cs` |
 
 ### GetAccountActivitiesByActivityType
 
@@ -31,7 +31,7 @@ Accessor: `client.AccountActivities` · Source: `Api/AccountActivities.cs` · 2 
 
 | Type | Source |
 | --- | --- |
-| `GetAccountActivitiesByActivityTypeRequest` | `Requests/AccountActivities/GetAccountActivitiesByActivityTypeRequest.cs` |
-| `Direction` | `Models/Enums/Direction.cs` |
-| `V2AccountActivitiesResponse1` | `Models/AnyOf/V2AccountActivitiesResponse1.cs` |
+| `GetAccountActivitiesByActivityTypeRequest` | `src/Alpaca/Requests/AccountActivities/GetAccountActivitiesByActivityTypeRequest.cs` |
+| `Direction` | `src/Alpaca/Models/Enums/Direction.cs` |
+| `V2AccountActivitiesResponse1` | `src/Alpaca/Models/AnyOf/V2AccountActivitiesResponse1.cs` |
 

@@ -2,7 +2,7 @@
 
 # ClockApi — operations
 
-Accessor: `client.ClockApi` · Source: `Api/ClockApi.cs` · 1 operation
+Accessor: `client.ClockApi` · Source: `src/Alpaca/Api/ClockApi.cs` · 1 operation
 
 **Type sources**: the file declaring each type an operation names (`RawError` excluded — see sdk-map.md).
 
@@ -15,5 +15,5 @@ Accessor: `client.ClockApi` · Source: `Api/ClockApi.cs` · 1 operation
 
 | Type | Source |
 | --- | --- |
-| `Clock` | `Models/Clock.cs` |
+| `Clock` | `src/Alpaca/Models/Clock.cs` |
 

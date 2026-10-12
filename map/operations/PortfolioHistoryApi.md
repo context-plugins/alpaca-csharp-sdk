@@ -2,7 +2,7 @@
 
 # PortfolioHistoryApi — operations
 
-Accessor: `client.PortfolioHistoryApi` · Source: `Api/PortfolioHistoryApi.cs` · 1 operation
+Accessor: `client.PortfolioHistoryApi` · Source: `src/Alpaca/Api/PortfolioHistoryApi.cs` · 1 operation
 
 **Type sources**: the file declaring each type an operation names (`RawError` excluded — see sdk-map.md).
 
@@ -16,6 +16,6 @@ Accessor: `client.PortfolioHistoryApi` · Source: `Api/PortfolioHistoryApi.cs` �
 
 | Type | Source |
 | --- | --- |
-| `GetAccountPortfolioHistoryRequest` | `Requests/PortfolioHistoryApi/GetAccountPortfolioHistoryRequest.cs` |
-| `PortfolioHistory` | `Models/PortfolioHistory.cs` |
+| `GetAccountPortfolioHistoryRequest` | `src/Alpaca/Requests/PortfolioHistoryApi/GetAccountPortfolioHistoryRequest.cs` |
+| `PortfolioHistory` | `src/Alpaca/Models/PortfolioHistory.cs` |
 

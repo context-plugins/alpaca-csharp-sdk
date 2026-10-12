@@ -2,7 +2,7 @@
 
 # Positions — operations
 
-Accessor: `client.Positions` · Source: `Api/Positions.cs` · 4 operations
+Accessor: `client.Positions` · Source: `src/Alpaca/Api/Positions.cs` · 4 operations
 
 **Type sources**: the file declaring each type an operation names (`RawError` excluded — see sdk-map.md).
 
@@ -17,9 +17,9 @@ Accessor: `client.Positions` · Source: `Api/Positions.cs` · 4 operations
 
 | Type | Source |
 | --- | --- |
-| `DeleteAllOpenPositionsRequest` | `Requests/Positions/DeleteAllOpenPositionsRequest.cs` |
-| `PositionClosedReponse` | `Models/PositionClosedReponse.cs` |
-| `DeleteAllOpenPositionsError` | `Errors/DeleteAllOpenPositionsError.cs` |
+| `DeleteAllOpenPositionsRequest` | `src/Alpaca/Requests/Positions/DeleteAllOpenPositionsRequest.cs` |
+| `PositionClosedReponse` | `src/Alpaca/Models/PositionClosedReponse.cs` |
+| `DeleteAllOpenPositionsError` | `src/Alpaca/Errors/DeleteAllOpenPositionsError.cs` |
 
 ### DeleteOpenPosition
 
@@ -32,8 +32,8 @@ Accessor: `client.Positions` · Source: `Api/Positions.cs` · 4 operations
 
 | Type | Source |
 | --- | --- |
-| `DeleteOpenPositionRequest` | `Requests/Positions/DeleteOpenPositionRequest.cs` |
-| `Order` | `Models/Order.cs` |
+| `DeleteOpenPositionRequest` | `src/Alpaca/Requests/Positions/DeleteOpenPositionRequest.cs` |
+| `Order` | `src/Alpaca/Models/Order.cs` |
 
 ### GetAllOpenPositions
 
@@ -44,7 +44,7 @@ Accessor: `client.Positions` · Source: `Api/Positions.cs` · 4 operations
 
 | Type | Source |
 | --- | --- |
-| `Position` | `Models/Position.cs` |
+| `Position` | `src/Alpaca/Models/Position.cs` |
 
 ### GetOpenPosition
 
@@ -56,6 +56,6 @@ Accessor: `client.Positions` · Source: `Api/Positions.cs` · 4 operations
 
 | Type | Source |
 | --- | --- |
-| `GetOpenPositionRequest` | `Requests/Positions/GetOpenPositionRequest.cs` |
-| `Position` | `Models/Position.cs` |
+| `GetOpenPositionRequest` | `src/Alpaca/Requests/Positions/GetOpenPositionRequest.cs` |
+| `Position` | `src/Alpaca/Models/Position.cs` |
 

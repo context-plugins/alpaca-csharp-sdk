@@ -2,7 +2,7 @@
 
 # Watchlists — operations
 
-Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
+Accessor: `client.Watchlists` · Source: `src/Alpaca/Api/Watchlists.cs` · 11 operations
 
 **Type sources**: the file declaring each type an operation names (`RawError` excluded — see sdk-map.md).
 
@@ -16,9 +16,9 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `AddAssetToWatchlistOperationRequest` | `Requests/Watchlists/AddAssetToWatchlistOperationRequest.cs` |
-| `AddAssetToWatchlistRequest` | `Models/AddAssetToWatchlistRequest.cs` |
-| `Watchlist` | `Models/Watchlist.cs` |
+| `AddAssetToWatchlistOperationRequest` | `src/Alpaca/Requests/Watchlists/AddAssetToWatchlistOperationRequest.cs` |
+| `AddAssetToWatchlistRequest` | `src/Alpaca/Models/AddAssetToWatchlistRequest.cs` |
+| `Watchlist` | `src/Alpaca/Models/Watchlist.cs` |
 
 ### AddAssetToWatchlistByName
 
@@ -31,9 +31,9 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `AddAssetToWatchlistByNameRequest` | `Requests/Watchlists/AddAssetToWatchlistByNameRequest.cs` |
-| `AddAssetToWatchlistRequest` | `Models/AddAssetToWatchlistRequest.cs` |
-| `Watchlist` | `Models/Watchlist.cs` |
+| `AddAssetToWatchlistByNameRequest` | `src/Alpaca/Requests/Watchlists/AddAssetToWatchlistByNameRequest.cs` |
+| `AddAssetToWatchlistRequest` | `src/Alpaca/Models/AddAssetToWatchlistRequest.cs` |
+| `Watchlist` | `src/Alpaca/Models/Watchlist.cs` |
 
 ### DeleteWatchlistById
 
@@ -45,7 +45,7 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `DeleteWatchlistByIdRequest` | `Requests/Watchlists/DeleteWatchlistByIdRequest.cs` |
+| `DeleteWatchlistByIdRequest` | `src/Alpaca/Requests/Watchlists/DeleteWatchlistByIdRequest.cs` |
 
 ### DeleteWatchlistByName
 
@@ -58,7 +58,7 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `DeleteWatchlistByNameRequest` | `Requests/Watchlists/DeleteWatchlistByNameRequest.cs` |
+| `DeleteWatchlistByNameRequest` | `src/Alpaca/Requests/Watchlists/DeleteWatchlistByNameRequest.cs` |
 
 ### GetWatchlistById
 
@@ -70,8 +70,8 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `GetWatchlistByIdRequest` | `Requests/Watchlists/GetWatchlistByIdRequest.cs` |
-| `Watchlist` | `Models/Watchlist.cs` |
+| `GetWatchlistByIdRequest` | `src/Alpaca/Requests/Watchlists/GetWatchlistByIdRequest.cs` |
+| `Watchlist` | `src/Alpaca/Models/Watchlist.cs` |
 
 ### GetWatchlistByName
 
@@ -84,8 +84,8 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `GetWatchlistByNameRequest` | `Requests/Watchlists/GetWatchlistByNameRequest.cs` |
-| `Watchlist` | `Models/Watchlist.cs` |
+| `GetWatchlistByNameRequest` | `src/Alpaca/Requests/Watchlists/GetWatchlistByNameRequest.cs` |
+| `Watchlist` | `src/Alpaca/Models/Watchlist.cs` |
 
 ### GetWatchlists
 
@@ -96,7 +96,7 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `Watchlist` | `Models/Watchlist.cs` |
+| `Watchlist` | `src/Alpaca/Models/Watchlist.cs` |
 
 ### PostWatchlist
 
@@ -108,9 +108,9 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `PostWatchlistOperationRequest` | `Requests/Watchlists/PostWatchlistOperationRequest.cs` |
-| `PostWatchlistRequest` | `Models/PostWatchlistRequest.cs` |
-| `Watchlist` | `Models/Watchlist.cs` |
+| `PostWatchlistOperationRequest` | `src/Alpaca/Requests/Watchlists/PostWatchlistOperationRequest.cs` |
+| `PostWatchlistRequest` | `src/Alpaca/Models/PostWatchlistRequest.cs` |
+| `Watchlist` | `src/Alpaca/Models/Watchlist.cs` |
 
 ### RemoveAssetFromWatchlist
 
@@ -122,8 +122,8 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `RemoveAssetFromWatchlistRequest` | `Requests/Watchlists/RemoveAssetFromWatchlistRequest.cs` |
-| `Watchlist` | `Models/Watchlist.cs` |
+| `RemoveAssetFromWatchlistRequest` | `src/Alpaca/Requests/Watchlists/RemoveAssetFromWatchlistRequest.cs` |
+| `Watchlist` | `src/Alpaca/Models/Watchlist.cs` |
 
 ### UpdateWatchlistById
 
@@ -135,9 +135,9 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `UpdateWatchlistByIdRequest` | `Requests/Watchlists/UpdateWatchlistByIdRequest.cs` |
-| `PostWatchlistRequest` | `Models/PostWatchlistRequest.cs` |
-| `Watchlist` | `Models/Watchlist.cs` |
+| `UpdateWatchlistByIdRequest` | `src/Alpaca/Requests/Watchlists/UpdateWatchlistByIdRequest.cs` |
+| `PostWatchlistRequest` | `src/Alpaca/Models/PostWatchlistRequest.cs` |
+| `Watchlist` | `src/Alpaca/Models/Watchlist.cs` |
 
 ### UpdateWatchlistByName
 
@@ -150,7 +150,7 @@ Accessor: `client.Watchlists` · Source: `Api/Watchlists.cs` · 11 operations
 
 | Type | Source |
 | --- | --- |
-| `UpdateWatchlistByNameRequest` | `Requests/Watchlists/UpdateWatchlistByNameRequest.cs` |
-| `PostWatchlistRequest` | `Models/PostWatchlistRequest.cs` |
-| `Watchlist` | `Models/Watchlist.cs` |
+| `UpdateWatchlistByNameRequest` | `src/Alpaca/Requests/Watchlists/UpdateWatchlistByNameRequest.cs` |
+| `PostWatchlistRequest` | `src/Alpaca/Models/PostWatchlistRequest.cs` |
+| `Watchlist` | `src/Alpaca/Models/Watchlist.cs` |
 

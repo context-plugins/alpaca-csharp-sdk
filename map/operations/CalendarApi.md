@@ -2,7 +2,7 @@
 
 # CalendarApi — operations
 
-Accessor: `client.CalendarApi` · Source: `Api/CalendarApi.cs` · 1 operation
+Accessor: `client.CalendarApi` · Source: `src/Alpaca/Api/CalendarApi.cs` · 1 operation
 
 **Type sources**: the file declaring each type an operation names (`RawError` excluded — see sdk-map.md).
 
@@ -16,6 +16,6 @@ Accessor: `client.CalendarApi` · Source: `Api/CalendarApi.cs` · 1 operation
 
 | Type | Source |
 | --- | --- |
-| `GetCalendarRequest` | `Requests/CalendarApi/GetCalendarRequest.cs` |
-| `Calendar` | `Models/Calendar.cs` |
+| `GetCalendarRequest` | `src/Alpaca/Requests/CalendarApi/GetCalendarRequest.cs` |
+| `Calendar` | `src/Alpaca/Models/Calendar.cs` |
 

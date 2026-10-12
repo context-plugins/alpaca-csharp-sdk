@@ -2,11 +2,11 @@
 
 Every operation below is shown in its throwing form. On an error status it throws `ApiException<TError>` — the status code, headers, content type and the operation's error type, `RawError` (the raw body) when the spec declares none — and where an operation offers an `…AsResult` sibling, that sibling returns `ApiResult<TResponse, TError>` instead. A request that produces no usable response surfaces as `SdkConnectionException` or `SdkTimeoutException`, a body that does not match the documented response type as `ResponseDeserializationException`, and a credential that cannot be applied as `AuthSchemeException`; all of them derive from `SdkException` and name the failed call. See [README → Error Handling](README.md#error-handling).
 
-> Source: [AlpacaClient](AlpacaClient.cs)
+> Source: [AlpacaClient](src/Alpaca/AlpacaClient.cs)
 
 ## AccountActivities
 
-> Source: [AccountActivities](Api/AccountActivities.cs)
+> Source: [AccountActivities](src/Alpaca/Api/AccountActivities.cs)
 
 <details>
 <summary><code>Task&lt;IReadOnlyList&lt;V2AccountActivitiesResponse&gt;&gt; GetAccountActivities(GetAccountActivitiesRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
@@ -53,7 +53,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[GetAccountActivitiesRequest](Requests/AccountActivities/GetAccountActivitiesRequest.cs)</code>
+<code>[GetAccountActivitiesRequest](src/Alpaca/Requests/AccountActivities/GetAccountActivitiesRequest.cs)</code>
 
 </dd>
 </dl>
@@ -63,9 +63,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>IReadOnlyList&lt;[V2AccountActivitiesResponse](Models/AnyOf/V2AccountActivitiesResponse.cs)&gt;</code>
+**OnSuccess**: <code>IReadOnlyList&lt;[V2AccountActivitiesResponse](src/Alpaca/Models/AnyOf/V2AccountActivitiesResponse.cs)&gt;</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -121,7 +121,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[GetAccountActivitiesByActivityTypeRequest](Requests/AccountActivities/GetAccountActivitiesByActivityTypeRequest.cs)</code>
+<code>[GetAccountActivitiesByActivityTypeRequest](src/Alpaca/Requests/AccountActivities/GetAccountActivitiesByActivityTypeRequest.cs)</code>
 
 </dd>
 </dl>
@@ -131,9 +131,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>IReadOnlyList&lt;[V2AccountActivitiesResponse1](Models/AnyOf/V2AccountActivitiesResponse1.cs)&gt;</code>
+**OnSuccess**: <code>IReadOnlyList&lt;[V2AccountActivitiesResponse1](src/Alpaca/Models/AnyOf/V2AccountActivitiesResponse1.cs)&gt;</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -145,7 +145,7 @@ catch (ApiException<RawError> ex)
 
 ## AccountConfigurationsApi
 
-> Source: [AccountConfigurationsApi](Api/AccountConfigurationsApi.cs)
+> Source: [AccountConfigurationsApi](src/Alpaca/Api/AccountConfigurationsApi.cs)
 
 <details>
 <summary><code>Task&lt;AccountConfigurations&gt; GetAccountConfig(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
@@ -188,9 +188,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[AccountConfigurations](Models/AccountConfigurations.cs)</code>
+**OnSuccess**: <code>[AccountConfigurations](src/Alpaca/Models/AccountConfigurations.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -241,7 +241,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[PatchAccountConfigRequest](Requests/AccountConfigurationsApi/PatchAccountConfigRequest.cs)</code>
+<code>[PatchAccountConfigRequest](src/Alpaca/Requests/AccountConfigurationsApi/PatchAccountConfigRequest.cs)</code>
 
 </dd>
 </dl>
@@ -251,9 +251,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[AccountConfigurations](Models/AccountConfigurations.cs)</code>
+**OnSuccess**: <code>[AccountConfigurations](src/Alpaca/Models/AccountConfigurations.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -265,7 +265,7 @@ catch (ApiException<RawError> ex)
 
 ## Accounts
 
-> Source: [Accounts](Api/Accounts.cs)
+> Source: [Accounts](src/Alpaca/Api/Accounts.cs)
 
 <details>
 <summary><code>Task&lt;Account&gt; GetAccount(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
@@ -308,9 +308,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Account](Models/Account.cs)</code>
+**OnSuccess**: <code>[Account](src/Alpaca/Models/Account.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -322,7 +322,7 @@ catch (ApiException<RawError> ex)
 
 ## CalendarApi
 
-> Source: [CalendarApi](Api/CalendarApi.cs)
+> Source: [CalendarApi](src/Alpaca/Api/CalendarApi.cs)
 
 <details>
 <summary><code>Task&lt;IReadOnlyList&lt;Calendar&gt;&gt; GetCalendar(GetCalendarRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
@@ -365,7 +365,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[GetCalendarRequest](Requests/CalendarApi/GetCalendarRequest.cs)</code>
+<code>[GetCalendarRequest](src/Alpaca/Requests/CalendarApi/GetCalendarRequest.cs)</code>
 
 </dd>
 </dl>
@@ -375,9 +375,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>IReadOnlyList&lt;[Calendar](Models/Calendar.cs)&gt;</code>
+**OnSuccess**: <code>IReadOnlyList&lt;[Calendar](src/Alpaca/Models/Calendar.cs)&gt;</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -389,7 +389,7 @@ catch (ApiException<RawError> ex)
 
 ## ClockApi
 
-> Source: [ClockApi](Api/ClockApi.cs)
+> Source: [ClockApi](src/Alpaca/Api/ClockApi.cs)
 
 <details>
 <summary><code>Task&lt;Clock&gt; GetClock(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
@@ -434,9 +434,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Clock](Models/Clock.cs)</code>
+**OnSuccess**: <code>[Clock](src/Alpaca/Models/Clock.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -448,7 +448,7 @@ catch (ApiException<RawError> ex)
 
 ## Orders
 
-> Source: [Orders](Api/Orders.cs)
+> Source: [Orders](src/Alpaca/Api/Orders.cs)
 
 <details>
 <summary><code>Task&lt;IReadOnlyList&lt;CanceledOrderResponse&gt;&gt; DeleteAllOrders(RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
@@ -494,9 +494,9 @@ catch (ApiException<DeleteAllOrdersError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>IReadOnlyList&lt;[CanceledOrderResponse](Models/CanceledOrderResponse.cs)&gt;</code>
+**OnSuccess**: <code>IReadOnlyList&lt;[CanceledOrderResponse](src/Alpaca/Models/CanceledOrderResponse.cs)&gt;</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[DeleteAllOrdersError](Errors/DeleteAllOrdersError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[DeleteAllOrdersError](src/Alpaca/Errors/DeleteAllOrdersError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -552,7 +552,7 @@ catch (ApiException<DeleteOrderByOrderIdError> ex)
 <dl>
 <dd>
 
-<code>[DeleteOrderByOrderIdRequest](Requests/Orders/DeleteOrderByOrderIdRequest.cs)</code>
+<code>[DeleteOrderByOrderIdRequest](src/Alpaca/Requests/Orders/DeleteOrderByOrderIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -564,7 +564,7 @@ catch (ApiException<DeleteOrderByOrderIdError> ex)
 
 **OnSuccess**: No content
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[DeleteOrderByOrderIdError](Errors/DeleteOrderByOrderIdError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[DeleteOrderByOrderIdError](src/Alpaca/Errors/DeleteOrderByOrderIdError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -615,7 +615,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[GetAllOrdersRequest](Requests/Orders/GetAllOrdersRequest.cs)</code>
+<code>[GetAllOrdersRequest](src/Alpaca/Requests/Orders/GetAllOrdersRequest.cs)</code>
 
 </dd>
 </dl>
@@ -625,9 +625,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>IReadOnlyList&lt;[Order](Models/Order.cs)&gt;</code>
+**OnSuccess**: <code>IReadOnlyList&lt;[Order](src/Alpaca/Models/Order.cs)&gt;</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -681,7 +681,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[GetOrderByOrderIdRequest](Requests/Orders/GetOrderByOrderIdRequest.cs)</code>
+<code>[GetOrderByOrderIdRequest](src/Alpaca/Requests/Orders/GetOrderByOrderIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -691,9 +691,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Order](Models/Order.cs)</code>
+**OnSuccess**: <code>[Order](src/Alpaca/Models/Order.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -752,7 +752,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[PatchOrderByOrderIdRequest](Requests/Orders/PatchOrderByOrderIdRequest.cs)</code>
+<code>[PatchOrderByOrderIdRequest](src/Alpaca/Requests/Orders/PatchOrderByOrderIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -762,9 +762,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Order](Models/Order.cs)</code>
+**OnSuccess**: <code>[Order](src/Alpaca/Models/Order.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -829,7 +829,7 @@ catch (ApiException<PostOrderError> ex)
 <dl>
 <dd>
 
-<code>[PostOrderRequest](Requests/Orders/PostOrderRequest.cs)</code>
+<code>[PostOrderRequest](src/Alpaca/Requests/Orders/PostOrderRequest.cs)</code>
 
 </dd>
 </dl>
@@ -839,9 +839,9 @@ catch (ApiException<PostOrderError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Order](Models/Order.cs)</code>
+**OnSuccess**: <code>[Order](src/Alpaca/Models/Order.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[PostOrderError](Errors/PostOrderError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[PostOrderError](src/Alpaca/Errors/PostOrderError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -853,7 +853,7 @@ catch (ApiException<PostOrderError> ex)
 
 ## PortfolioHistoryApi
 
-> Source: [PortfolioHistoryApi](Api/PortfolioHistoryApi.cs)
+> Source: [PortfolioHistoryApi](src/Alpaca/Api/PortfolioHistoryApi.cs)
 
 <details>
 <summary><code>Task&lt;PortfolioHistory&gt; GetAccountPortfolioHistory(GetAccountPortfolioHistoryRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
@@ -899,7 +899,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[GetAccountPortfolioHistoryRequest](Requests/PortfolioHistoryApi/GetAccountPortfolioHistoryRequest.cs)</code>
+<code>[GetAccountPortfolioHistoryRequest](src/Alpaca/Requests/PortfolioHistoryApi/GetAccountPortfolioHistoryRequest.cs)</code>
 
 </dd>
 </dl>
@@ -909,9 +909,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[PortfolioHistory](Models/PortfolioHistory.cs)</code>
+**OnSuccess**: <code>[PortfolioHistory](src/Alpaca/Models/PortfolioHistory.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -923,7 +923,7 @@ catch (ApiException<RawError> ex)
 
 ## Positions
 
-> Source: [Positions](Api/Positions.cs)
+> Source: [Positions](src/Alpaca/Api/Positions.cs)
 
 <details>
 <summary><code>Task&lt;IReadOnlyList&lt;PositionClosedReponse&gt;&gt; DeleteAllOpenPositions(DeleteAllOpenPositionsRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
@@ -969,7 +969,7 @@ catch (ApiException<DeleteAllOpenPositionsError> ex)
 <dl>
 <dd>
 
-<code>[DeleteAllOpenPositionsRequest](Requests/Positions/DeleteAllOpenPositionsRequest.cs)</code>
+<code>[DeleteAllOpenPositionsRequest](src/Alpaca/Requests/Positions/DeleteAllOpenPositionsRequest.cs)</code>
 
 </dd>
 </dl>
@@ -979,9 +979,9 @@ catch (ApiException<DeleteAllOpenPositionsError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>IReadOnlyList&lt;[PositionClosedReponse](Models/PositionClosedReponse.cs)&gt;</code>
+**OnSuccess**: <code>IReadOnlyList&lt;[PositionClosedReponse](src/Alpaca/Models/PositionClosedReponse.cs)&gt;</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[DeleteAllOpenPositionsError](Errors/DeleteAllOpenPositionsError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[DeleteAllOpenPositionsError](src/Alpaca/Errors/DeleteAllOpenPositionsError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1035,7 +1035,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[DeleteOpenPositionRequest](Requests/Positions/DeleteOpenPositionRequest.cs)</code>
+<code>[DeleteOpenPositionRequest](src/Alpaca/Requests/Positions/DeleteOpenPositionRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1045,9 +1045,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Order](Models/Order.cs)</code>
+**OnSuccess**: <code>[Order](src/Alpaca/Models/Order.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1100,9 +1100,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>IReadOnlyList&lt;[Position](Models/Position.cs)&gt;</code>
+**OnSuccess**: <code>IReadOnlyList&lt;[Position](src/Alpaca/Models/Position.cs)&gt;</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1156,7 +1156,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[GetOpenPositionRequest](Requests/Positions/GetOpenPositionRequest.cs)</code>
+<code>[GetOpenPositionRequest](src/Alpaca/Requests/Positions/GetOpenPositionRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1166,9 +1166,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Position](Models/Position.cs)</code>
+**OnSuccess**: <code>[Position](src/Alpaca/Models/Position.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1180,7 +1180,7 @@ catch (ApiException<RawError> ex)
 
 ## Watchlists
 
-> Source: [Watchlists](Api/Watchlists.cs)
+> Source: [Watchlists](src/Alpaca/Api/Watchlists.cs)
 
 <details>
 <summary><code>Task&lt;Watchlist&gt; AddAssetToWatchlist(AddAssetToWatchlistOperationRequest request, RequestOptions? requestOptions = null, CancellationToken cancellationToken = default);</code></summary>
@@ -1226,7 +1226,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[AddAssetToWatchlistOperationRequest](Requests/Watchlists/AddAssetToWatchlistOperationRequest.cs)</code>
+<code>[AddAssetToWatchlistOperationRequest](src/Alpaca/Requests/Watchlists/AddAssetToWatchlistOperationRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1236,9 +1236,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
+**OnSuccess**: <code>[Watchlist](src/Alpaca/Models/Watchlist.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1292,7 +1292,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[AddAssetToWatchlistByNameRequest](Requests/Watchlists/AddAssetToWatchlistByNameRequest.cs)</code>
+<code>[AddAssetToWatchlistByNameRequest](src/Alpaca/Requests/Watchlists/AddAssetToWatchlistByNameRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1302,9 +1302,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
+**OnSuccess**: <code>[Watchlist](src/Alpaca/Models/Watchlist.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1357,7 +1357,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[DeleteWatchlistByIdRequest](Requests/Watchlists/DeleteWatchlistByIdRequest.cs)</code>
+<code>[DeleteWatchlistByIdRequest](src/Alpaca/Requests/Watchlists/DeleteWatchlistByIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1369,7 +1369,7 @@ catch (ApiException<RawError> ex)
 
 **OnSuccess**: No content
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1419,7 +1419,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[DeleteWatchlistByNameRequest](Requests/Watchlists/DeleteWatchlistByNameRequest.cs)</code>
+<code>[DeleteWatchlistByNameRequest](src/Alpaca/Requests/Watchlists/DeleteWatchlistByNameRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1431,7 +1431,7 @@ catch (ApiException<RawError> ex)
 
 **OnSuccess**: No content
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1485,7 +1485,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[GetWatchlistByIdRequest](Requests/Watchlists/GetWatchlistByIdRequest.cs)</code>
+<code>[GetWatchlistByIdRequest](src/Alpaca/Requests/Watchlists/GetWatchlistByIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1495,9 +1495,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
+**OnSuccess**: <code>[Watchlist](src/Alpaca/Models/Watchlist.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1551,7 +1551,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[GetWatchlistByNameRequest](Requests/Watchlists/GetWatchlistByNameRequest.cs)</code>
+<code>[GetWatchlistByNameRequest](src/Alpaca/Requests/Watchlists/GetWatchlistByNameRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1561,9 +1561,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
+**OnSuccess**: <code>[Watchlist](src/Alpaca/Models/Watchlist.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1614,9 +1614,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>IReadOnlyList&lt;[Watchlist](Models/Watchlist.cs)&gt;</code>
+**OnSuccess**: <code>IReadOnlyList&lt;[Watchlist](src/Alpaca/Models/Watchlist.cs)&gt;</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1670,7 +1670,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[PostWatchlistOperationRequest](Requests/Watchlists/PostWatchlistOperationRequest.cs)</code>
+<code>[PostWatchlistOperationRequest](src/Alpaca/Requests/Watchlists/PostWatchlistOperationRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1680,9 +1680,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
+**OnSuccess**: <code>[Watchlist](src/Alpaca/Models/Watchlist.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1737,7 +1737,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[RemoveAssetFromWatchlistRequest](Requests/Watchlists/RemoveAssetFromWatchlistRequest.cs)</code>
+<code>[RemoveAssetFromWatchlistRequest](src/Alpaca/Requests/Watchlists/RemoveAssetFromWatchlistRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1747,9 +1747,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
+**OnSuccess**: <code>[Watchlist](src/Alpaca/Models/Watchlist.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1803,7 +1803,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[UpdateWatchlistByIdRequest](Requests/Watchlists/UpdateWatchlistByIdRequest.cs)</code>
+<code>[UpdateWatchlistByIdRequest](src/Alpaca/Requests/Watchlists/UpdateWatchlistByIdRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1813,9 +1813,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
+**OnSuccess**: <code>[Watchlist](src/Alpaca/Models/Watchlist.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
@@ -1869,7 +1869,7 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-<code>[UpdateWatchlistByNameRequest](Requests/Watchlists/UpdateWatchlistByNameRequest.cs)</code>
+<code>[UpdateWatchlistByNameRequest](src/Alpaca/Requests/Watchlists/UpdateWatchlistByNameRequest.cs)</code>
 
 </dd>
 </dl>
@@ -1879,9 +1879,9 @@ catch (ApiException<RawError> ex)
 <dl>
 <dd>
 
-**OnSuccess**: <code>[Watchlist](Models/Watchlist.cs)</code>
+**OnSuccess**: <code>[Watchlist](src/Alpaca/Models/Watchlist.cs)</code>
 
-**OnError**: <code>[ApiException](Core/Exceptions/ApiException.cs)&lt;[RawError](Core/ErrorResponse/RawError.cs)&gt;</code>
+**OnError**: <code>[ApiException](src/Alpaca/Core/Exceptions/ApiException.cs)&lt;[RawError](src/Alpaca/Core/ErrorResponse/RawError.cs)&gt;</code>
 
 </dd>
 </dl>
